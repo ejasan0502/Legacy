@@ -62,6 +62,8 @@ public class Player : Character {
         playerInfoDisplay.SetPlayer(this);
     }
     #endregion
+    #region GetMethods
+    #endregion
     #region Skills Methods
     public void AddSkill(Skill s){
         if ( !HasSkill(s.id) ) skills.Add(new Skill(s));

@@ -30,6 +30,7 @@ public class MenusWindow : MonoBehaviour {
     }
 
     public void Exit(){
+        
         Game.GetPlayerObject().GetComponent<PlayerObject>().SetControls(true);
         Console.instance.SetDisplay(true);
 

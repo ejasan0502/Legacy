@@ -12,7 +12,7 @@ public class Skill {
 
     public Stats stats;                 // Passive skills will ALWAYS have stats as percents
 
-    public float level;
+    public int level;
 
     public int reqLevel;
     public Skill[] reqs;
@@ -29,16 +29,27 @@ public class Skill {
     }
 
     public bool CanLevelUp(Player p){
-        if ( p.level >= reqLevel ){
+        if ( p.classLevel >= reqLevel && p.classPoints > 0 ){
             return true;
         }
 
         return false;
     }
 
+    public bool CanLearn(Player p){
+        if ( p.classLevel >= reqLevel ){
+            foreach (Skill s in reqs){
+                if ( !p.HasSkill(s.id) ){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public void LevelUp(){
         level++;
-
     }   
 
     public virtual void Cast(Character caster){

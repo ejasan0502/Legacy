@@ -68,9 +68,8 @@ public class Console : MonoBehaviour {
     }
 
     public void SetDisplay(bool b){
-        foreach (Transform t in transform){
-            t.gameObject.SetActive(b);
-        }
+        if ( b )
+            Minimize();
     }
 
     private IEnumerator Fade(){
