@@ -8,8 +8,6 @@ public class Console : MonoBehaviour {
     #region Variables
     public InputField minimizedInputField;
     public Text minimizedText;
-    public InputField maximizedInputField;
-    public Text maximizedText;
 
 	private static object _lock = new object();
 	private static Console _instance;
@@ -33,6 +31,8 @@ public class Console : MonoBehaviour {
     private int logCount = 0;
     private string logsText = "";
     private TouchScreenKeyboard keyboard;
+    private float startTime = 0f;
+    private float logTime = 1f;
     #endregion
 
 	void Awake(){
@@ -51,25 +51,18 @@ public class Console : MonoBehaviour {
 
     public void Submit(){
         if ( instance.minimizedText.gameObject.activeSelf ) Log(instance.minimizedInputField.text);
-        else if ( instance.maximizedText.gameObject.activeSelf ) Log(instance.maximizedInputField.text);
 
         instance.minimizedInputField.text = "";
-        instance.maximizedInputField.text = "";
     }
 
     public void Minimize(){
         transform.GetChild(0).gameObject.SetActive(true);
-        transform.GetChild(1).gameObject.SetActive(false);
-    }
-
-    public void Maximize(){
-        transform.GetChild(0).gameObject.SetActive(false);
-        transform.GetChild(1).gameObject.SetActive(true);
     }
 
     public void SetDisplay(bool b){
-        if ( b )
-            Minimize();
+        foreach (Transform t in transform){
+            t.gameObject.SetActive(b);
+        }
     }
 
     private IEnumerator Fade(){
@@ -92,15 +85,16 @@ public class Console : MonoBehaviour {
         instance.logsText += "\n" + s;
         instance.logCount++;
 
-        instance.minimizedText.text = s;
-        instance.maximizedText.text = instance.logsText;
-
-        if ( instance.logCount*30f > instance.maximizedText.rectTransform.sizeDelta.y ){
-            instance.maximizedText.rectTransform.sizeDelta = new Vector2(instance.maximizedText.rectTransform.sizeDelta.x,instance.logCount*30f);
+        if ( Time.time - instance.startTime < instance.logTime ){
+            instance.minimizedText.text += "\n" + s;
+        } else {
+            instance.minimizedText.text = s;
         }
 
         instance.StopCoroutine("Fade");
         instance.StartCoroutine("Fade");
+
+        instance.startTime = Time.time;
 	}
 	public static void Log(float x){
 		Log(x+"");

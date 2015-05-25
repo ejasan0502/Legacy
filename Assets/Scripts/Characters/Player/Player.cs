@@ -63,6 +63,9 @@ public class Player : Character {
     }
     #endregion
     #region GetMethods
+    public PlayerInfo GetPlayerInfo(){
+        return playerInfoDisplay;
+    }
     #endregion
     #region Skills Methods
     public void AddSkill(Skill s){

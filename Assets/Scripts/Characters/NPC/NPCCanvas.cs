@@ -13,7 +13,6 @@ public class NPCCanvas : MonoBehaviour {
     public GameObject sellList;
     public GameObject craftList;
     public GameObject questList;
-    public GameObject skillList;
     public GameObject itemInfoPref;
     public GameObject questInfoPref;
     public GameObject craftInfoPref;

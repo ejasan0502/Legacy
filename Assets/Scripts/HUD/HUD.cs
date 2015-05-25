@@ -28,6 +28,7 @@ public class HUD : MonoBehaviour {
                     windowsRectTransform[0].gameObject.SetActive(true);
                     Game.GetPlayerObject().GetComponent<PlayerObject>().SetControls(false);
                     Console.instance.SetDisplay(false);
+                    Game.GetPlayer().GetPlayerInfo().gameObject.SetActive(false);
                 } else if ( rt.name == "Settings" ){
                     
                 } else if ( rt.name == "Log Off" ){

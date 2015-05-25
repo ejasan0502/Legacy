@@ -16,7 +16,12 @@ public class SkillWindow : MonoBehaviour {
     }
 
     void OnEnable(){
-        
+        UpdateDisplay();
+    }
+
+    public void UpdateDisplay(){
+        lvlExpText.text = "Class Level: " + p.classLevel + " - " + p.classExp + " / " + p.maxClassExp;
+        skillPointsText.text = "Class Points: " + p.classPoints;   
     }
 
     public void Learn(string id){
@@ -28,11 +33,11 @@ public class SkillWindow : MonoBehaviour {
         p.GetSkill(id).LevelUp();
     }
 
-    public void HideQuestInfo(){
+    public void HideSkillInfo(){
         skillInfo.gameObject.SetActive(false);
     }
 
-    public void DisplayQuestInfo(string id){
+    public void DisplaySkillInfo(string id){
         if ( !skillInfo.gameObject.activeSelf ) skillInfo.gameObject.SetActive(true);
 
         Skill s = Game.GetSkillData().GetSkill(id);
@@ -41,19 +46,19 @@ public class SkillWindow : MonoBehaviour {
         descriptionText += "Required Class Level: " + s.reqLevel + "\n";
         switch(s.skillType){
         case SkillType.aoe:
-        descriptionText += "Aoe";
+        descriptionText += "Aoe\n";
         break;
         case SkillType.buff:
-        descriptionText += "Buff";
+        descriptionText += "Buff\n";
         break;
         case SkillType.passive:
-        descriptionText += "Passive";
+        descriptionText += "Passive\n";
         break;
         case SkillType.singleTarget:
-        descriptionText += "Single Target";
+        descriptionText += "Single Target\n";
         break;
         case SkillType.summon:
-        descriptionText += "Summon";
+        descriptionText += "Summon\n";
         break;
         }
 
@@ -67,12 +72,12 @@ public class SkillWindow : MonoBehaviour {
             } else {
                 percent = s.stats.magicMinDmg;
             }
-            description.Trim().Replace("{X}",percent+"");
+            description = description.Replace("{X}",percent+"");
         }
 
-        descriptionText += s.description + "\n";
-        foreach (Skill ss in s.reqs){
-            descriptionText += "Requires " + ss.name + "\n";
+        descriptionText += description + "\n";
+        foreach (string ss in s.reqs){
+            descriptionText += "Requires " + Game.GetSkillData().GetSkill(ss).name + "\n";
         }
 
         skillInfo.GetChild(0).GetComponent<Text>().text = s.name;

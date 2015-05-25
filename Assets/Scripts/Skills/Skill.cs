@@ -11,12 +11,19 @@ public class Skill {
     public SkillType skillType;
 
     public Stats stats;                 // Passive skills will ALWAYS have stats as percents
+    public float cd;
 
     public int level;
 
     public int reqLevel;
-    public Skill[] reqs;
-
+    public List<string> reqs;
+    
+    public Skill(){
+        level = 0;
+        stats = new Stats();
+        reqs = new List<string>();
+    }
+    
     public Skill(Skill s){
         FieldInfo[] fields = GetType().GetFields();
         FieldInfo[] fields2 = s.GetType().GetFields();
@@ -27,7 +34,7 @@ public class Skill {
                 fields[i].SetValue(this,fields2[i].GetValue(s));
         }
     }
-
+    
     public bool CanLevelUp(Player p){
         if ( p.classLevel >= reqLevel && p.classPoints > 0 ){
             return true;
@@ -35,11 +42,11 @@ public class Skill {
 
         return false;
     }
-
+    
     public bool CanLearn(Player p){
         if ( p.classLevel >= reqLevel ){
-            foreach (Skill s in reqs){
-                if ( !p.HasSkill(s.id) ){
+            foreach (string s in reqs){
+                if ( !p.HasSkill(s) ){
                     return false;
                 }
             }
@@ -47,19 +54,19 @@ public class Skill {
         }
         return false;
     }
-
+    
     public void LevelUp(){
         level++;
     }   
-
+    
     public virtual void Cast(Character caster){
 
     }
-
+    
     public virtual void Apply(Character caster){
         
     }
-
+    
     public virtual void Apply(Character caster, Character target){
         
     }
