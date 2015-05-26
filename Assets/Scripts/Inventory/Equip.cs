@@ -1,15 +1,33 @@
 ﻿using UnityEngine;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Equip : Item {
 
+    public int masteryLevel;
     public EquipType equipType;
     public Characteristics requirements;
-    public int masteryLevel;
     public Stats bonusStats;
-    public Ability[] abilities;
+
+    public Equip(){
+        name = "";
+        id = "";
+        tier = Tier.common;
+        description = "";
+        weight = 0f;
+        cost = 0f;
+        craftCost = 0f;
+        craftChance = 0;
+        ingredients = new List<Ingredient>();
+        icon = null;
+        stats = new Stats();
+        masteryLevel = 0;
+        equipType = EquipType.primaryWeapon;
+        requirements = new Characteristics();
+        bonusStats = new Stats();
+    }
 
     public Equip(Equip e){
         FieldInfo[] fields = GetType().GetFields();
@@ -17,6 +35,8 @@ public class Equip : Item {
         for (int i = 0; i < fields.Length; i++){
             if ( fields[i].GetType().Equals(typeof(Stats)) )
                 fields[i].SetValue(this,new Stats( (Stats)fields2[i].GetValue(e) ));
+            else if ( fields[i].GetType().Equals(typeof(Characteristics)) )
+                fields[i].SetValue(this,new Characteristics( (Characteristics)fields2[i].GetValue(e) ));
             else
                 fields[i].SetValue(this,fields2[i].GetValue(e));
         }

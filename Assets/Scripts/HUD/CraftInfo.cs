@@ -29,7 +29,7 @@ public class CraftInfo : MonoBehaviour {
         Player p = Game.GetPlayer();
         string s = "";
         float sizeY = 0f;
-        for (int i = 0; i < item.ingredients.Length; i++){
+        for (int i = 0; i < item.ingredients.Count; i++){
             int have = 0;
             InventoryItem ii = p.inventory.GetInventorySlot(item.ingredients[i].item);
             if ( ii != null ) have = ii.amount;

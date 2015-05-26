@@ -10,8 +10,6 @@ using Sfs2X.Requests;
 // Note: GameData, NetworkManager, DataSaver should be on the first scene
 public class Game : MonoBehaviour {
 
-    public bool extractXmlData = false;
-
     private SmartFox connection;
     private GameData gameData;
     private MonsterData monsterData;
@@ -50,9 +48,10 @@ public class Game : MonoBehaviour {
         notificationPref = Resources.Load("Notification", typeof(GameObject)) as GameObject;
     }
     void Start(){
-        if ( extractXmlData ){
-            skillsData.ExtractXmlData();
-        }
+        gameData.ExtractItemsXmlData();
+        gameData.ExtractUsablesXmlData();
+        gameData.ExtractEquipsXmlData();
+        skillsData.ExtractXmlData();
     }
     #endregion
     #region Public Static Methods

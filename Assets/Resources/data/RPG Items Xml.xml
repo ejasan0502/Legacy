@@ -1,58 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Item>
-		<name>Practice Sword</name>
-		<id>w.1hs-0</id>
-		<tier>common</tier>
-		<description>A wooden sword for beginners.</description>
-		<cost>1</cost>
-		<craftCost>0</craftCost>
-		<craftChance>0</craftChance>
-		<icon>inventory/weapons/1hs/</icon>
-		<stats>meleeMinDmg-1,meleeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-1</stats>
-		<equipType>primaryWeapon</equipType>
-	</Item>
-	<Item>
-		<name>Practice Staff</name>
-		<id>w.st-0</id>
-		<tier>common</tier>
-		<description>A wooden staff for beginners.</description>
-		<cost>1</cost>
-		<craftCost>0</craftCost>
-		<craftChance>0</craftChance>
-		<icon>inventory/weapons/st</icon>
-		<stats>meleeMinDmg-1,meleeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-1.5</stats>
-		<equipType>primaryWeapon</equipType>
-	</Item>
-	<Item>
-		<name>Practice Dagger</name>
-		<id>w.d-0</id>
-		<tier>common</tier>
-		<description>A wooden dagger for beginners.</description>
-		<cost>1</cost>
-		<craftCost>0</craftCost>
-		<craftChance>0</craftChance>
-		<icon>inventory/weapons/d</icon>
-		<stats>meleeMinDmg-1,meleeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-0.75</stats>
-		<equipType>primaryWeapon</equipType>
-	</Item>
-	<Item>
-		<name>Practice Bow</name>
-		<id>w.b-0</id>
-		<tier>common</tier>
-		<description>A wooden bow for beginners.</description>
-		<cost>1</cost>
-		<craftCost>0</craftCost>
-		<craftChance>0</craftChance>
-		<icon>inventory/weapons/b</icon>
-		<stats>rangeMinDmg-1,rangeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-1</stats>
-		<equipType>primaryWeapon</equipType>
-	</Item>
-	<Item>
 		<name>Health Crystal</name>
 		<id>u-0</id>
 		<tier>common</tier>
 		<description>A red crystal that replenishes health every 3 seconds for 15 seconds.</description>
+		<weight>1</weight>
 		<cost>5</cost>
 		<craftCost>0</craftCost>
 		<craftChance>0</craftChance>
@@ -64,6 +17,7 @@
 		<id>u-1</id>
 		<tier>common</tier>
 		<description>A blue crystal that replenishes mana every 3 seconds for 15 seconds</description>
+		<weight>1</weight>
 		<cost>5</cost>
 		<craftCost>0</craftCost>
 		<craftChance>0</craftChance>
@@ -75,6 +29,7 @@
 		<id>u-2</id>
 		<tier>common</tier>
 		<description>A red potion that replenishes health.</description>
+		<weight>1</weight>
 		<cost>10</cost>
 		<craftCost>50</craftCost>
 		<craftChance>100</craftChance>
@@ -87,6 +42,7 @@
 		<id>u-3</id>
 		<tier>common</tier>
 		<description>A blue potion that replenishes mana.</description>
+		<weight>1</weight>
 		<cost>15</cost>
 		<craftCost>65</craftCost>
 		<craftChance>100</craftChance>
@@ -99,6 +55,7 @@
 		<id>m-0</id>
 		<tier>common</tier>
 		<description>A clear flask used for alchemy.</description>
+		<weight>1</weight>
 		<cost>1</cost>
 		<craftCost>0</craftCost>
 		<craftChance>0</craftChance>

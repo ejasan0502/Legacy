@@ -1,9 +1,26 @@
 ﻿using UnityEngine;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 
-[System.Serializable]
 public class Usable : Item {
+
+    public UsableType usableType;
+
+    public Usable(){
+        name = "";
+        id = "";
+        tier = Tier.common;
+        description = "";
+        weight = 0f;
+        cost = 0f;
+        craftCost = 0f;
+        craftChance = 0;
+        ingredients = new List<Ingredient>();
+        icon = null;
+        stats = new Stats();
+        usableType = UsableType.replenish;
+    }
 
     public Usable(Usable u){
         FieldInfo[] fields = GetType().GetFields();
@@ -16,5 +33,13 @@ public class Usable : Item {
         }
     }
 
-    public virtual void Use(Character user){}
+    public void Use(Character user){}
+}
+
+public enum UsableType {
+    replenish,
+    buff,
+    teleport,
+    damage,
+    aoe
 }

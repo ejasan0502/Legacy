@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Equips xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Equip>
+		<name>Practice Sword</name>
+		<id>w.1hs-0</id>
+		<tier>common</tier>
+		<description>A wooden sword for beginners.</description>
+		<weight>5</weight>
+		<cost>1</cost>
+		<craftCost>0</craftCost>
+		<craftChance>0</craftChance>
+		<icon>inventory/weapons/1hs/</icon>
+		<stats>meleeMinDmg-1,meleeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-1</stats>
+		<equipType>primaryWeapon</equipType>
+	</Equip>
+	<Equip>
+		<name>Practice Staff</name>
+		<id>w.st-0</id>
+		<tier>common</tier>
+		<description>A wooden staff for beginners.</description>
+		<weight>6</weight>
+		<cost>1</cost>
+		<craftCost>0</craftCost>
+		<craftChance>0</craftChance>
+		<icon>inventory/weapons/st</icon>
+		<stats>meleeMinDmg-1,meleeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-1.5</stats>
+		<equipType>primaryWeapon</equipType>
+	</Equip>
+	<Equip>
+		<name>Practice Dagger</name>
+		<id>w.d-0</id>
+		<tier>common</tier>
+		<description>A wooden dagger for beginners.</description>
+		<weight>3</weight>
+		<cost>1</cost>
+		<craftCost>0</craftCost>
+		<craftChance>0</craftChance>
+		<icon>inventory/weapons/d</icon>
+		<stats>meleeMinDmg-1,meleeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-0.75</stats>
+		<equipType>primaryWeapon</equipType>
+	</Equip>
+	<Equip>
+		<name>Practice Bow</name>
+		<id>w.b-0</id>
+		<tier>common</tier>
+		<description>A wooden bow for beginners.</description>
+		<weight>4</weight>
+		<cost>1</cost>
+		<craftCost>0</craftCost>
+		<craftChance>0</craftChance>
+		<icon>inventory/weapons/b</icon>
+		<stats>rangeMinDmg-1,rangeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-1</stats>
+		<equipType>primaryWeapon</equipType>
+	</Equip>
+</Equips>

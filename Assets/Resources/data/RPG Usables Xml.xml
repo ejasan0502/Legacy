@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Usables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Usable>
+		<name>Bottle</name>
+		<id>m-0</id>
+		<tier>common</tier>
+		<description>A clear flask used for alchemy.</description>
+		<cost>1</cost>
+		<craftCost>0</craftCost>
+		<craftChance>0</craftChance>
+		<icon>inventory/materials/</icon>
+	</Usable>
+</Usables>

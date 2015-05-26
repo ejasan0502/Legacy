@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Item {
@@ -12,11 +13,23 @@ public class Item {
     public float cost;
     public float craftCost;
     public int craftChance;             // 0 - 100
-    public Ingredient[] ingredients;
+    public List<Ingredient> ingredients;
     public Sprite icon;
     public Stats stats;
 
-    public Item(){}
+    public Item(){
+        name = "";
+        id = "";
+        tier = Tier.common;
+        description = "";
+        weight = 0f;
+        cost = 0f;
+        craftCost = 0f;
+        craftChance = 0;
+        ingredients = new List<Ingredient>();
+        icon = null;
+        stats = new Stats();
+    }
     public Item(Item item){
         FieldInfo[] fields = GetType().GetFields();
         FieldInfo[] fields2 = item.GetType().GetFields();
