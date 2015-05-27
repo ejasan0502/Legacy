@@ -13,9 +13,9 @@ public class HUD : MonoBehaviour {
             menusRectTransform[0].gameObject.SetActive(b);
 
             if ( b ){
-                Vector2 localpoint = Vector2.zero;
-                if ( RectTransformUtility.ScreenPointToLocalPointInRectangle(menusRectTransform[0],Input.mousePosition,Camera.main, out localpoint) ){
-                    menusRectTransform[0].localPosition = localpoint;
+                Vector3 pos = Vector2.zero;
+                if ( RectTransformUtility.ScreenPointToWorldPointInRectangle(menusRectTransform[0],Input.mousePosition,Camera.main, out pos) ){
+                    menusRectTransform[0].position = pos;
                 }
             }
         }

@@ -11,8 +11,13 @@ public class InputControls : MonoBehaviour {
     public float camZoomSpd = 10f;
     public float minFieldOfView = 20f;
     public float maxFieldOfView = 60f;
+    public float minAngleY = -1000f;
+    public float maxAngleY = 200f;
 
     private Vector3 camOffset;
+    private float desiredAngleX = 0f;
+    private float desiredAngleY = 0f;
+
     private Vector2 touchStartPos;
     private PlayerObject playerObject;
     private bool follow = false;
@@ -29,7 +34,7 @@ public class InputControls : MonoBehaviour {
         // Decrease speeds for mobile platforms
         if ( Application.isMobilePlatform ) {
             camZoomSpd *= 0.01f;
-            camRotSpd *= 0.2f;
+            camRotSpd *= 0.25f;
         }
     }
 
@@ -102,9 +107,11 @@ public class InputControls : MonoBehaviour {
                 touchStartPos = Input.mousePosition;
             }
             if ( Input.GetMouseButton(1) ){
-                float x = Input.mousePosition.x - touchStartPos.x;
-                Camera.main.transform.RotateAround(transform.position,Vector3.up,x*camRotSpd);
-                camOffset = Camera.main.transform.position - transform.position;
+                desiredAngleX += Input.mousePosition.x - touchStartPos.x;
+                desiredAngleY += Input.mousePosition.y - touchStartPos.y;
+
+                if ( desiredAngleY < minAngleY ) desiredAngleY = minAngleY;
+                else if ( desiredAngleY > maxAngleY ) desiredAngleY = maxAngleY;
             }
             #endregion
             #region Zooming
@@ -120,15 +127,31 @@ public class InputControls : MonoBehaviour {
             if ( Input.touchCount == 1 ){
                 Touch touch = Input.touches[0];
                 if ( touch.phase == TouchPhase.Began ){
+                    touchStartPos = Input.mousePosition;
                     inputTime = Time.time;
+                    GameObject.FindObjectOfType<HUD>().SetMenuDisplay(false);
                 }
 
-                if ( touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved ){
+                if ( touch.phase == TouchPhase.Stationary ){
                     if ( Time.time - inputTime > tapTime ){
                         hold = true;
                         GameObject.FindObjectOfType<HUD>().SetMenuDisplay(true);
                     }
                 }
+                
+                #region Camera Controls
+                if ( touch.phase == TouchPhase.Moved ){
+                    if ( !hold ){
+                        inputTime = Time.time;
+
+                        desiredAngleX += Input.mousePosition.x - touchStartPos.x;
+                        desiredAngleY += Input.mousePosition.y - touchStartPos.y;
+
+                        if ( desiredAngleY < minAngleY ) desiredAngleY = minAngleY;
+                        else if ( desiredAngleY > maxAngleY ) desiredAngleY = maxAngleY;
+                    }
+                } 
+                #endregion
 
                 if ( touch.phase == TouchPhase.Ended ){
                     if ( hold ) {
@@ -180,37 +203,23 @@ public class InputControls : MonoBehaviour {
                 }
             } else
             #endregion
-            #region Camera Controls
-            if ( Input.touchCount == 3 ){
-                Touch touch1 = Input.touches[0];
-                Touch touch2 = Input.touches[1];
-                Touch touch3 = Input.touches[2];
-
-                if ( touch1.phase == TouchPhase.Began && touch2.phase == TouchPhase.Began && touch3.phase == TouchPhase.Began ){
-                    touchStartPos = touch1.position;
-                }
-                if ( touch1.phase == TouchPhase.Moved ){
-                    float x = touch1.position.x - touchStartPos.x;
-                    Camera.main.transform.RotateAround(transform.position,Vector3.up,x*camRotSpd);
-                    camOffset = Camera.main.transform.position - transform.position;
-                }
-            } else
-            #endregion
-            #region Zooming
+            #region Zooming Controls
             if ( Input.touchCount == 2 ){
                 Touch touch1 = Input.touches[0];
                 Touch touch2 = Input.touches[1];
 
-                Vector2 touch1PrevPos = touch1.position - touch1.deltaPosition;
-                Vector2 touch2PrevPos = touch2.position - touch2.deltaPosition;
+                if ( touch1.phase == TouchPhase.Moved && touch2.phase == TouchPhase.Moved ) {
+                    Vector2 touch1PrevPos = touch1.position - touch1.deltaPosition;
+                    Vector2 touch2PrevPos = touch2.position - touch2.deltaPosition;
 
-                float prevTouchDeltaMag = (touch1PrevPos - touch2PrevPos).magnitude;
-                float touchDeltaMag = (touch1.position - touch2.position).magnitude;
+                    float prevTouchDeltaMag = (touch1PrevPos - touch2PrevPos).magnitude;
+                    float touchDeltaMag = (touch1.position - touch2.position).magnitude;
 
-                float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+                    float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-                Camera.main.fieldOfView += deltaMagnitudeDiff * camZoomSpd;
-                Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, 0.1f, 179.9f);
+                    Camera.main.fieldOfView += deltaMagnitudeDiff * camZoomSpd;
+                    Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, 0.1f, 179.9f);
+                }
             } 
             #endregion
         }
@@ -225,10 +234,15 @@ public class InputControls : MonoBehaviour {
             enabled = false;
         }
 
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position,transform.position + camOffset,Time.deltaTime);
-
         if ( Camera.main.fieldOfView > maxFieldOfView ) Camera.main.fieldOfView = maxFieldOfView;
         else if ( Camera.main.fieldOfView < minFieldOfView ) Camera.main.fieldOfView = minFieldOfView;
+    }
+
+    void LateUpdate(){
+        Quaternion rotation = Quaternion.Euler(desiredAngleY*camRotSpd,desiredAngleX*camRotSpd,0);
+        Camera.main.transform.position = transform.position + (rotation * camOffset);
+
+        Camera.main.transform.LookAt(transform);
     }
 
     private bool InDeadZone(){
