@@ -26,14 +26,22 @@ public class Monster : Character {
     public override void PhysicalHit(Character atker){
         base.PhysicalHit(atker);
 
-        MonsterObject mo = characterObject as MonsterObject;
-        if ( mo.enemySight.target == null ) mo.enemySight.SetTarget(atker);
+        if ( currentStats.health > 0 ){
+            MonsterObject mo = characterObject as MonsterObject;
+            if ( mo.enemySight.target == null ) mo.enemySight.SetTarget(atker);
+        } else {
+            
+        }
     }
     public override void MagicalHit(Character atker, float percent){
         base.MagicalHit(atker, percent);
+        
+        if ( currentStats.health > 0 ){
+            MonsterObject mo = characterObject as MonsterObject;
+            if ( mo.enemySight.target == null ) mo.enemySight.SetTarget(atker);
+        } else {
 
-        MonsterObject mo = characterObject as MonsterObject;
-        if ( mo.enemySight.target == null ) mo.enemySight.SetTarget(atker);
+        }
     }
     #endregion
 

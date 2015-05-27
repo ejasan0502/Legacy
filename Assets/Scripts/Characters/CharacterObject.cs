@@ -111,6 +111,9 @@ public class CharacterObject : MonoBehaviour {
     }
     #endregion
     #region Public Methods
+    public void StopMovement(){
+        endPoint = transform.position;
+    }
     public virtual void OnDeath(){
         StartCoroutine("WaitForDestroy");
     }

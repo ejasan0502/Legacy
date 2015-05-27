@@ -11,7 +11,7 @@ public class Character {
     public int level = 1;
     public float exp;
 
-    public float atkDistance = 3f;
+    public float atkDistance = 2f;
     public Stats stats;
     public Stats currentStats;
     public CharacterObject characterObject;
@@ -28,10 +28,10 @@ public class Character {
         currentStats.health -= dmg;
 
         Color c = Color.red;
-        string s = (dmg+0f)+"";
+        string s = ((int)dmg)+"";
         if ( dmg < 0 ) {
             c = Color.green;
-            s = Mathf.Abs(dmg+0f)+"";
+            s = Mathf.Abs((int)dmg+0f)+"";
         }
         characterObject.CreateText(s,c);
 
@@ -43,6 +43,15 @@ public class Character {
         if ( dmg < 1 ) dmg = 1f;
 
         currentStats.health -= dmg;
+
+        Color c = Color.red;
+        string s = ((int)dmg)+"";
+        if ( dmg < 0 ) {
+            c = Color.green;
+            s = Mathf.Abs((int)dmg+0f)+"";
+        }
+        characterObject.CreateText(s,c);
+
         CheckDeath();
     }
     #endregion

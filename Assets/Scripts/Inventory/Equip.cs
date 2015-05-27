@@ -6,6 +6,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Equip : Item {
 
+    public GameObject model;
     public int masteryLevel;
     public EquipType equipType;
     public Characteristics requirements;
@@ -23,6 +24,7 @@ public class Equip : Item {
         ingredients = new List<Ingredient>();
         icon = null;
         stats = new Stats();
+        model = null;
         masteryLevel = 0;
         equipType = EquipType.primaryWeapon;
         requirements = new Characteristics();
@@ -30,16 +32,22 @@ public class Equip : Item {
     }
 
     public Equip(Equip e){
-        FieldInfo[] fields = GetType().GetFields();
-        FieldInfo[] fields2 = e.GetType().GetFields();
-        for (int i = 0; i < fields.Length; i++){
-            if ( fields[i].GetType().Equals(typeof(Stats)) )
-                fields[i].SetValue(this,new Stats( (Stats)fields2[i].GetValue(e) ));
-            else if ( fields[i].GetType().Equals(typeof(Characteristics)) )
-                fields[i].SetValue(this,new Characteristics( (Characteristics)fields2[i].GetValue(e) ));
-            else
-                fields[i].SetValue(this,fields2[i].GetValue(e));
-        }
+        name = e.name;
+        id = e.id;
+        tier = e.tier;
+        description = e.description;
+        weight = e.weight;
+        cost = e.cost;
+        craftCost = e.craftCost;
+        craftChance = e.craftChance;
+        ingredients = e.ingredients;
+        icon = e.icon;
+        stats = new Stats(e.stats);
+        model = e.model;
+        masteryLevel = e.masteryLevel;
+        equipType = e.equipType;
+        requirements = new Characteristics(e.requirements);
+        bonusStats = new Stats(e.bonusStats);
     }
 
     public override Equip GetAsEquip(){

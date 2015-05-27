@@ -18,26 +18,20 @@ public class NPC {
     public Item[] GetItemsList(){
         Item[] items = new Item[buyList.Length];
         
-        if ( items.Length > 0 ){
-            for (int i = 0; i < items.Length; i++){
-                items[i] = Game.GetGameData().GetItem(buyList[i]);
-            }
-            return items;
-        } else {
-            return null;
+        for (int i = 0; i < items.Length; i++){
+            items[i] = Game.GetGameData().GetItem(buyList[i]);
         }
+
+        return items;
     }
     public Item[] GetCraftsList(){
         Item[] items = new Item[craftList.Length];
         
-        if ( items.Length > 0 ){
-            for (int i = 0; i < items.Length; i++){
-                items[i] = Game.GetGameData().GetItem(craftList[i]);
-            }
-            return items;
-        } else {
-            return null;
+        for (int i = 0; i < items.Length; i++){
+            items[i] = Game.GetGameData().GetItem(craftList[i]);
         }
+
+        return items;
     }
     public List<Quest> GetQuestList(Player p){
         List<Quest> quests = new List<Quest>();
@@ -46,7 +40,7 @@ public class NPC {
             if ( !p.HasQuest(questList[i]) )
                 quests.Add(Game.GetQuestData().GetQuest(questList[i]));
         }
-        return quests.Count > 0 ? quests : null;
+        return quests;
     }
 }
 

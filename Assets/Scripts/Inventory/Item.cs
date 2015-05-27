@@ -31,14 +31,17 @@ public class Item {
         stats = new Stats();
     }
     public Item(Item item){
-        FieldInfo[] fields = GetType().GetFields();
-        FieldInfo[] fields2 = item.GetType().GetFields();
-        for (int i = 0; i < fields.Length; i++){
-            if ( fields[i].GetType().Equals(typeof(Stats)) )
-                fields[i].SetValue(this,new Stats( (Stats)fields2[i].GetValue(item) ));
-            else
-                fields[i].SetValue(this,fields2[i].GetValue(item));
-        }
+        name = item.name;
+        id = item.id;
+        tier = item.tier;
+        description = item.description;
+        weight = item.weight;
+        cost = item.cost;
+        craftCost = item.craftCost;
+        craftChance = item.craftChance;
+        ingredients = item.ingredients;
+        icon = item.icon;
+        stats = new Stats(item.stats);
     }
 
     public virtual bool IsEquip() { return false; }

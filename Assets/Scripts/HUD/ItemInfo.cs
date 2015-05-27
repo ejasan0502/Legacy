@@ -16,8 +16,9 @@ public class ItemInfo : MonoBehaviour {
     public Text btnText;
     public Slider amtSlider;
     public Text amtText;
+    public Button otherBtn;
 
-    public void SetItemAsDisplay(InventoryItem i, Canvas c){
+    public void SetItemAsDisplay(int index, InventoryItem i, Canvas c){
         item = i.item;
         canvas = c;
 
@@ -35,6 +36,8 @@ public class ItemInfo : MonoBehaviour {
         descriptionText.transform.localPosition = newPos;
 
         btn.transform.GetChild(0).GetComponent<Text>().text = "Drop";
+        otherBtn.gameObject.SetActive(true);
+        otherBtn.onClick.AddListener(() => Equip(index));
 
         amtSlider.gameObject.SetActive(false);
         amtText.gameObject.SetActive(false);
@@ -100,8 +103,6 @@ public class ItemInfo : MonoBehaviour {
         int index = p.inventory.GetIndexOf(item);
         if ( index != -1 ){
             p.inventory.RemoveItem(index,1);
-            GameObject drop = Instantiate(Resources.Load("Pickup")) as GameObject;
-            drop.GetComponent<Pickup>().SetItem(item,1);
             canvas.GetComponent<InventoryWindow>().UpdateDisplay();
         }
     }
@@ -115,5 +116,11 @@ public class ItemInfo : MonoBehaviour {
 
         btnText.text += item.cost * amtSlider.value + "u";
         amtText.text = amtSlider.value + "";
+    }
+
+    public void Equip(int x){
+        Player p = Game.GetPlayer();
+        if ( p.inventory.slots[x].item.GetAsEquip().CanEquip(p) )
+            p.Equip(x);
     }
 }

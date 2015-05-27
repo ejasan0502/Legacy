@@ -43,6 +43,7 @@ public class Player : Character {
     private Stats baseStats;
     private Stats bonusStats;
     private PlayerInfo playerInfoDisplay;
+    private InputControls controls;
 
     public override bool IsPlayer {
         get {
@@ -73,76 +74,6 @@ public class Player : Character {
     }
     #endregion
     #region Equipment Methods
-    public string GetStatsString(){
-        string text = "";
-
-        FieldInfo[] currentStatsFields = currentStats.GetType().GetFields();
-        FieldInfo[] statsField = stats.GetType().GetFields();
-
-        for (int i = 0; i < currentStatsFields.Length; i++){
-            switch(currentStatsFields[i].Name){
-            case "health":
-            text += "HP: " + currentStatsFields[i].GetValue(currentStats) + " / " + statsField[i].GetValue(stats);
-            break;
-            case "mana":
-            text += "\nMP: " + currentStatsFields[i].GetValue(currentStats) + " / " + statsField[i].GetValue(stats);
-            break;
-            case "hpRecov":
-            text += "\nHP Recovery: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "mpRecov":
-            text += "\nMP Recovery: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "meleeMinDmg":
-            text += "\nMelee Min.DMG: " + currentStatsFields[i].GetValue(currentStats) + " - " + currentStatsFields[i+1].GetValue(currentStats);
-            break;
-            case "rangeMinDmg":
-            text += "\nRange Min.DMG: " + currentStatsFields[i].GetValue(currentStats) + " - " + currentStatsFields[i+1].GetValue(currentStats);
-            break;
-            case "magicMinDmg":
-            text += "\nMagic Min.DMG: " + currentStatsFields[i].GetValue(currentStats) + " - " + currentStatsFields[i+1].GetValue(currentStats);
-            break;
-            case "physDef":
-            text += "\nPhysical DEF: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "magDef":
-            text += "\nMagical DEF: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "critChance":
-            text += "\nCritical: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "critDmg":
-            text += "\nCritical DMG %: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "evasion":
-            text += "\nEvasion %: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "accuracy":
-            text += "\nAccuracy %: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "atkSpd":
-            text += "\nAtk SPD: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "castSpd":
-            text += "\nCast SPD: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "movSpd":
-            text += "\nMovt SPD: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "enchanceRate":
-            text += "\nEnchance Rate %: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "enchantRate":
-            text += "\nEnchant Rate %: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            case "dropRate":
-            text += "\nDrop Rate %: " + currentStatsFields[i].GetValue(currentStats);
-            break;
-            }
-        }
-
-        return text;
-    }
     public void Equip(int index){
         if ( index >= 0 && index < inventory.slots.Count ){
             Item item = inventory.slots[index].item;
@@ -150,6 +81,35 @@ public class Player : Character {
                 Equip e = item.GetAsEquip();
                 equipment[(int)e.equipType] = e;
                 CalculateEquipmentStats();
+                
+                // Create Model
+                Model model = characterObject.GetComponent<Model>();
+                GameObject o = (GameObject) GameObject.Instantiate(e.model);
+
+                if ( e.equipType == EquipType.primaryWeapon ){
+                    if ( model.primaryWeaponRoot.childCount > 0 ) {
+                        GameObject.Destroy(model.primaryWeaponRoot.GetChild(0).gameObject);
+                    }
+                    o.transform.SetParent(model.primaryWeaponRoot);
+
+                    Quaternion rotation = model.transform.rotation;
+                    rotation = Quaternion.Euler(rotation.eulerAngles.x,rotation.eulerAngles.y-180f,rotation.eulerAngles.z);
+                    o.transform.rotation = rotation;
+                    Vector3 offset = o.transform.position - o.transform.GetChild(0).position;
+                    o.transform.position = model.primaryWeaponRoot.position + offset;
+
+                    // Set Animations
+                    Animator anim = characterObject.GetComponent<Animator>();
+                    if ( e.id.Contains("1hs") ){
+                        anim.SetInteger("Attack Position",1);
+                    }
+                }
+
+                // Remove from inventory
+                inventory.RemoveItem(index,1);
+
+                // Update inventory display
+                MenusWindow.instance.inventoryWindow.UpdateDisplay();
             } else {
                 Console.Log("Cannot equip this item");
             }
@@ -236,6 +196,76 @@ public class Player : Character {
     }
     #endregion
     #region Stats Methods
+    public string GetStatsString(){
+        string text = "";
+
+        FieldInfo[] currentStatsFields = currentStats.GetType().GetFields();
+        FieldInfo[] statsField = stats.GetType().GetFields();
+
+        for (int i = 0; i < currentStatsFields.Length; i++){
+            switch(currentStatsFields[i].Name){
+            case "health":
+            text += "HP: " + currentStatsFields[i].GetValue(currentStats) + " / " + statsField[i].GetValue(stats);
+            break;
+            case "mana":
+            text += "\nMP: " + currentStatsFields[i].GetValue(currentStats) + " / " + statsField[i].GetValue(stats);
+            break;
+            case "hpRecov":
+            text += "\nHP Recovery: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "mpRecov":
+            text += "\nMP Recovery: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "meleeMinDmg":
+            text += "\nMelee Min.DMG: " + currentStatsFields[i].GetValue(currentStats) + " - " + currentStatsFields[i+1].GetValue(currentStats);
+            break;
+            case "rangeMinDmg":
+            text += "\nRange Min.DMG: " + currentStatsFields[i].GetValue(currentStats) + " - " + currentStatsFields[i+1].GetValue(currentStats);
+            break;
+            case "magicMinDmg":
+            text += "\nMagic Min.DMG: " + currentStatsFields[i].GetValue(currentStats) + " - " + currentStatsFields[i+1].GetValue(currentStats);
+            break;
+            case "physDef":
+            text += "\nPhysical DEF: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "magDef":
+            text += "\nMagical DEF: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "critChance":
+            text += "\nCritical: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "critDmg":
+            text += "\nCritical DMG %: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "evasion":
+            text += "\nEvasion %: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "accuracy":
+            text += "\nAccuracy %: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "atkSpd":
+            text += "\nAtk SPD: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "castSpd":
+            text += "\nCast SPD: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "movSpd":
+            text += "\nMovt SPD: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "enchanceRate":
+            text += "\nEnchance Rate %: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "enchantRate":
+            text += "\nEnchant Rate %: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            case "dropRate":
+            text += "\nDrop Rate %: " + currentStatsFields[i].GetValue(currentStats);
+            break;
+            }
+        }
+
+        return text;
+    }
     public void CalculateBaseStats(){
         maxExp = 30f*level + (level - 1)*level*5f; 
 
@@ -257,13 +287,20 @@ public class Player : Character {
         baseStats.accuracy = ((attributes.dexterity*0.165f)*level)/100.0f;
         baseStats.evasion = 3f - (attributes.agility*0.165f)*level;
 
+        baseStats.atkSpd = 1f;
+        baseStats.castSpd = 1f;
+        baseStats.movSpd = 1f;
+
         baseStats.dropRate = (attributes.luck*0.165f)*level;
         baseStats.enhanceRate = (attributes.luck*0.165f)*level;
         baseStats.enchantRate = (attributes.luck*0.165f)*level;
+
+        stats = new Stats(1f);
+        currentStats = new Stats(stats);
     }
 
     public void CalculateEquipmentStats(){
-        stats = baseStats;
+        stats = new Stats(baseStats);
 
         for (int i = 0; i < equipment.Length; i++){
             if ( equipment[i] != null ){
@@ -271,6 +308,14 @@ public class Player : Character {
                     stats += equipment[i].stats*0.1f;
                 else
                     stats += equipment[i].stats;
+            }
+        }
+
+        FieldInfo[] f1 = currentStats.GetType().GetFields();
+        FieldInfo[] f2 = stats.GetType().GetFields();
+        for (int i = 0; i < f1.Length; i++){
+            if ( f1[i].Name != "health" && f1[i].Name != "mana" ){
+                f1[i].SetValue(currentStats,(float)f2[i].GetValue(stats));
             }
         }
     }

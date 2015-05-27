@@ -35,9 +35,15 @@ public class Inventory {
         }
     }
 
+    public void AddItem(Equip item){
+        slots.Add(new InventoryItem(new Equip(item),1));
+
+        RecalculateWeight();
+    }
+
     public void AddItem(Item item, int amt){
         if ( item.IsEquip() ){
-            slots.Add(new InventoryItem(item,amt));
+            AddItem(item.GetAsEquip());
         } else {
             int i = GetIndexOf(item);
 
@@ -103,7 +109,7 @@ public class InventoryItem {
     public int amount;
 
     public InventoryItem(Item i, int amt){
-        item = new Item(i);
+        item = i;
         amount = amt;
     }
 }

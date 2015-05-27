@@ -72,6 +72,7 @@ public class InputControls : MonoBehaviour {
                         Vector3 pos = hit.point;
                         pos.y += transform.position.y;
                         playerObject.SetEndPoint(pos);
+                        playerObject.SetTarget(null);
                     } else if ( hit.transform.gameObject.layer == LayerMask.NameToLayer(layerToDetectTargetTouch) ){
                         #region Player/Monster selected
                         if ( hit.transform.GetComponent<CharacterObject>() != null ){
@@ -81,12 +82,13 @@ public class InputControls : MonoBehaviour {
                                     if ( c.IsPlayer ){
                                         follow = true;
                                     } else {
+                                        playerObject.SetTarget(c);
                                         playerObject.transform.LookAt(playerObject.GetTarget().characterObject.transform);
-                                        playerObject.SetState(CharacterState.battling);
                                     }
                                 } else {
                                     playerObject.SetTarget(c);
-                                }  
+                                    playerObject.transform.LookAt(playerObject.GetTarget().characterObject.transform);
+                                }
                             }
                         } else if ( hit.transform.GetComponent<NPCObject>() != null )
                         #endregion

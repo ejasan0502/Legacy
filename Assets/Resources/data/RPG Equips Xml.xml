@@ -9,8 +9,10 @@
 		<cost>1</cost>
 		<craftCost>0</craftCost>
 		<craftChance>0</craftChance>
-		<icon>inventory/weapons/1hs/</icon>
+		<icon>inventory/icons/weapons/1hs</icon>
 		<stats>meleeMinDmg-1,meleeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-1</stats>
+		<model>inventory/models/weapons/1hs</model>
+		<masteryLevel>0</masteryLevel>
 		<equipType>primaryWeapon</equipType>
 	</Equip>
 	<Equip>
@@ -22,8 +24,10 @@
 		<cost>1</cost>
 		<craftCost>0</craftCost>
 		<craftChance>0</craftChance>
-		<icon>inventory/weapons/st</icon>
+		<icon>inventory/icons/weapons/st</icon>
 		<stats>meleeMinDmg-1,meleeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-1.5</stats>
+		<model>inventory/models/weapons/st</model>
+		<masteryLevel>0</masteryLevel>
 		<equipType>primaryWeapon</equipType>
 	</Equip>
 	<Equip>
@@ -35,8 +39,10 @@
 		<cost>1</cost>
 		<craftCost>0</craftCost>
 		<craftChance>0</craftChance>
-		<icon>inventory/weapons/d</icon>
+		<icon>inventory/icons/weapons/d</icon>
 		<stats>meleeMinDmg-1,meleeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-0.75</stats>
+		<model>inventory/models/weapons/d</model>
+		<masteryLevel>0</masteryLevel>
 		<equipType>primaryWeapon</equipType>
 	</Equip>
 	<Equip>
@@ -48,8 +54,10 @@
 		<cost>1</cost>
 		<craftCost>0</craftCost>
 		<craftChance>0</craftChance>
-		<icon>inventory/weapons/b</icon>
+		<icon>inventory/icons/weapons/b</icon>
 		<stats>rangeMinDmg-1,rangeMaxDmg-3,magicMinDmg-1,magicMaxDmg-3,atkSpd-1</stats>
+		<model>inventory/models/weapons/b</model>
+		<masteryLevel>0</masteryLevel>
 		<equipType>primaryWeapon</equipType>
 	</Equip>
 </Equips>

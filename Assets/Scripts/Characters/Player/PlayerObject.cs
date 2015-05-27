@@ -51,6 +51,7 @@ public class PlayerObject : CharacterObject {
     protected override void Idle(){
         if ( target != null ){
             anim.SetBool("Battle",true);
+            SetState(CharacterState.battling);
             characterInfo.SetActive(true);
         }
     }

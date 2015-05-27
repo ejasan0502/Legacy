@@ -8,8 +8,16 @@ public class MenusWindow : MonoBehaviour {
     public InventoryWindow inventoryWindow;
     public QuestWindow questWindow;
 
+    private static MenusWindow _instance;
+    public static MenusWindow instance {
+        get {
+            return GameObject.FindObjectOfType<MenusWindow>();
+        }
+    }
+
     void OnEnable(){
         characterWindow.gameObject.SetActive(true);
+        Game.GetPlayerObject().StopMovement();
     }
 
     public void DisplayWindow(int x){
@@ -31,7 +39,7 @@ public class MenusWindow : MonoBehaviour {
 
     public void Exit(){
         Game.GetPlayer().GetPlayerInfo().gameObject.SetActive(true);
-        Game.GetPlayerObject().GetComponent<PlayerObject>().SetControls(true);
+        Game.GetPlayerObject().SetControls(true);
         Console.instance.SetDisplay(true);
 
         gameObject.SetActive(false);

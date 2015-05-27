@@ -9,6 +9,8 @@ public class Console : MonoBehaviour {
     public InputField minimizedInputField;
     public Text minimizedText;
 
+    public string[] commands;
+
 	private static object _lock = new object();
 	private static Console _instance;
 	public static Console instance {
@@ -52,6 +54,8 @@ public class Console : MonoBehaviour {
     public void Submit(){
         if ( instance.minimizedText.gameObject.activeSelf ) Log(instance.minimizedInputField.text);
 
+        instance.Command(instance.minimizedInputField.text);
+
         instance.minimizedInputField.text = "";
     }
 
@@ -62,6 +66,21 @@ public class Console : MonoBehaviour {
     public void SetDisplay(bool b){
         foreach (Transform t in transform){
             t.gameObject.SetActive(b);
+        }
+    }
+
+    private void Command(string s){
+        foreach (string c in commands){
+            if ( s.Split(' ')[0] == c ){
+                Log("Command initialized...");
+                switch(c){
+                case "setunits":
+                Game.GetPlayer().inventory.currency = float.Parse(s.Split(' ')[1]);
+                break;
+                }
+
+                return;
+            }
         }
     }
 

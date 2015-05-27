@@ -100,7 +100,8 @@ public class GameData : MonoBehaviour {
                     }
                     break;
                     case "icon":
-                    e.icon = Resources.Load(n2.InnerText,typeof(Sprite)) as Sprite;
+                    e.icon = Resources.Load(n2.InnerText+"/"+e.name,typeof(Sprite)) as Sprite;
+                    if ( e.icon == null ) e.icon = Resources.Load(n2.InnerText+"/Default",typeof(Sprite)) as Sprite;
                     break;
                     case "stats":
                     FieldInfo[] fields = e.stats.GetType().GetFields();
@@ -117,6 +118,10 @@ public class GameData : MonoBehaviour {
                             }
                         }
                     }
+                    break;
+                    case "model":
+                    e.model = Resources.Load(n2.InnerText+"/"+e.name,typeof(GameObject)) as GameObject;
+                    if ( e.model == null ) e.model = Resources.Load(n2.InnerText+"/Default",typeof(GameObject)) as GameObject;
                     break;
                     case "masteryLevel":
                     e.masteryLevel = int.Parse(n2.InnerText);
@@ -230,7 +235,7 @@ public class GameData : MonoBehaviour {
                     }
                     break;
                     case "icon":
-                    e.icon = Resources.Load(n2.InnerText,typeof(Sprite)) as Sprite;
+                    e.icon = Resources.Load(n2.InnerText+"/"+e.name,typeof(Sprite)) as Sprite;
                     break;
                     case "stats":
                     FieldInfo[] fields = e.stats.GetType().GetFields();
@@ -306,7 +311,7 @@ public class GameData : MonoBehaviour {
                     }
                     break;
                     case "icon":
-                    e.icon = Resources.Load(n2.InnerText,typeof(Sprite)) as Sprite;
+                    e.icon = Resources.Load(n2.InnerText+"/"+e.name,typeof(Sprite)) as Sprite;
                     break;
                     case "stats":
                     FieldInfo[] fields = e.stats.GetType().GetFields();

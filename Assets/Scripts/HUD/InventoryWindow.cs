@@ -33,16 +33,17 @@ public class InventoryWindow : MonoBehaviour {
         }
 
         // Fill objects list
-        Vector3 startPos = new Vector3(-contentsRectTransform.rect.width/2.0f,10f,0f);      // Based on local
+        Vector3 startPos = contentsRectTransform.position;
+        startPos.x = startPos.x - contentsRectTransform.rect.width/2.0f;
         float maxWidth = 0f;
         for (int i = 0; i < p.inventory.slots.Count; i++){
             GameObject o = Instantiate(Resources.Load("Item Info")) as GameObject;
             RectTransform rt = o.transform as RectTransform;
 
             o.transform.localScale = new Vector3(1f,1f,1f);
-            o.transform.localPosition = new Vector3(startPos.x+rt.rect.width*i,startPos.y,startPos.z);
+            o.transform.localPosition = new Vector3(startPos.x+rt.rect.width/2.0f+rt.rect.width*i,startPos.y,0f);
 
-            o.GetComponent<ItemInfo>().SetItemAsDisplay(p.inventory.slots[i],GetComponent<Canvas>());
+            o.GetComponent<ItemInfo>().SetItemAsDisplay(i,p.inventory.slots[i],GetComponent<Canvas>());
             
             o.transform.SetParent(contentsRectTransform);
 
@@ -52,7 +53,8 @@ public class InventoryWindow : MonoBehaviour {
         }
 
         // Adjust Contents Rect
-        contentsRectTransform.sizeDelta = new Vector2(maxWidth,contentsRectTransform.sizeDelta.y);
+        if ( maxWidth > contentsRectTransform.sizeDelta.x ) 
+            contentsRectTransform.sizeDelta = new Vector2(maxWidth,contentsRectTransform.sizeDelta.y);
 
         // Set Units Text
         unitsText.text = p.inventory.currency + "u";
