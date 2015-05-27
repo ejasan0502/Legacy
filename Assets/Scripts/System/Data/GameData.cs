@@ -52,6 +52,7 @@ public class GameData : MonoBehaviour {
         DontDestroyOnLoad(this);
     }
 
+    #region Xml Extract Methods
     public void ExtractEquipsXmlData(){
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml( ((TextAsset)Resources.Load("data/RPG Equips Xml")).text );
@@ -341,6 +342,7 @@ public class GameData : MonoBehaviour {
 
         Console.Log("Usables Xml Data extracted.");
     }
+    #endregion
     #region Add Methods
     private void AddWeapon(Equip e){
         string itemType = e.id.Split('.')[1].Split('-')[0];
