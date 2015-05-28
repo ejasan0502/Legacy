@@ -19,6 +19,11 @@ public class CharacterWindow : MonoBehaviour {
         UpdateDisplay();
     }
 
+    public void Unequip(int x){
+        p.Unequip(x);
+        equipmentInfoDisplay.SetActive(false);
+    }
+
     public void DisplayEquip(int x){
         if ( p.equipment[x] != null ){
             equipmentInfoDisplay.SetActive(true);
@@ -28,6 +33,8 @@ public class CharacterWindow : MonoBehaviour {
             rt.GetChild(1).GetComponent<Image>().sprite = p.equipment[x].icon;
             rt.GetChild(2).GetComponent<Text>().text = p.equipment[x].stats.ToString();
             rt.GetChild(3).GetComponent<Text>().text = p.equipment[x].description;
+            rt.GetChild(5).GetComponent<Button>().onClick.RemoveAllListeners();
+            rt.GetChild(5).GetComponent<Button>().onClick.AddListener(() => Unequip(x));
         }
     }
 
@@ -39,7 +46,7 @@ public class CharacterWindow : MonoBehaviour {
         statsText.text = p.GetStatsString();
 
         for (int i = 0; i < p.equipment.Length; i++){
-            if ( p.equipment[i].icon != null )
+            if ( p.equipment[i] != null && p.equipment[i].icon != null )
                 equipmentParentTransform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = p.equipment[i].icon;
         }
     }

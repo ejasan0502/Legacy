@@ -26,11 +26,11 @@ public class Player : Character {
     public string race;
     
     public Characteristics attributes = new Characteristics();
-    [XmlArray("Equipment"),XmlArrayItem("Equip")] public Equip[] equipment = new Equip[11];
+    [HideInInspector][XmlArray("Equipment"),XmlArrayItem("Equip")] public Equip[] equipment = new Equip[11];
 
     public Inventory inventory;
 
-    [XmlArray("Hotkeys"),XmlArrayItem("Hotkey")] public Hotkey[] hotkeys = new Hotkey[10];
+    [HideInInspector][XmlArray("Hotkeys"),XmlArrayItem("Hotkey")] public Hotkey[] hotkeys = new Hotkey[10];
 
     public string lastSavedScene = "";
     public string lastSafeZone = "";
@@ -53,7 +53,6 @@ public class Player : Character {
 
     public Player(){
         inventory = new Inventory(this);
-
         CalculateStats();
     }
 
@@ -79,6 +78,7 @@ public class Player : Character {
             Item item = inventory.slots[index].item;
             if ( item.IsEquip() ){
                 Equip e = item.GetAsEquip();
+                if ( equipment[(int)e.equipType] != null ) Unequip((int)e.equipType);
                 equipment[(int)e.equipType] = e;
                 CalculateEquipmentStats();
                 
@@ -87,9 +87,6 @@ public class Player : Character {
                 GameObject o = (GameObject) GameObject.Instantiate(e.model);
 
                 if ( e.equipType == EquipType.primaryWeapon ){
-                    if ( model.primaryWeaponRoot.childCount > 0 ) {
-                        GameObject.Destroy(model.primaryWeaponRoot.GetChild(0).gameObject);
-                    }
                     o.transform.SetParent(model.primaryWeaponRoot);
 
                     Quaternion rotation = model.transform.rotation;
@@ -117,7 +114,26 @@ public class Player : Character {
     }
     public void Unequip(int index){
         if ( index >= 0 && index < equipment.Length ){
+
+            // Destroy Model
+            Model model = characterObject.GetComponent<Model>();
+            if ( equipment[index].equipType == EquipType.primaryWeapon ){
+                if ( model.primaryWeaponRoot.childCount > 0 ) 
+                    GameObject.Destroy(model.primaryWeaponRoot.GetChild(0).gameObject);
+
+                // Set Animations
+                Animator anim = characterObject.GetComponent<Animator>();
+                if ( equipment[index].id.Contains("1hs") ){
+                    anim.SetInteger("Attack Position",0);
+                }
+            }
+
+            if ( equipment[index].id != "" ) inventory.AddItem(equipment[index]);
+
             equipment[index] = null;
+            CalculateEquipmentStats();
+
+            MenusWindow.instance.characterWindow.UpdateDisplay();
         }
     }
     #endregion
