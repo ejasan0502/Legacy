@@ -97,8 +97,12 @@ public class Player : Character {
 
                     // Set Animations
                     Animator anim = characterObject.GetComponent<Animator>();
-                    if ( e.id.Contains("1hs") ){
+                    if ( e.id.Contains(".1h") ){
                         anim.SetInteger("Attack Position",1);
+                    } else if ( e.id.Contains(".2h") ){
+                        anim.SetInteger("Attack Position",2);
+                    } else if ( e.id.Contains(".b-") ){
+                        anim.SetInteger("Attack Position",3);
                     }
                 }
 
@@ -107,6 +111,8 @@ public class Player : Character {
 
                 // Update inventory display
                 MenusWindow.instance.inventoryWindow.UpdateDisplay();
+
+                Game.Notification("Equipped " + e.name,true);
             } else {
                 Console.Log("Cannot equip this item");
             }
@@ -123,9 +129,7 @@ public class Player : Character {
 
                 // Set Animations
                 Animator anim = characterObject.GetComponent<Animator>();
-                if ( equipment[index].id.Contains("1hs") ){
-                    anim.SetInteger("Attack Position",0);
-                }
+                anim.SetInteger("Attack Position",0);
             }
 
             if ( equipment[index].id != "" ) inventory.AddItem(equipment[index]);
@@ -324,6 +328,9 @@ public class Player : Character {
                     stats += equipment[i].stats*0.1f;
                 else
                     stats += equipment[i].stats;
+
+                if ( i == (int)EquipType.primaryWeapon )
+                    stats.atkSpd = equipment[i].stats.atkSpd;
             }
         }
 

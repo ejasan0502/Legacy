@@ -55,11 +55,10 @@ public class Game : MonoBehaviour {
     }
     #endregion
     #region Public Static Methods
-    public static void Notification(Canvas c, string s, bool b){
+    public static void Notification(string s, bool b){
         GameObject o = Instantiate(notificationPref) as GameObject;
         o.transform.GetComponent<DestroyWithDelay>().canTapDestroy = b;
-        o.transform.GetChild(0).GetComponent<Text>().text = s;
-        o.transform.SetParent(c.transform);
+        o.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = s;
         o.transform.localPosition = Vector3.zero;
     }
     public static void LoadScene(string s, bool b){

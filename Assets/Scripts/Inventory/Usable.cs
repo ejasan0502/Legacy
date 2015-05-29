@@ -23,20 +23,39 @@ public class Usable : Item {
     }
 
     public Usable(Usable u){
-        FieldInfo[] fields = GetType().GetFields();
-        FieldInfo[] fields2 = u.GetType().GetFields();
-        for (int i = 0; i < fields.Length; i++){
-            if ( fields[i].GetType().Equals(typeof(Stats)) )
-                fields[i].SetValue(this,new Stats( (Stats)fields2[i].GetValue(u) ));
-            else
-                fields[i].SetValue(this,fields2[i].GetValue(u));
-        }
+        name = u.name;
+        id = u.id;
+        tier = u.tier;
+        description = u.description;
+        weight = u.weight;
+        cost = u.cost;
+        craftCost = u.craftCost;
+        craftChance = u.craftChance;
+        ingredients = u.ingredients;
+        icon = u.icon;
+        stats = new Stats(u.stats);
+        usableType = u.usableType;
     }
 
-    public void Use(Character user){}
+    public void Use(Character target){
+        if ( usableType == UsableType.instant ){
+            
+        } else if ( usableType == UsableType.replenish ){
+            
+        } else if ( usableType == UsableType.buff ){
+
+        } else if ( usableType == UsableType.teleport ){
+
+        } else if ( usableType == UsableType.damage ){
+
+        } else if ( usableType == UsableType.aoe ){
+
+        }
+    }
 }
 
 public enum UsableType {
+    instant,
     replenish,
     buff,
     teleport,

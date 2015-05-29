@@ -127,18 +127,20 @@ public class NPCCanvas : MonoBehaviour {
         if ( b ) contentObj = buyList.transform.GetChild(0).GetChild(0) as RectTransform;
         else contentObj = sellList.transform.GetChild(0).GetChild(0) as RectTransform;
 
-        RectTransform itemInfoPrefRectTransform = itemInfoPref.GetComponent<RectTransform>();
-        contentObj.sizeDelta = new Vector3(itemInfoPrefRectTransform.rect.width*items.Length,contentObj.rect.height);
-
+        float maxWidth = 0f;
         for (int i = 0; i < items.Length; i++){
             GameObject o = Instantiate(itemInfoPref) as GameObject;
             o.transform.SetParent(contentObj);
-            Vector2 pos = new Vector2(contentObj.rect.min.x + itemInfoPrefRectTransform.rect.width/2.0f + itemInfoPrefRectTransform.rect.width*i,0);
+            RectTransform rt = o.transform as RectTransform;
+            Vector2 pos = new Vector2(contentObj.rect.min.x + rt.rect.width/2.0f + rt.rect.width*i,0);
             o.transform.localPosition = pos;
             o.transform.localScale = new Vector3(1f,1f,1f);
 
             o.GetComponent<ItemInfo>().SetItem(items[i],GetComponent<Canvas>(),b);
         }
+
+        if ( maxWidth > contentObj.sizeDelta.x )
+            contentObj.sizeDelta = new Vector2(maxWidth,contentObj.sizeDelta.y);
     }
     private void CreateList(List<Quest> quests){
         RectTransform contentObj = questList.transform.GetChild(0).GetChild(0) as RectTransform;
@@ -178,7 +180,7 @@ public class NPCCanvas : MonoBehaviour {
 
             int amt = 10;
             if ( items[i].IsEquip() ) amt = 1;
-            o.GetComponent<CraftInfo>().SetItem(items[i],amt,GetComponent<Canvas>());
+            o.GetComponent<CraftInfo>().SetItem(items[i],amt);
         }
     }
     #endregion

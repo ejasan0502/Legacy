@@ -33,20 +33,18 @@ public class InventoryWindow : MonoBehaviour {
         }
 
         // Fill objects list
-        Vector3 startPos = contentsRectTransform.position;
-        startPos.x = startPos.x - contentsRectTransform.rect.width/2.0f;
         float maxWidth = 0f;
         for (int i = 0; i < p.inventory.slots.Count; i++){
             GameObject o = Instantiate(Resources.Load("Item Info")) as GameObject;
+            o.transform.SetParent(contentsRectTransform);
+            
             RectTransform rt = o.transform as RectTransform;
-
+            Vector2 pos = new Vector2(contentsRectTransform.rect.min.x + rt.rect.width/2.0f + rt.rect.width*i,0);
+            o.transform.localPosition = pos;
             o.transform.localScale = new Vector3(1f,1f,1f);
-            o.transform.localPosition = new Vector3(startPos.x+rt.rect.width/2.0f+rt.rect.width*i,startPos.y,0f);
 
             o.GetComponent<ItemInfo>().SetItemAsDisplay(i,p.inventory.slots[i],GetComponent<Canvas>());
             
-            o.transform.SetParent(contentsRectTransform);
-
             inventorySlotObjects.Add(o);
 
             maxWidth += rt.rect.width;

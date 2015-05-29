@@ -101,7 +101,7 @@ public class QuestInfo : MonoBehaviour {
         Quest q = Game.GetPlayer().GetQuest(quest.id);
         if ( q != null && q.IsDone() ){
             Game.GetPlayer().CompleteQuest(q);
-            Game.Notification(canvas,"Quest Complete!",true);
+            Game.Notification("Quest Complete!",true);
             canvas.GetComponent<NPCCanvas>().Quest();
         }
     }

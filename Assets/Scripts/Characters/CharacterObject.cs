@@ -20,6 +20,8 @@ public class CharacterObject : MonoBehaviour {
     protected GameObject characterInfo;
 
     private Vector3 endPoint;
+    private float recoveryTime = 0f;
+    private float recoveryRate = 3f;
 
     #region Unity Methods
     protected virtual void Awake(){
@@ -44,6 +46,9 @@ public class CharacterObject : MonoBehaviour {
     }
     #endregion
     #region Set Methods
+    public void SetRecoveryRate(float x){
+        recoveryRate = x;
+    }
     public void SetState(CharacterState cs){
         state = cs;
     }
@@ -76,6 +81,7 @@ public class CharacterObject : MonoBehaviour {
             switch (state){
             case CharacterState.idle:
             Idle();
+            Recovery();
             break;
             case CharacterState.battling:
             Battling();
@@ -98,6 +104,13 @@ public class CharacterObject : MonoBehaviour {
     protected virtual void Attacking(){}
     protected virtual void Dying(){}
     public virtual void ApplyDamage(){}
+    public void Recovery(){
+        if ( Time.time - recoveryTime >= recoveryRate ){
+            c.currentStats.health += c.currentStats.hpRecov;
+            c.currentStats.mana += c.currentStats.mpRecov;
+            recoveryTime = Time.time;
+        }
+    }
     public void Cast(string id){
         if ( canCast ){
             if ( c.HasSkill(id) ){

@@ -80,9 +80,9 @@ public class ItemInfo : MonoBehaviour {
             p.inventory.currency -= item.cost * amtSlider.value;
             p.inventory.AddItem(item,(int)amtSlider.value);
 
-            Game.Notification(canvas,"Purchased", true);
+            Game.Notification("Purchased", true);
         } else {
-            Game.Notification(canvas,"Not enough units...", true);
+            Game.Notification("Not enough units...", true);
         }
     }
 
@@ -93,7 +93,7 @@ public class ItemInfo : MonoBehaviour {
             p.inventory.AddCurrency((int)(amtSlider.value*item.cost*0.5f));
             p.inventory.RemoveItem(index,(int)amtSlider.value);
             canvas.GetComponent<NPCCanvas>().Sell();
-            Game.Notification(canvas,"Sold", true);
+            Game.Notification("Sold", true);
         }
     }
 

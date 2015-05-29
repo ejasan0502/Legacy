@@ -7,6 +7,7 @@ public class PlayerObject : CharacterObject {
     private InputControls controls;
     private Character target = null;
     private float atkTime;
+    private float battleEndTime;
 
     protected override void Awake(){
         base.Awake();
@@ -64,12 +65,14 @@ public class PlayerObject : CharacterObject {
                 SetEndPoint(transform.position);
                 SetState(CharacterState.attacking);
             }
-        } else {
+        } else if ( Time.time - battleEndTime >= 3f ){
             anim.SetBool("Battle",false);
             characterInfo.SetActive(false);
             SetState(CharacterState.idle);
         }
+
         if ( target != null && !target.IsAlive ){
+            battleEndTime = Time.time;
             target = null;
         }
     }
@@ -90,6 +93,7 @@ public class PlayerObject : CharacterObject {
             SetState(CharacterState.battling);
         }
         if ( target != null && !target.IsAlive ){
+            battleEndTime = Time.time;
             target = null;
         }
     }

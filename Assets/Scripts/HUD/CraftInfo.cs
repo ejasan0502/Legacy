@@ -6,7 +6,6 @@ public class CraftInfo : MonoBehaviour {
     
     private Item item;
     private int amount;
-    private Canvas canvas;
 
     public Text textName;
     public Image portrait;
@@ -17,10 +16,9 @@ public class CraftInfo : MonoBehaviour {
 
     private bool canCraft = true;
 
-    public void SetItem(Item it, int amt, Canvas c){
+    public void SetItem(Item it, int amt){
         item = it;
         amount = amt;
-        canvas = c;
 
         textName.text = item.name;
         portrait.sprite = item.icon;
@@ -55,13 +53,13 @@ public class CraftInfo : MonoBehaviour {
                 p.inventory.currency -= item.craftCost;
                 if ( Random.Range(0,100)*p.attributes.luck <= item.craftChance ){
                     p.inventory.AddItem(item,amount);
-                    Game.Notification(canvas,"Crafting successful!", true);
+                    Game.Notification("Crafting successful!", true);
                 } else {
-                    Game.Notification(canvas,"Crafting failed...", true);
+                    Game.Notification("Crafting failed...", true);
                 }
             }
         } else {
-            Game.Notification(canvas,"Not enough units...", true);
+            Game.Notification("Not enough units...", true);
         }
     }
 }
