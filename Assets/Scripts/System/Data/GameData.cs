@@ -95,13 +95,13 @@ public class GameData : MonoBehaviour {
                     case "ingredients":
                     foreach (string s in n2.InnerText.Split(',')){
                         if ( s != "" ){
-                            e.ingredients.Add(new Ingredient( GetItem(s.Split('-')[0]) , int.Parse(s.Split('-')[1]) ) );
+                            e.ingredients.Add(new Ingredient( s.Split('_')[0] , int.Parse(s.Split('_')[1]) ) );
                         }
                     }
                     break;
                     case "icon":
-                    e.icon = Resources.Load(n2.InnerText+"/"+e.name,typeof(Sprite)) as Sprite;
-                    if ( e.icon == null ) e.icon = Resources.Load(n2.InnerText+"/Default",typeof(Sprite)) as Sprite;
+                    e.icon = Resources.Load(n2.InnerText+e.name,typeof(Sprite)) as Sprite;
+                    if ( e.icon == null ) e.icon = Resources.Load("inventory/icons/weapons/Default",typeof(Sprite)) as Sprite;
                     break;
                     case "stats":
                     FieldInfo[] fields = e.stats.GetType().GetFields();
@@ -230,12 +230,13 @@ public class GameData : MonoBehaviour {
                     case "ingredients":
                     foreach (string s in n2.InnerText.Split(',')){
                         if ( s != "" ){
-                            e.ingredients.Add(new Ingredient( GetItem(s.Split('-')[0]) , int.Parse(s.Split('-')[1]) ) );
+                            e.ingredients.Add(new Ingredient( s.Split('_')[0] , int.Parse(s.Split('_')[1]) ) );
                         }
                     }
                     break;
                     case "icon":
-                    e.icon = Resources.Load(n2.InnerText+"/"+e.name,typeof(Sprite)) as Sprite;
+                    e.icon = Resources.Load(n2.InnerText+e.name,typeof(Sprite)) as Sprite;
+                    if ( e.icon == null ) e.icon = Resources.Load("inventory/icons/materials/Default",typeof(Sprite)) as Sprite;
                     break;
                     case "stats":
                     FieldInfo[] fields = e.stats.GetType().GetFields();
@@ -306,12 +307,13 @@ public class GameData : MonoBehaviour {
                     case "ingredients":
                     foreach (string s in n2.InnerText.Split(',')){
                         if ( s != "" ){
-                            e.ingredients.Add(new Ingredient( GetItem(s.Split('-')[0]) , int.Parse(s.Split('-')[1]) ) );
+                            e.ingredients.Add(new Ingredient( s.Split('_')[0] , int.Parse(s.Split('_')[1]) ) );
                         }
                     }
                     break;
                     case "icon":
-                    e.icon = Resources.Load(n2.InnerText+"/"+e.name,typeof(Sprite)) as Sprite;
+                    e.icon = Resources.Load(n2.InnerText+e.name,typeof(Sprite)) as Sprite;
+                    if ( e.icon == null ) e.icon = Resources.Load("inventory/icons/usables/Default",typeof(Sprite)) as Sprite;
                     break;
                     case "stats":
                     FieldInfo[] fields = e.stats.GetType().GetFields();
@@ -330,11 +332,20 @@ public class GameData : MonoBehaviour {
                     }
                     break;
                     case "usableType":
-                    if ( n2.InnerText.ToLower() == "replenish" ) e.usableType = UsableType.replenish;
+                    if ( n2.InnerText.ToLower() == "potion" ) e.usableType = UsableType.potion;
+                    else if ( n2.InnerText.ToLower() == "replenish" ) e.usableType = UsableType.replenish;
                     else if ( n2.InnerText.ToLower() == "buff" ) e.usableType = UsableType.buff;
-                    else if ( n2.InnerText.ToLower() == "teleport" ) e.usableType = UsableType.teleport;
+                    else if ( n2.InnerText.ToLower() == "buffPercent" ) e.usableType = UsableType.buffPercent;
                     else if ( n2.InnerText.ToLower() == "damage" ) e.usableType = UsableType.damage;
                     else if ( n2.InnerText.ToLower() == "aoe" ) e.usableType = UsableType.aoe;
+                    else if ( n2.InnerText.ToLower() == "dot" ) e.usableType = UsableType.dot;
+                    break;
+                    case "duration":
+                    e.duration = float.Parse(n2.InnerText);
+                    break;
+                    case "friendly":
+                    if ( n2.InnerText == "true" ) e.friendly = true;
+                    else e.friendly = false;
                     break;
                     }
                 }
@@ -438,18 +449,17 @@ public class GameData : MonoBehaviour {
     #endregion
     #region Get Methods
     public Item GetItem(string id){
-        switch(id.ToLower().Split('.')[0]){
-        case "w":
-        return GetWeapon(id);
-        case "u":
-        return GetUsable(id);
-        case "m":
-        return GetMaterial(id);
-        case "ar":
-        return GetArmor(id);
-        case "a":
-        return GetAccessory(id);
-        }
+        if ( id.ToLower().StartsWith("w") ){
+            return GetWeapon(id);
+        } else if ( id.ToLower().StartsWith("u") ){
+            return GetUsable(id);
+        } else if ( id.ToLower().StartsWith("m") ){
+            return GetMaterial(id);
+        } else if ( id.ToLower().StartsWith("ar") ){
+            return GetArmor(id);
+        } else if ( id.ToLower().StartsWith("a") ){
+            return GetAccessory(id);
+        } 
 
         return null;
     }
@@ -577,6 +587,7 @@ public class GameData : MonoBehaviour {
     }
 
     public Item GetMaterial(string id){
+        Debug.Log(id);
         int index = int.Parse(id.Split('-')[1]);
         
         if ( index < materials.Count )

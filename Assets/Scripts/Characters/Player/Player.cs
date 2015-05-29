@@ -56,23 +56,35 @@ public class Player : Character {
         CalculateStats();
     }
 
-    #region Set Methods
-    public void SetPlayerInfo(PlayerInfo pi){
-        playerInfoDisplay = pi;
-        playerInfoDisplay.SetPlayer(this);
+    #region Public Methods
+    public void Use(int index){
+        PlayerObject po = characterObject as PlayerObject;
+        if ( index >= 0 && index < inventory.slots.Count ){
+            Item item = inventory.slots[index].item;
+            if ( item.IsUsable() ){
+                Usable u = item.GetAsUsable();
+                if ( po.HasTarget() ){
+                    if ( u.friendly && po.GetTarget().IsPlayer || !u.friendly && !po.GetTarget().IsPlayer ){
+                        u.Use(po.GetTarget());
+                        inventory.RemoveItem(index,1);
+                        MenusWindow.instance.inventoryWindow.UpdateDisplay();
+                        Game.Notification("Used " + u.name,true);
+                    } else {
+                        Game.Notification("Invalid target",true);
+                    }
+                } else {
+                    if ( u.friendly ){
+                        u.Use(po.c);
+                        inventory.RemoveItem(index,1);
+                        MenusWindow.instance.inventoryWindow.UpdateDisplay();
+                        Game.Notification("Used " + u.name,true);
+                    }
+                }
+            } else {
+                Console.Log("Cannot use this item");
+            }
+        }
     }
-    #endregion
-    #region GetMethods
-    public PlayerInfo GetPlayerInfo(){
-        return playerInfoDisplay;
-    }
-    #endregion
-    #region Skills Methods
-    public void AddSkill(Skill s){
-        if ( !HasSkill(s.id) ) skills.Add(new Skill(s));
-    }
-    #endregion
-    #region Equipment Methods
     public void Equip(int index){
         if ( index >= 0 && index < inventory.slots.Count ){
             Item item = inventory.slots[index].item;
@@ -139,6 +151,22 @@ public class Player : Character {
 
             MenusWindow.instance.characterWindow.UpdateDisplay();
         }
+    }
+    #endregion
+    #region Set Methods
+    public void SetPlayerInfo(PlayerInfo pi){
+        playerInfoDisplay = pi;
+        playerInfoDisplay.SetPlayer(this);
+    }
+    #endregion
+    #region GetMethods
+    public PlayerInfo GetPlayerInfo(){
+        return playerInfoDisplay;
+    }
+    #endregion
+    #region Skills Methods
+    public void AddSkill(Skill s){
+        if ( !HasSkill(s.id) ) skills.Add(new Skill(s));
     }
     #endregion
     #region Experience Methods

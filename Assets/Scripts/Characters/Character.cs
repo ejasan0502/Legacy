@@ -20,6 +20,19 @@ public class Character {
     [HideInInspector] public float aggro = 0f;
 
     #region Public Methods
+    public void Damage(float h, float m){
+        currentStats.health -= h;
+        currentStats.mana -= m;
+
+        CheckDeath();
+    }
+    public void Heal(float h, float m){
+        currentStats.health += h;
+        currentStats.mana += m;
+
+        if ( currentStats.health > stats.health ) currentStats.health = stats.health;
+        if ( currentStats.mana > stats.mana ) currentStats.mana = stats.mana;
+    }
     public virtual void PhysicalHit(Character atker){
         float rawDmg = Random.Range(atker.currentStats.meleeMinDmg,atker.currentStats.meleeMaxDmg);
         float dmg = rawDmg - currentStats.physDef;
@@ -34,6 +47,9 @@ public class Character {
             s = Mathf.Abs((int)dmg+0f)+"";
         }
         characterObject.CreateText(s,c);
+
+        if ( currentStats.health > stats.health ) currentStats.health = stats.health;
+        if ( currentStats.mana > stats.mana ) currentStats.mana = stats.mana;
 
         CheckDeath();
     }
@@ -51,6 +67,9 @@ public class Character {
             s = Mathf.Abs((int)dmg+0f)+"";
         }
         characterObject.CreateText(s,c);
+
+        if ( currentStats.health > stats.health ) currentStats.health = stats.health;
+        if ( currentStats.mana > stats.mana ) currentStats.mana = stats.mana;
 
         CheckDeath();
     }

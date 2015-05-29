@@ -51,10 +51,10 @@ public class Item {
 }
 
 public class Ingredient {
-    public Item item;
+    public string item;
     public int amount;
 
-    public Ingredient(Item i, int amt){
+    public Ingredient(string i, int amt){
         item = i;
         amount = amt;
     }

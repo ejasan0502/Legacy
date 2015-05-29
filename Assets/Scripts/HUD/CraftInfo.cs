@@ -31,7 +31,7 @@ public class CraftInfo : MonoBehaviour {
             int have = 0;
             InventoryItem ii = p.inventory.GetInventorySlot(item.ingredients[i].item);
             if ( ii != null ) have = ii.amount;
-            s += item.ingredients[i].item.name + " " + have + "/" + item.ingredients[i].amount;
+            s += Game.GetGameData().GetItem(item.ingredients[i].item).name + " " + have + "/" + item.ingredients[i].amount;
             sizeY += 30f;
 
             if ( have < item.ingredients[i].amount ){

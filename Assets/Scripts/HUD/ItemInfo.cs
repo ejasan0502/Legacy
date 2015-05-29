@@ -36,14 +36,30 @@ public class ItemInfo : MonoBehaviour {
         descriptionText.transform.localPosition = newPos;
 
         btn.transform.GetChild(0).GetComponent<Text>().text = "Drop";
-        otherBtn.gameObject.SetActive(true);
-        otherBtn.onClick.AddListener(() => Equip(index));
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(() => Drop());
+
+        if ( item.IsEquip() ){
+            otherBtn.gameObject.SetActive(true);
+            otherBtn.onClick.RemoveAllListeners();
+            otherBtn.onClick.AddListener(() => Equip(index));
+        } else if ( item.IsUsable() ){
+            otherBtn.gameObject.SetActive(true);
+            otherBtn.onClick.RemoveAllListeners();
+            otherBtn.transform.GetChild(0).GetComponent<Text>().text = "Use";
+            otherBtn.onClick.AddListener(() => Use(index));
+        }
 
         amtSlider.gameObject.SetActive(false);
         amtText.gameObject.SetActive(false);
     }
 
     public void SetItem(Item i, Canvas c, bool b){
+        if ( i == null ) {
+            Console.Error("ItemInfo.cs - SetItem(item,canvas,bool): @param1 is null");
+            return;
+        }
+
         item = i;
         buy = b;
         canvas = c;
@@ -122,5 +138,12 @@ public class ItemInfo : MonoBehaviour {
         Player p = Game.GetPlayer();
         if ( p.inventory.slots[x].item.GetAsEquip().CanEquip(p) )
             p.Equip(x);
+    }
+
+    public void Use(int x){
+        Player p = Game.GetPlayer();
+        if ( p.inventory.slots[x].item.GetAsUsable().CanUse() ){
+            p.Use(x);
+        }
     }
 }

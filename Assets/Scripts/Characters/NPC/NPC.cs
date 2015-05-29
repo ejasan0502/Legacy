@@ -20,6 +20,9 @@ public class NPC {
         
         for (int i = 0; i < items.Length; i++){
             items[i] = Game.GetGameData().GetItem(buyList[i]);
+            if ( items[i] == null ){
+                Console.Error("NPC.cs - GetItemsList(): buyList index " + i + " with id of " + buyList[i] + " is null");
+            }
         }
 
         return items;

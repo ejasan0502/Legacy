@@ -8,6 +8,7 @@ public class Console : MonoBehaviour {
     #region Variables
     public InputField minimizedInputField;
     public Text minimizedText;
+    public RectTransform errorField;
 
     public string[] commands;
 
@@ -51,6 +52,10 @@ public class Console : MonoBehaviour {
         Minimize();
     }
 
+    public void CloseErrorMessage(){
+        errorField.gameObject.SetActive(false);
+    }
+
     public void Submit(){
         if ( instance.minimizedText.gameObject.activeSelf ) Log(instance.minimizedInputField.text);
 
@@ -64,9 +69,7 @@ public class Console : MonoBehaviour {
     }
 
     public void SetDisplay(bool b){
-        foreach (Transform t in transform){
-            t.gameObject.SetActive(b);
-        }
+        transform.GetChild(0).gameObject.SetActive(b);
     }
 
     private void Command(string s){
@@ -98,6 +101,12 @@ public class Console : MonoBehaviour {
     }
 
     #region Log Methods
+    public static void Error(string s){
+        Debug.Log(s);
+
+        instance.errorField.gameObject.SetActive(true);
+        instance.errorField.GetChild(0).GetComponent<Text>().text = s;
+    }
 	public static void Log(string s){
 		Debug.Log(s);
 

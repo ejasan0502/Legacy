@@ -1,56 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Item>
-		<name>Health Crystal</name>
-		<id>u-0</id>
-		<tier>common</tier>
-		<description>A red crystal that replenishes health every 3 seconds for 15 seconds.</description>
-		<weight>1</weight>
-		<cost>5</cost>
-		<craftCost>0</craftCost>
-		<craftChance>0</craftChance>
-		<icon>inventory/usables/</icon>
-		<stats>health-15</stats>
-	</Item>
-	<Item>
-		<name>Mana Crystal</name>
-		<id>u-1</id>
-		<tier>common</tier>
-		<description>A blue crystal that replenishes mana every 3 seconds for 15 seconds</description>
-		<weight>1</weight>
-		<cost>5</cost>
-		<craftCost>0</craftCost>
-		<craftChance>0</craftChance>
-		<icon>inventory/usables/</icon>
-		<stats>mana-15</stats>
-	</Item>
-	<Item>
-		<name>Health Potion</name>
-		<id>u-2</id>
-		<tier>common</tier>
-		<description>A red potion that replenishes health.</description>
-		<weight>1</weight>
-		<cost>10</cost>
-		<craftCost>50</craftCost>
-		<craftChance>100</craftChance>
-		<ingredients>Health Crystal-5,Bottle-1</ingredients>
-		<icon>inventory/usables/</icon>
-		<stats>health-50</stats>
-	</Item>
-	<Item>
-		<name>Mana Potion</name>
-		<id>u-3</id>
-		<tier>common</tier>
-		<description>A blue potion that replenishes mana.</description>
-		<weight>1</weight>
-		<cost>15</cost>
-		<craftCost>65</craftCost>
-		<craftChance>100</craftChance>
-		<ingredients>Mana Crystal-5,Bottle-1</ingredients>
-		<icon>inventory/usables/</icon>
-		<stats>mana-50</stats>
-	</Item>
-	<Item>
 		<name>Bottle</name>
 		<id>m-0</id>
 		<tier>common</tier>
@@ -59,6 +9,6 @@
 		<cost>1</cost>
 		<craftCost>0</craftCost>
 		<craftChance>0</craftChance>
-		<icon>inventory/materials/</icon>
+		<icon>inventory/icons/materials/</icon>
 	</Item>
 </Items>

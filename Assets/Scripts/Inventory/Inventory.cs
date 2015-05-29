@@ -41,9 +41,21 @@ public class Inventory {
         RecalculateWeight();
     }
 
+    public void AddItem(Usable item, int amt){
+        int i = GetIndexOf(item);
+
+        if ( i != -1 ){
+            slots[i].amount += amt;
+        } else {
+            slots.Add(new InventoryItem(item,amt));
+        }
+    }
+
     public void AddItem(Item item, int amt){
         if ( item.IsEquip() ){
             AddItem(item.GetAsEquip());
+        } else if ( item.IsUsable() ){
+            AddItem(item.GetAsUsable(),amt);
         } else {
             int i = GetIndexOf(item);
 
@@ -88,11 +100,27 @@ public class Inventory {
         return -1;
     }
 
+    public int GetIndexOf(string id){
+        for (int i = 0; i < slots.Count; i++){
+            if ( slots[i].item.id == id ){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public InventoryItem GetInventorySlot(Item item){
         int index = GetIndexOf(item);
         if ( index != -1 ) 
             return slots[index];
 
+        return null;
+    }
+
+    public InventoryItem GetInventorySlot(string id){
+        int index = GetIndexOf(id);
+        if ( index != -1 )
+            return slots[index];
         return null;
     }
 

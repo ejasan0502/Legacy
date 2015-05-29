@@ -1,22 +1,21 @@
 ﻿using UnityEngine;
+using System.Reflection;
 using System.Collections;
 
-public class Replenish : MonoBehaviour, Status {
+public class DamageOverTime : MonoBehaviour, Status {
 
     public float duration = 15f;
     public float rate = 3f;
-    public float hp;
-    public float mp;
+    public Stats stats;
 
-    public void Initialize(float h, float m, float r, float d){
-        hp = h;
-        mp = m;
+    public void Initialize(Stats s, float r, float d){
+        stats = new Stats(s);
         rate = r;
         duration = d;
 
         StartCoroutine("Progress");
     }
-
+    
     private IEnumerator Progress(){
         CharacterObject co = GetComponent<CharacterObject>();
         if ( co != null ){
@@ -24,7 +23,7 @@ public class Replenish : MonoBehaviour, Status {
 
             while (Time.time - startTime < duration){
                 yield return new WaitForSeconds(rate);
-                co.c.Heal(hp/duration,mp/duration);
+                co.c.Damage(stats.health,stats.mana);
             }
 
             Destroy(this);

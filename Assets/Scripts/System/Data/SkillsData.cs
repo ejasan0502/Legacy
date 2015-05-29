@@ -55,6 +55,10 @@ public class SkillsData : MonoBehaviour {
                     case "levelReq":
                     s.reqLevel = int.Parse(n2.InnerText);
                     break;
+                    case "icon":
+                    s.icon = Resources.Load(n2.InnerText+s.name,typeof(Sprite)) as Sprite;
+                    if ( s.icon == null ) s.icon = Resources.Load("skills/icons/Default",typeof(Sprite)) as Sprite;
+                    break;
                     case "description":
                     s.description = n2.InnerText;
                     break;
