@@ -41,6 +41,7 @@ public class MenusWindow : MonoBehaviour {
         Game.GetPlayer().GetPlayerInfo().gameObject.SetActive(true);
         Game.GetPlayerObject().SetControls(true);
         Console.instance.SetDisplay(true);
+        HotkeyManager.instance.SetDisplay(true);
 
         gameObject.SetActive(false);
         characterWindow.gameObject.SetActive(false);

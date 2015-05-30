@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Collections;
@@ -57,6 +58,18 @@ public class Player : Character {
     }
 
     #region Public Methods
+    public void SetHotkey(int index, Hotkey h){
+        if ( index < hotkeys.Length ) {
+            hotkeys[index] = h;
+            HotkeyManager.instance.transform.GetChild(index).GetChild(0).GetComponent<Image>().sprite = hotkeys[index].GetIcon();
+            if ( !hotkeys[index].IsSkill ){
+                HotkeyManager.instance.transform.GetChild(index).GetChild(2).gameObject.SetActive(true);
+                HotkeyManager.instance.UpdateHotkeyText(index);
+            } else {
+                HotkeyManager.instance.transform.GetChild(index).GetChild(2).gameObject.SetActive(false);
+            }
+        }
+    }
     public void Use(int index){
         PlayerObject po = characterObject as PlayerObject;
         if ( index >= 0 && index < inventory.slots.Count ){
@@ -392,16 +405,6 @@ public class Player : Character {
         CalculateBaseStats();
         CalculateEquipmentStats();
         CalculateBonusStats();
-    }
-    #endregion
-    #region Hotkey Methods
-    public void SetHotkey(int index, Hotkey h){
-        if ( index < hotkeys.Length ) 
-            hotkeys[index] = h;
-    }
-    public void UseHotkey(int index){
-        if ( hotkeys[index] != null )
-            hotkeys[index].ApplyHotkey(this);
     }
     #endregion
     #region Data Methods

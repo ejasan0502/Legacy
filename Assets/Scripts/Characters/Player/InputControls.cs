@@ -248,6 +248,10 @@ public class InputControls : MonoBehaviour {
     }
 
     private bool InDeadZone(){
+        if ( RectTransformUtility.RectangleContainsScreenPoint(HotkeyManager.instance.cameraRect,Input.mousePosition,Camera.main) ){
+            return true;
+        }
+
         return false;
     }
 }

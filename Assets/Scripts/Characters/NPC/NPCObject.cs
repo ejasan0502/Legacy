@@ -14,6 +14,7 @@ public class NPCObject : MonoBehaviour {
 
     public void Interact(PlayerObject p){
         Console.instance.SetDisplay(false);
+        HotkeyManager.instance.SetDisplay(false);
         Game.GetPlayer().GetPlayerInfo().gameObject.SetActive(false);
 
         GameObject o = Instantiate(Resources.Load("NPCCanvas")) as GameObject;
@@ -26,5 +27,6 @@ public class NPCObject : MonoBehaviour {
         Game.GetPlayer().GetPlayerInfo().gameObject.SetActive(true);
         player.SetControls(true);
         Console.instance.SetDisplay(true);
+        HotkeyManager.instance.SetDisplay(true);
     }
 }
