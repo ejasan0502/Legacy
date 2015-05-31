@@ -16,11 +16,7 @@ public class HotkeyManager : MonoBehaviour {
         }
     }
 
-    private bool hide = false;
-
     public void SetDisplay(bool b){
-        hide = b;
-
         foreach (Transform t in transform){
             t.gameObject.SetActive(b);
         }

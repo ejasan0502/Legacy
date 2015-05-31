@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class Character {
     public string name;
     public GameObject model;
-    public RuntimeAnimatorController animator;
     
     public int level = 1;
     public float exp;

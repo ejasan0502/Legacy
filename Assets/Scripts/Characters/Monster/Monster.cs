@@ -11,7 +11,6 @@ public class Monster : Character {
     public Monster(Monster m){
         name = m.name;
         model = m.model;
-        animator = m.animator;
         stats = new Stats(m.stats);
         currentStats = new Stats(m.currentStats);
         characterObject = m.characterObject;

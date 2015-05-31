@@ -82,8 +82,6 @@ public class Game : MonoBehaviour {
         
         if ( p.IsPlayer ){
             PlayerObject po = o.AddComponent<PlayerObject>();
-            po.GetComponent<Animator>().runtimeAnimatorController = p.animator;
-            po.GetComponent<Animator>().updateMode = AnimatorUpdateMode.AnimatePhysics;
             po.GetComponent<NavMeshAgent>().angularSpeed = 300f;
             po.SetCharacter(p);
             po.SetCanvas(canvas);
@@ -95,8 +93,6 @@ public class Game : MonoBehaviour {
             return po;
         } else {
             MonsterObject mo = o.AddComponent<MonsterObject>();
-            mo.GetComponent<Animator>().runtimeAnimatorController = p.animator;
-            mo.GetComponent<Animator>().updateMode = AnimatorUpdateMode.AnimatePhysics;
             mo.GetComponent<NavMeshAgent>().angularSpeed = 300f;
             mo.SetCharacter(p);
             mo.SetCanvas(canvas);

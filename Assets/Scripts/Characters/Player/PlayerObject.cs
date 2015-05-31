@@ -38,8 +38,11 @@ public class PlayerObject : CharacterObject {
     }
     #endregion
     #region Get Methods
-    public bool HasTarget(){
+    public override bool HasTarget(){
         return target != null;
+    }
+    public override bool TargetIsAlive(){
+        return target != null && target.currentStats.health > 0;
     }
     public Character GetTarget(){
         return target;
@@ -62,8 +65,11 @@ public class PlayerObject : CharacterObject {
             Vector3 v = co.transform.position;
             SetEndPoint(v);
             if ( Vector3.Distance(transform.position,co.transform.position) < c.atkDistance ){
+                anim.SetBool("Attack",true);
                 SetEndPoint(transform.position);
                 SetState(CharacterState.attacking);
+            } else {
+                //anim.SetBool("Attack",false);
             }
         } else if ( Time.time - battleEndTime >= 3f ){
             anim.SetBool("Battle",false);
@@ -78,12 +84,6 @@ public class PlayerObject : CharacterObject {
     }
     protected override void Attacking(){
         if ( target != null && target.IsAlive && c.IsAlive ){
-            if ( Time.time - atkTime > c.currentStats.atkSpd ){
-                anim.SetBool("Attack",true);
-                atkTime = Time.time;
-            } else {
-                anim.SetBool("Attack",false);
-            }
             if ( Vector3.Distance(transform.position,target.characterObject.transform.position) > c.atkDistance ){
                 anim.SetBool("Attack",false);
                 SetState(CharacterState.battling);

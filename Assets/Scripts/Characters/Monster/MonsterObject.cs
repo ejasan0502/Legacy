@@ -77,6 +77,7 @@ public class MonsterObject : CharacterObject {
             Vector3 v = enemySight.target.characterObject.transform.position;
             SetEndPoint(v);
             if ( Vector3.Distance(transform.position,v) < c.atkDistance ){
+                anim.SetBool("Attack",true);
                 transform.LookAt(v);
                 SetEndPoint(transform.position);
                 SetState(CharacterState.attacking);
@@ -95,12 +96,6 @@ public class MonsterObject : CharacterObject {
                 anim.SetBool("Attack",false);
                 SetState(CharacterState.battling);
             }
-            if ( Time.time - atkTime > c.currentStats.atkSpd ){
-                anim.SetBool("Attack",true);
-                atkTime = Time.time;
-            } else {
-                anim.SetBool("Attack",false);
-            }
         } else {
             anim.SetBool("Attack",false);
             SetState(CharacterState.battling);
@@ -116,5 +111,13 @@ public class MonsterObject : CharacterObject {
             enemySight.target.PhysicalHit(c);
             transform.LookAt(enemySight.target.characterObject.transform.position);
         }
+    }
+
+    public override bool HasTarget(){
+        return enemySight.target != null;
+    }
+
+    public override bool TargetIsAlive(){
+        return enemySight.target != null && enemySight.target.currentStats.health > 0;
     }
 }

@@ -348,8 +348,8 @@ public class Player : Character {
         baseStats.accuracy = ((attributes.dexterity*0.165f)*level)/100.0f;
         baseStats.evasion = 3f - (attributes.agility*0.165f)*level;
 
-        baseStats.atkSpd = 1f;
-        baseStats.castSpd = 1f;
+        baseStats.atkSpd = 3f;
+        baseStats.castSpd = 3f;
         baseStats.movSpd = 1f;
 
         baseStats.dropRate = (attributes.luck*0.165f)*level;
@@ -364,7 +364,7 @@ public class Player : Character {
         stats = new Stats(baseStats);
 
         for (int i = 0; i < equipment.Length; i++){
-            if ( equipment[i] != null ){
+            if ( equipment[i] != null && equipment[i].id != "" ){
                 if ( i == (int)EquipType.secondaryWeapon && !equipment[i].IsShield )
                     stats += equipment[i].stats*0.1f;
                 else

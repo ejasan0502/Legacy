@@ -33,17 +33,6 @@ public class CharacterObject : MonoBehaviour {
 
         navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
     }
-
-    protected void Update(){
-        if ( canMove ) {
-            navAgent.SetDestination(endPoint);
-            if ( Vector3.Distance(transform.position,endPoint) < 0.1f ){
-                anim.SetBool("Move",false);
-            } else {
-                anim.SetBool("Move",true);
-            }
-        }
-    }
     #endregion
     #region Set Methods
     public void SetRecoveryRate(float x){
@@ -73,6 +62,12 @@ public class CharacterObject : MonoBehaviour {
     public Character GetCharacter(){
         return c;
     }
+    public virtual bool HasTarget(){
+        return false;
+    }
+    public virtual bool TargetIsAlive(){
+        return false;
+    }
     #endregion
     #region State Machine Methods
     protected virtual IEnumerator StateMachine(){
@@ -95,6 +90,15 @@ public class CharacterObject : MonoBehaviour {
             case CharacterState.dying:
             Dying();
             break;
+            }
+
+            if ( canMove ) {
+                navAgent.SetDestination(endPoint);
+                if ( Vector3.Distance(transform.position,endPoint) < 0.5f ){
+                    if ( anim.GetBool("Move") ) anim.SetBool("Move",false);
+                } else {
+                   if ( !anim.GetBool("Move") )  anim.SetBool("Move",true);
+                }
             }
         }
     }
