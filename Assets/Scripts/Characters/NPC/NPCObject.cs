@@ -8,8 +8,22 @@ public class NPCObject : MonoBehaviour {
     private PlayerObject player = null;
 
     void Awake(){
-        npc.npcObject = this;
-        name = npc.name;
+        StartCoroutine("WaitForLoad");
+    }
+
+    private IEnumerator WaitForLoad(){
+        while (!Game.GameDataLoaded){
+            yield return new WaitForSeconds(1f);
+        }
+
+        if ( npc.id != "" ){
+            npc = Game.GetNPCData().GetNPC(npc.id);
+            npc.npcObject = this;
+            name = npc.name;
+        } else {
+            npc.npcObject = this;
+            name = npc.name;
+        }
     }
 
     public void Interact(PlayerObject p){

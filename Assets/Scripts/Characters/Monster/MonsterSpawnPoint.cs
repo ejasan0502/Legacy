@@ -25,7 +25,7 @@ public class MonsterSpawnPoint : MonoBehaviour {
         while(true){
             yield return new WaitForSeconds(spawnRate);
             CheckMonstersList();
-            if ( monsters.Count < maxSpawnCount ){
+            if ( monsters.Count < maxSpawnCount && Game.GameDataLoaded ){
                 CharacterObject co = null;
                 Monster m = null;
                 if ( monsterId == "" ) m = new Monster(monster);

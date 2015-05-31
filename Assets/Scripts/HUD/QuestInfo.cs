@@ -22,16 +22,10 @@ public class QuestInfo : MonoBehaviour {
 
         float height = 90f;
         string s = "";
-        if ( quest.questType == QuestType.main ){
-            s += "Main\n";
-        } else if ( quest.questType == QuestType.side ){
-            s += "Side\n";
-        } else {
-            s += "Event\n";
-        }
+        s += quest.questType+"\n";
         s += quest.description + "\n";
         
-        for (int i = 0; i < quest.questObjectives.Length; i++){
+        for (int i = 0; i < quest.questObjectives.Count; i++){
             s += quest.questObjectives[i].objective + " " + quest.questObjectives[i].amt + " " + quest.questObjectives[i].GetObjectiveName();
             height += 30f;
         }
@@ -51,16 +45,10 @@ public class QuestInfo : MonoBehaviour {
 
         float height = 90f;
         string s = "";
-        if ( quest.questType == QuestType.main ){
-            s += "Main\n";
-        } else if ( quest.questType == QuestType.side ){
-            s += "Side\n";
-        } else {
-            s += "Event\n";
-        }
+        s += quest.questType + "\n";
         s += quest.description + "\n";
         
-        for (int i = 0; i < quest.questObjectives.Length; i++){
+        for (int i = 0; i < quest.questObjectives.Count; i++){
             s += quest.questObjectives[i].objective + " " + quest.questObjectives[i].amt + " " + quest.questObjectives[i].GetObjectiveName();
             height += 30f;
         }

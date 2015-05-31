@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Monsters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Monster>
+		<name>Doll</name>
+		<id>tutorial-0</id>
+		<level>1</level>
+		<description>A wooden doll.</description>
+		<model>monsters/tutorial/</model>
+		<stats>health-5,meleeMinDmg-1,meleeMaxDmg-2,accuracy-90,atkSpd-3,movSpd-3</stats>
+		<sightRange>8</sightRange>
+		<atkDistance>2</atkDistance>
+		<exp>4</exp>
+		<drops>m-0</drops>
+		<currency>5</currency>
+	</Monster>
+	<Monster>
+		<name>Wolf</name>
+		<id>tutorial-1</id>
+		<level>3</level>
+		<description>A small wolf with razor claws and sharp fangs.</description>
+		<model>monsters/tutorial/</model>
+		<stats>health-5,meleeMinDmg-1,meleeMaxDmg-2,accuracy-90,atkSpd-3,movSpd-3</stats>
+		<sightRange>8</sightRange>
+		<atkDistance>2</atkDistance>
+		<exp>8</exp>
+		<drops>m-0</drops>
+		<currency>10</currency>
+	</Monster>
+	<Monster>
+		<name>Thief</name>
+		<id>tutorial-2</id>
+		<level>5</level>
+		<description>A cloaked man with a dagger.</description>
+		<model>monsters/tutorial/</model>
+		<stats>health-5,meleeMinDmg-1,meleeMaxDmg-2,accuracy-90,atkSpd-3,movSpd-3</stats>
+		<sightRange>10</sightRange>
+		<atkDistance>2</atkDistance>
+		<exp>12</exp>
+		<drops>m-0</drops>
+		<currency>15</currency>
+	</Monster>
+	<Monster>
+		<name>Ogre</name>
+		<id>tutorial-3</id>
+		<level>7</level>
+		<description>A big brutish monster with a giant club.</description>
+		<model>monsters/tutorial/</model>
+		<stats>health-5,meleeMinDmg-1,meleeMaxDmg-2,accuracy-90,atkSpd-3,movSpd-3</stats>
+		<sightRange>15</sightRange>
+		<atkDistance>3</atkDistance>
+		<exp>20</exp>
+		<drops>m-0</drops>
+		<currency>20</currency>
+	</Monster>
+	<Monster>
+		<name>Obelisk</name>
+		<id>tutorial-4</id>
+		<level>9</level>
+		<description>A gigantic ancient stone statue</description>
+		<model>monsters/tutorial/</model>
+		<stats>health-5,meleeMinDmg-1,meleeMaxDmg-2,accuracy-90,atkSpd-3,movSpd-3</stats>
+		<sightRange>20</sightRange>
+		<atkDistance>5</atkDistance>
+		<exp>40</exp>
+		<drops>m-0</drops>
+		<currency>25</currency>
+	</Monster>
+</Monsters>

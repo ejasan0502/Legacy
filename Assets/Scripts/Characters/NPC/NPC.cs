@@ -7,13 +7,35 @@ using System.Collections.Generic;
 public class NPC {
     public string name;
     public string id;
-    public Sprite portrait;
+    public GameObject model;
     public NPCType npcType;
     public string[] buyList;
     public string[] craftList;
     public string[] questList;
 
     public NPCObject npcObject;
+
+    public NPC(){
+        name = "";
+        id = "";
+        model = null;
+        npcType = NPCType.civilian;
+        buyList = new string[0];
+        craftList = new string[0];
+        questList = new string[0];
+        npcObject = null;
+    }
+
+    public NPC(NPC n){
+        name = n.name;
+        id = n.id;
+        model = n.model;
+        npcType = n.npcType;
+        buyList = n.buyList;
+        craftList = n.craftList;
+        questList = n.questList;
+        npcObject = null;
+    }
 
     public Item[] GetItemsList(){
         Item[] items = new Item[buyList.Length];

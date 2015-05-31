@@ -36,6 +36,9 @@ public class MonsterData : MonoBehaviour {
                     case "id":
                     e.id = n2.InnerText;
                     break;
+                    case "level":
+                    e.level = int.Parse(n2.InnerText);
+                    break;
                     case "description":
                     e.description = n2.InnerText;
                     break;
@@ -80,6 +83,9 @@ public class MonsterData : MonoBehaviour {
                     case "atkDistance":
                     e.atkDistance = float.Parse(n2.InnerText);
                     break;
+                    case "exp":
+                    e.exp = float.Parse(n2.InnerText);
+                    break;
                     }
                 }
             }
@@ -94,7 +100,7 @@ public class MonsterData : MonoBehaviour {
     }
 
     public Monster GetMonster(string id){
-        string part1 = id.Split('.')[0];
+        string part1 = id.Split('-')[0];
         switch (part1.ToLower()){
         case "tutorial":
         foreach (Monster m in tutorial){
@@ -102,6 +108,7 @@ public class MonsterData : MonoBehaviour {
         }
         break;
         }
+        Console.Error("MonsterData.cs - GetMonster(string): Returned a null value. Id value = " + id);
         return null;
     }
 }

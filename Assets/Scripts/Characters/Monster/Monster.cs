@@ -9,9 +9,12 @@ public class Monster : Character {
     public string description;
     public string id;
     public float sightRange = 10f;
+    public List<string> drops;
+    public float currency;
 
     public Monster(){
         name = "";
+        level = 1;
         description = "";
         id = "";
         model = null;
@@ -21,10 +24,13 @@ public class Monster : Character {
         skills = new List<Skill>();
         sightRange = 0f;
         atkDistance = 0f;
+        exp = 0f;
+        currency = 0f;
     }
 
     public Monster(Monster m){
         name = m.name;
+        level = m.level;
         description = m.description;
         id = m.id;
         model = m.model;
@@ -34,6 +40,8 @@ public class Monster : Character {
         skills = m.skills;
         sightRange = m.sightRange;
         atkDistance = m.atkDistance;
+        exp = m.exp;
+        currency = m.currency;
     }
 
     #region Override Methods

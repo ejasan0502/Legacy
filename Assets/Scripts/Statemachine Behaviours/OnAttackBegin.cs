@@ -22,7 +22,8 @@ public class OnAttackBegin : StateMachineBehaviour {
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	    animator.SetInteger("Attack Animation",Random.Range(0,2));
+	    if ( animator.GetComponent<CharacterObject>().c.IsPlayer )
+            animator.SetInteger("Attack Animation",Random.Range(0,2));
 	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

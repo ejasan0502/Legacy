@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<NPCs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<NPC>
+		<name>Yurie</name>
+		<id>tutorial-0</id>
+		<model>npcs/tutorial/</model>
+		<npcType>civillian</npcType>
+		<questList>tutorial-0</questList>
+	</NPC>
+</NPCs>

@@ -8,9 +8,19 @@ public class Quest {
     public Sprite icon;
     public string id;
     public string description;
-    public QuestType questType;
-    public QuestObjective[] questObjectives;
+    public string questType;
+    public List<QuestObjective> questObjectives;
     public int levelReq;
+
+    public Quest(){
+        name = "";
+        icon = null;
+        id = "";
+        description = "";
+        questType = "";
+        questObjectives = new List<QuestObjective>();
+        levelReq = 1;
+    }
 
     public Quest(Quest q){
         name = q.name;
@@ -18,11 +28,7 @@ public class Quest {
         id = q.id;
         description = q.description;
         questType = q.questType;
-        questObjectives = new QuestObjective[questObjectives.Length];
-        for (int i = 0; i < questObjectives.Length; i++){
-            questObjectives[i] = new QuestObjective(q.questObjectives[i]);
-        }
-
+        questObjectives = q.questObjectives;
         levelReq = q.levelReq;
     }
 
@@ -62,16 +68,31 @@ public class QuestObjective {
     private Item item = null;
     private NPC npc = null;
 
+    public QuestObjective(string i, string o, int a){
+        id = i;
+        objective = o;
+        amt = a;
+
+        if ( objective == "collect" ){
+            item = Game.GetGameData().GetMaterial(id);
+        } else if ( objective == "kill" ){
+            monster = Game.GetMonsterData().GetMonster(id);
+        } else if ( objective == "talk" ){
+            npc = Game.GetNPCData().GetNPC(id);
+        } else {
+            Console.Log("Invalid objective");
+        }
+    }
     public QuestObjective(QuestObjective qo){
         id = qo.id;
         objective = qo.objective;
         amt = qo.amt;
 
-        if ( objective == "Collect" ){
+        if ( objective == "collect" ){
             item = Game.GetGameData().GetMaterial(id);
-        } else if ( objective == "Kill" ){
+        } else if ( objective == "kill" ){
             monster = Game.GetMonsterData().GetMonster(id);
-        } else if ( objective == "Talk" ){
+        } else if ( objective == "talk" ){
             npc = Game.GetNPCData().GetNPC(id);
         } else {
             Console.Log("Invalid objective");
@@ -86,10 +107,4 @@ public class QuestObjective {
 
         return "";
     }
-}
-
-public enum QuestType {
-    main,
-    side,
-    evt
 }

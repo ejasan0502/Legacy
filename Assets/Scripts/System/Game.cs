@@ -23,6 +23,8 @@ public class Game : MonoBehaviour {
     private Player player;
     private PlayerObject playerObject;
     private static GameObject notificationPref;
+    private bool gameDataLoaded = false;
+    private static Game _instance = null;
 
     #region Unity Methods
     void Awake(){
@@ -52,9 +54,19 @@ public class Game : MonoBehaviour {
         gameData.ExtractUsablesXmlData();
         gameData.ExtractEquipsXmlData();
         skillsData.ExtractXmlData();
+        monsterData.ExtractMonsterXmlData();
+        questData.ExtractQuestXmlData();
+        npcData.ExtractNPCXmlData();
+
+        gameDataLoaded = true;
     }
     #endregion
     #region Public Static Methods
+    public static bool GameDataLoaded {
+        get {
+            return GetInstance().gameDataLoaded;
+        }
+    }
     public static void Notification(string s, bool b){
         GameObject o = Instantiate(notificationPref) as GameObject;
         o.transform.GetComponent<DestroyWithDelay>().canTapDestroy = b;
@@ -107,7 +119,10 @@ public class Game : MonoBehaviour {
     #endregion
     #region Get Static Methods
     public static Game GetInstance(){
-        return GameObject.FindObjectOfType<Game>();
+        if ( _instance == null ){
+            _instance = GameObject.FindObjectOfType<Game>();
+        }
+        return _instance;
     }
     public static SmartFox GetConnection(){
         return GetInstance().connection;
