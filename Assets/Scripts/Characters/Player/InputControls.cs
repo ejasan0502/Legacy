@@ -78,7 +78,7 @@ public class InputControls : MonoBehaviour {
                         if ( hit.transform.GetComponent<CharacterObject>() != null ){
                             Character c = hit.transform.GetComponent<CharacterObject>().GetCharacter();
                             if ( c.IsAlive ){
-                                if ( playerObject.HasTarget() && playerObject.GetTarget() == c ){
+                                if ( playerObject.GetTarget() != null && playerObject.GetTarget() == c ){
                                     if ( c.IsPlayer ){
                                         follow = true;
                                     } else {
@@ -179,7 +179,7 @@ public class InputControls : MonoBehaviour {
                             if ( hit.transform.GetComponent<CharacterObject>() != null ){
                                 Character c = hit.transform.GetComponent<CharacterObject>().GetCharacter();
                                 if ( c.IsAlive ){
-                                    if ( playerObject.HasTarget() && playerObject.GetTarget() == c ){
+                                    if ( playerObject.GetTarget() != null && playerObject.GetTarget() == c ){
                                         if ( c.IsPlayer ){
                                             follow = true;
                                         } else {

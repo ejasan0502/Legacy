@@ -19,8 +19,14 @@ public class Skill {
     public List<string> reqs;
     
     public Skill(){
-        level = 0;
+        name = "";
+        id = "";
+        icon = null;
+        description = "";
+        skillType = SkillType.singleTarget;
         stats = new Stats();
+        level = 0;
+        reqLevel = 0;
         reqs = new List<string>();
     }
     

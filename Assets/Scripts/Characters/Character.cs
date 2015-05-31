@@ -16,8 +16,6 @@ public class Character {
     public CharacterObject characterObject;
     public List<Skill> skills = new List<Skill>();
 
-    [HideInInspector] public float aggro = 0f;
-
     #region Public Methods
     public void Damage(float h, float m){
         currentStats.health -= h;
@@ -32,10 +30,19 @@ public class Character {
         if ( currentStats.health > stats.health ) currentStats.health = stats.health;
         if ( currentStats.mana > stats.mana ) currentStats.mana = stats.mana;
     }
+    public virtual void Miss(Character atker){
+        characterObject.CreateText("Miss",Color.yellow,1f);
+    }
     public virtual void PhysicalHit(Character atker){
         float rawDmg = Random.Range(atker.currentStats.meleeMinDmg,atker.currentStats.meleeMaxDmg);
         float dmg = rawDmg - currentStats.physDef;
         if ( dmg < 1 ) dmg = 1f;
+
+        float scale = 1f;
+        if ( Random.Range(0,100) <= atker.currentStats.critChance ){
+            dmg *= atker.currentStats.critDmg;
+            scale = 2f;
+        }
 
         currentStats.health -= dmg;
 
@@ -43,9 +50,9 @@ public class Character {
         string s = ((int)dmg)+"";
         if ( dmg < 0 ) {
             c = Color.green;
-            s = Mathf.Abs((int)dmg+0f)+"";
+            s = Mathf.Abs((int)dmg)+"";
         }
-        characterObject.CreateText(s,c);
+        characterObject.CreateText(s,c,scale);
 
         if ( currentStats.health > stats.health ) currentStats.health = stats.health;
         if ( currentStats.mana > stats.mana ) currentStats.mana = stats.mana;
@@ -57,15 +64,21 @@ public class Character {
         float dmg = rawDmg - currentStats.magDef;
         if ( dmg < 1 ) dmg = 1f;
 
+        float scale = 1f;
+        if ( Random.Range(0,100) <= atker.currentStats.critChance ){
+            dmg *= atker.currentStats.critDmg;
+            scale = 2f;
+        }
+
         currentStats.health -= dmg;
 
         Color c = Color.red;
         string s = ((int)dmg)+"";
         if ( dmg < 0 ) {
             c = Color.green;
-            s = Mathf.Abs((int)dmg+0f)+"";
+            s = Mathf.Abs((int)dmg)+"";
         }
-        characterObject.CreateText(s,c);
+        characterObject.CreateText(s,c,scale);
 
         if ( currentStats.health > stats.health ) currentStats.health = stats.health;
         if ( currentStats.mana > stats.mana ) currentStats.mana = stats.mana;
@@ -112,12 +125,6 @@ public class Character {
     }
     #endregion
     #region Set Methods
-    public void ResetAggro(){
-        aggro = 0f;
-    }
-    public void AddAggro(float x){
-        aggro += x;
-    }
     public void SetCharacterObject(CharacterObject o){
         characterObject = o;
     }

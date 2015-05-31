@@ -15,7 +15,7 @@ public class OnAttackBegin : StateMachineBehaviour {
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 	    CharacterObject co = animator.GetComponent<CharacterObject>();
         if ( Time.time - startTime >= co.c.currentStats.atkSpd ){
-            if ( co.HasTarget() && co.TargetIsAlive() )
+            if ( co.GetTarget() != null && co.GetTarget().IsAlive )
                 animator.SetBool("Attack",true);
         }
 	}

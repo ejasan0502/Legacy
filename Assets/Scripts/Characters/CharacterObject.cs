@@ -62,11 +62,8 @@ public class CharacterObject : MonoBehaviour {
     public Character GetCharacter(){
         return c;
     }
-    public virtual bool HasTarget(){
-        return false;
-    }
-    public virtual bool TargetIsAlive(){
-        return false;
+    public virtual Character GetTarget(){
+        return null;
     }
     #endregion
     #region State Machine Methods
@@ -107,7 +104,6 @@ public class CharacterObject : MonoBehaviour {
     protected virtual void Casting(){}
     protected virtual void Attacking(){}
     protected virtual void Dying(){}
-    public virtual void ApplyDamage(){}
     public void Recovery(){
         if ( Time.time - recoveryTime >= recoveryRate ){
             c.currentStats.health += c.currentStats.hpRecov;
@@ -134,9 +130,10 @@ public class CharacterObject : MonoBehaviour {
     public virtual void OnDeath(){
         StartCoroutine("WaitForDestroy");
     }
-    public void CreateText(string s, Color c){
+    public void CreateText(string s, Color c, float sc){
         GameObject o = GameObject.Instantiate(floatingText) as GameObject;
         o.transform.position = transform.position + transform.up;
+        o.transform.localScale *= sc;
 
         Text text = o.transform.GetChild(0).GetComponent<Text>();
         text.text = s;

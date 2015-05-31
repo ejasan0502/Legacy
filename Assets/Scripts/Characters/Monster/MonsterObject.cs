@@ -13,7 +13,6 @@ public class MonsterObject : CharacterObject {
     private Vector3 startPos;
     private int nodeIndex = 0;
     private float waitTime;
-    private float atkTime;
 
     void Start(){
         GameObject o = new GameObject("Enemy Sight");
@@ -29,7 +28,6 @@ public class MonsterObject : CharacterObject {
 
         navAgent.speed = c.currentStats.movSpd;
         startPos = transform.position;
-        atkTime = Time.time;
 
         SetEndPoint(startPos);
 
@@ -105,19 +103,8 @@ public class MonsterObject : CharacterObject {
     protected override void Dying(){
         if ( !anim.GetBool("Death") ) anim.SetBool("Death",true);
     }
-
-    public override void ApplyDamage(){
-        if ( enemySight.target != null ) {
-            enemySight.target.PhysicalHit(c);
-            transform.LookAt(enemySight.target.characterObject.transform.position);
-        }
-    }
-
-    public override bool HasTarget(){
-        return enemySight.target != null;
-    }
-
-    public override bool TargetIsAlive(){
-        return enemySight.target != null && enemySight.target.currentStats.health > 0;
+    
+    public override Character GetTarget(){
+        return enemySight.target;
     }
 }

@@ -76,7 +76,7 @@ public class Player : Character {
             Item item = inventory.slots[index].item;
             if ( item.IsUsable() ){
                 Usable u = item.GetAsUsable();
-                if ( po.HasTarget() ){
+                if ( po.GetTarget() != null ){
                     if ( u.friendly && po.GetTarget().IsPlayer || !u.friendly && !po.GetTarget().IsPlayer ){
                         u.Use(po.GetTarget());
                         inventory.RemoveItem(index,1);
@@ -239,11 +239,19 @@ public class Player : Character {
     }
     #endregion
     #region Override Methods
+    public override void Miss(Character atker){
+        base.Miss(atker);
+
+        PlayerObject po = characterObject as PlayerObject;
+        if ( po.GetTarget() == null ){
+            po.SetTarget(atker);
+        }
+    }
     public override void PhysicalHit(Character atker){
         base.PhysicalHit(atker);
 
         PlayerObject po = characterObject as PlayerObject;
-        if ( !po.HasTarget() && atker.IsAlive ){
+        if ( po.GetTarget() == null ){
             po.SetTarget(atker);
         }
     }
@@ -251,7 +259,7 @@ public class Player : Character {
         base.MagicalHit(atker, percent);
 
         PlayerObject po = characterObject as PlayerObject;
-        if ( !po.HasTarget() && atker.IsAlive ){
+        if ( po.GetTarget() == null ){
             po.SetTarget(atker);
         }
     }

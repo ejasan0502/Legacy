@@ -21,7 +21,7 @@ public class UsableHotkey : Hotkey {
     public override void ApplyHotkey(Player p, int index){
         Character c = p;
 
-        if ( ((PlayerObject)p.characterObject).HasTarget() ){
+        if ( ((PlayerObject)p.characterObject).GetTarget() != null ){
             c = ((PlayerObject)p.characterObject).GetTarget();
         }
 

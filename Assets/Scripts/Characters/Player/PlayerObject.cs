@@ -6,7 +6,6 @@ public class PlayerObject : CharacterObject {
 
     private InputControls controls;
     private Character target = null;
-    private float atkTime;
     private float battleEndTime;
 
     protected override void Awake(){
@@ -14,8 +13,6 @@ public class PlayerObject : CharacterObject {
         DontDestroyOnLoad(this);
 
         controls = GetComponent<InputControls>();
-
-        atkTime = Time.time;
     }
     
     void Start(){
@@ -38,13 +35,7 @@ public class PlayerObject : CharacterObject {
     }
     #endregion
     #region Get Methods
-    public override bool HasTarget(){
-        return target != null;
-    }
-    public override bool TargetIsAlive(){
-        return target != null && target.currentStats.health > 0;
-    }
-    public Character GetTarget(){
+    public override Character GetTarget(){
         return target;
     }
     public CharacterObject GetTargetObject(){
@@ -68,8 +59,6 @@ public class PlayerObject : CharacterObject {
                 anim.SetBool("Attack",true);
                 SetEndPoint(transform.position);
                 SetState(CharacterState.attacking);
-            } else {
-                //anim.SetBool("Attack",false);
             }
         } else if ( Time.time - battleEndTime >= 3f ){
             anim.SetBool("Battle",false);
@@ -102,13 +91,6 @@ public class PlayerObject : CharacterObject {
         if ( !anim.GetBool("Death") ) {
             anim.SetBool("Death",true);
             controls.enabled = false;
-        }
-    }
-
-    public override void ApplyDamage(){
-        if ( target != null ) {
-            target.PhysicalHit(c);
-            transform.LookAt(target.characterObject.transform.position);
         }
     }
     #endregion
