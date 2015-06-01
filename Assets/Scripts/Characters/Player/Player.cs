@@ -183,11 +183,31 @@ public class Player : Character {
     }
     #endregion
     #region Experience Methods
+    public override void AddExp(float x){
+        base.AddExp(x);
+        classExp += x*0.125f;
+
+        Console.Log("Gained " + (int)x + " exp.");
+        Console.Log("Gained " + (int)x*0.125f + " class exp.");
+
+        if ( exp >= maxExp ){
+            LevelUp();
+        }
+        if ( classExp >= maxClassExp ){
+            ClassLevelUp();
+        }
+    }
     public void LevelUp(){
-           
+        level++;
+        CalculateStats();
+        exp = exp - maxExp;
+        currentStats = new Stats(stats);
+        ((PlayerObject)characterObject).CreateText("Level Up!",Color.white,3f);
     }
     public void ClassLevelUp(){
-
+        classLevel++;
+        classExp = classExp - maxClassExp;
+        maxClassExp = (10f + level*level)*0.25f;
     }
     #endregion
     #region Quests Methods
@@ -336,7 +356,7 @@ public class Player : Character {
         return text;
     }
     public void CalculateBaseStats(){
-        maxExp = 30f*level + (level - 1)*level*5f; 
+        maxExp = 10f + level*level;
 
         baseStats = new Stats();
         baseStats.health = 10f + (attributes.strength*0.165f)*level + (attributes.vitality*0.33f)*level;
@@ -366,6 +386,10 @@ public class Player : Character {
 
         stats = new Stats(1f);
         currentStats = new Stats(stats);
+    }
+
+    public void CalculateSkillStats(){
+
     }
 
     public void CalculateEquipmentStats(){

@@ -22,7 +22,7 @@ public class Replenish : MonoBehaviour, Status {
         if ( co != null ){
             float startTime = Time.time;
 
-            while (Time.time - startTime < duration){
+            while (Time.time - startTime < duration && co.c.IsAlive){
                 yield return new WaitForSeconds(rate);
                 co.c.Heal(hp/duration,mp/duration);
             }

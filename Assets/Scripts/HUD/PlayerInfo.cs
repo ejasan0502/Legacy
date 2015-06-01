@@ -20,6 +20,8 @@ public class PlayerInfo : MonoBehaviour {
 
     void FixedUpdate(){
         if ( p != null ){
+            levelText.text = p.level + "";
+
             healthBar.fillAmount = p.currentStats.health / p.stats.health;
             manaBar.fillAmount = p.currentStats.mana / p.stats.mana;
             expBar.fillAmount = p.exp / p.maxExp;

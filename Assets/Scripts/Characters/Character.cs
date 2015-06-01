@@ -16,14 +16,18 @@ public class Character {
     public CharacterObject characterObject;
     public List<Skill> skills = new List<Skill>();
 
+    protected Character killer = null;
+
     #region Public Methods
     public void Damage(float h, float m){
         currentStats.health -= h;
         currentStats.mana -= m;
 
-        CheckDeath();
+        if ( currentStats.health < 1 ) currentStats.health = 1f;
     }
     public void Heal(float h, float m){
+        if ( !IsAlive ) return;
+
         currentStats.health += h;
         currentStats.mana += m;
 
@@ -57,7 +61,7 @@ public class Character {
         if ( currentStats.health > stats.health ) currentStats.health = stats.health;
         if ( currentStats.mana > stats.mana ) currentStats.mana = stats.mana;
 
-        CheckDeath();
+        CheckDeath(atker);
     }
     public virtual void MagicalHit(Character atker, float percent){
         float rawDmg = percent*Random.Range(atker.currentStats.magicMinDmg,atker.currentStats.magicMaxDmg);
@@ -83,13 +87,21 @@ public class Character {
         if ( currentStats.health > stats.health ) currentStats.health = stats.health;
         if ( currentStats.mana > stats.mana ) currentStats.mana = stats.mana;
 
-        CheckDeath();
+        CheckDeath(atker);
+    }
+    public virtual void AddExp(float x){
+        exp += x;
     }
     #endregion
     #region Private Methods
-    private void CheckDeath(){
+    private void CheckDeath(Character atker){
         if ( currentStats.health < 1 ){
             currentStats.health = 0f;
+
+            if ( atker.IsPlayer ){
+                atker.AddExp(exp);
+            }
+
             Death();
         }
     }
