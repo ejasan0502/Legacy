@@ -160,7 +160,7 @@ public class ItemInfo : MonoBehaviour {
     public void SetHotkey(int index){
         Player p = Game.GetPlayer();
         if ( item.IsUsable() ){
-            Game.Notification("Assigned " + item.name + " to Hotkey " + index+1,true);
+            Game.Notification("Assigned " + item.name + " to Hotkey " + (index+1),true);
             p.SetHotkey(index,new UsableHotkey( p.inventory.GetIndexOf(item),item.GetAsUsable() ));
             hotkeyWindow.SetActive(false);
         } else {

@@ -37,8 +37,7 @@ public class Inventory {
 
     public void AddItem(Equip item){
         slots.Add(new InventoryItem(new Equip(item),1));
-
-        RecalculateWeight();
+        Console.Log("Obtained " + item.name);
     }
 
     public void AddItem(Usable item, int amt){
@@ -49,6 +48,7 @@ public class Inventory {
         } else {
             slots.Add(new InventoryItem(item,amt));
         }
+        Console.Log("Obtained " + item.name + " x" + amt);
     }
 
     public void AddItem(Item item, int amt){
@@ -64,6 +64,7 @@ public class Inventory {
             } else {
                 slots.Add(new InventoryItem(item,amt));
             }
+            Console.Log("Obtained " + item.name + " x" + amt);
         }
         
         RecalculateWeight();

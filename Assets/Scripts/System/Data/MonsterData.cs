@@ -51,13 +51,15 @@ public class MonsterData : MonoBehaviour {
 
                     string[] stats = n2.InnerText.Split(',');
                     foreach (string ss in stats){
-                        string statName = ss.Split('-')[0];
-                        string statValue = ss.Split('-')[1];
+                        if ( ss != "" ){
+                            string statName = ss.Split('-')[0];
+                            string statValue = ss.Split('-')[1];
 
-                        foreach (FieldInfo f in fields){
-                            if ( f.Name == statName ){
-                                f.SetValue(e.stats,float.Parse(statValue));
-                                break;
+                            foreach (FieldInfo f in fields){
+                                if ( f.Name == statName ){
+                                    f.SetValue(e.stats,float.Parse(statValue));
+                                    break;
+                                }
                             }
                         }
                     }
@@ -65,15 +67,17 @@ public class MonsterData : MonoBehaviour {
                     case "skills":
                     string[] skillList = n2.InnerText.Split(',');
                     foreach (string s in skillList){
-                        string skillId = s.Split('-')[0];
-                        int skillLvl = int.Parse(s.Split('-')[1]);
+                        if ( s != "" ){
+                            string skillId = s.Split('-')[0];
+                            int skillLvl = int.Parse(s.Split('-')[1]);
 
-                        Skill sk = Game.GetSkillData().GetSkill(skillId);
-                        if ( sk != null ){
-                            sk.level = skillLvl;
-                            e.skills.Add(sk);
-                        } else {
-                            Console.Error("MonsterData.cs - ExtractMonsterXmlData(): Skill id does not exist! " + skillId);
+                            Skill sk = Game.GetSkillData().GetSkill(skillId);
+                            if ( sk != null ){
+                                sk.level = skillLvl;
+                                e.skills.Add(sk);
+                            } else {
+                                Console.Error("MonsterData.cs - ExtractMonsterXmlData(): Skill id does not exist! " + skillId);
+                            }
                         }
                     }
                     break;
@@ -85,6 +89,28 @@ public class MonsterData : MonoBehaviour {
                     break;
                     case "exp":
                     e.exp = float.Parse(n2.InnerText);
+                    break;
+                    case "drops":
+                    string[] dropList = n2.InnerText.Split(',');
+                    foreach (string s in dropList){
+                        if ( s != "" ){
+                            string t = s.Split('.')[0];
+                            string id = s.Split('.')[1];
+
+                            if ( id != "" ){
+                                Tier tier = Tier.common;
+                                if ( t == "r" ) tier = Tier.rare;
+                                else if ( t == "u" ) tier = Tier.unique;
+                                else if ( t == "l" ) tier = Tier.legendary;
+                                else if ( t == "g" ) tier = Tier.godly;
+
+                                e.drops.Add(new Drop(id,tier));
+                            }
+                        }
+                    }
+                    break;
+                    case "currency":
+                    e.currency = float.Parse(n2.InnerText);
                     break;
                     }
                 }

@@ -142,6 +142,10 @@ public class CharacterObject : MonoBehaviour {
     #endregion
     #region Private Methods
     private IEnumerator WaitForDestroy(){
+        if ( navAgent.enabled ) {
+            cc.enabled = false;
+            navAgent.enabled = false;
+        }
         yield return new WaitForSeconds(5f);
         Destroy(gameObject);
     }

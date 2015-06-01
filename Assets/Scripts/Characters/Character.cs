@@ -23,6 +23,9 @@ public class Character {
         currentStats.health -= h;
         currentStats.mana -= m;
 
+        if ( h > 0 ) characterObject.CreateText("-" + h,Color.red,1f);
+        else if ( m > 0 ) characterObject.CreateText("-" + m,Color.blue,1f);
+
         if ( currentStats.health < 1 ) currentStats.health = 1f;
     }
     public void Heal(float h, float m){
@@ -30,6 +33,9 @@ public class Character {
 
         currentStats.health += h;
         currentStats.mana += m;
+
+        if ( h > 0 ) characterObject.CreateText("+" + h,Color.green,1f);
+        else if ( m > 0 ) characterObject.CreateText("+" + m,Color.blue,1f);
 
         if ( currentStats.health > stats.health ) currentStats.health = stats.health;
         if ( currentStats.mana > stats.mana ) currentStats.mana = stats.mana;
@@ -93,18 +99,15 @@ public class Character {
         exp += x;
     }
     #endregion
-    #region Private Methods
-    private void CheckDeath(Character atker){
+    #region Protected Methods
+    protected  virtual void CheckDeath(Character atker){
         if ( currentStats.health < 1 ){
             currentStats.health = 0f;
-
-            if ( atker.IsPlayer ){
-                atker.AddExp(exp);
-            }
-
             Death();
         }
     }
+    #endregion
+    #region Private Methods
     private void Death(){
         characterObject.SetState(CharacterState.dying);
     }

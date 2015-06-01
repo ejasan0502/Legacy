@@ -108,13 +108,15 @@ public class GameData : MonoBehaviour {
 
                     string[] stats = n2.InnerText.Split(',');
                     foreach (string ss in stats){
-                        string statName = ss.Split('-')[0];
-                        string statValue = ss.Split('-')[1];
+                        if ( ss != "" ){
+                            string statName = ss.Split('-')[0];
+                            string statValue = ss.Split('-')[1];
 
-                        foreach (FieldInfo f in fields){
-                            if ( f.Name == statName ){
-                                f.SetValue(e.stats,float.Parse(statValue));
-                                break;
+                            foreach (FieldInfo f in fields){
+                                if ( f.Name == statName ){
+                                    f.SetValue(e.stats,float.Parse(statValue));
+                                    break;
+                                }
                             }
                         }
                     }
@@ -141,12 +143,14 @@ public class GameData : MonoBehaviour {
                     case "requirements":
                     FieldInfo[] reqFields = e.requirements.GetType().GetFields();
                     foreach (string s in n2.InnerText.Split(',')){
-                        string reqName = s.Split('-')[0];
-                        string reqValue = s.Split('-')[1];
+                        if ( s != "" ){
+                            string reqName = s.Split('-')[0];
+                            string reqValue = s.Split('-')[1];
 
-                        foreach (FieldInfo f in reqFields){
-                            if ( f.Name == reqName ){
-                                f.SetValue(e.requirements,float.Parse(reqValue));
+                            foreach (FieldInfo f in reqFields){
+                                if ( f.Name == reqName ){
+                                    f.SetValue(e.requirements,float.Parse(reqValue));
+                                }
                             }
                         }
                     }
@@ -155,13 +159,15 @@ public class GameData : MonoBehaviour {
                     FieldInfo[] bonusStatFields = e.stats.GetType().GetFields();
 
                     foreach (string ss in n2.InnerText.Split(',')){
-                        string bonusStatName = ss.Split('-')[0];
-                        string bonusStatValue = ss.Split('-')[1];
+                        if ( ss != "" ){
+                            string bonusStatName = ss.Split('-')[0];
+                            string bonusStatValue = ss.Split('-')[1];
 
-                        foreach (FieldInfo f in bonusStatFields){
-                            if ( f.Name == bonusStatName ){
-                                f.SetValue(e.stats,float.Parse(bonusStatValue));
-                                break;
+                            foreach (FieldInfo f in bonusStatFields){
+                                if ( f.Name == bonusStatName ){
+                                    f.SetValue(e.stats,float.Parse(bonusStatValue));
+                                    break;
+                                }
                             }
                         }
                     }
@@ -243,13 +249,15 @@ public class GameData : MonoBehaviour {
 
                     string[] stats = n2.InnerText.Split(',');
                     foreach (string ss in stats){
-                        string statName = ss.Split('-')[0];
-                        string statValue = ss.Split('-')[1];
+                        if ( ss != "" ){
+                            string statName = ss.Split('-')[0];
+                            string statValue = ss.Split('-')[1];
 
-                        foreach (FieldInfo f in fields){
-                            if ( f.Name == statName ){
-                                f.SetValue(e.stats,float.Parse(statValue));
-                                break;
+                            foreach (FieldInfo f in fields){
+                                if ( f.Name == statName ){
+                                    f.SetValue(e.stats,float.Parse(statValue));
+                                    break;
+                                }
                             }
                         }
                     }
@@ -320,13 +328,15 @@ public class GameData : MonoBehaviour {
 
                     string[] stats = n2.InnerText.Split(',');
                     foreach (string ss in stats){
-                        string statName = ss.Split('-')[0];
-                        string statValue = ss.Split('-')[1];
+                        if ( ss != "" ){
+                            string statName = ss.Split('-')[0];
+                            string statValue = ss.Split('-')[1];
 
-                        foreach (FieldInfo f in fields){
-                            if ( f.Name == statName ){
-                                f.SetValue(e.stats,float.Parse(statValue));
-                                break;
+                            foreach (FieldInfo f in fields){
+                                if ( f.Name == statName ){
+                                    f.SetValue(e.stats,float.Parse(statValue));
+                                    break;
+                                }
                             }
                         }
                     }
@@ -346,6 +356,9 @@ public class GameData : MonoBehaviour {
                     case "friendly":
                     if ( n2.InnerText == "true" ) e.friendly = true;
                     else e.friendly = false;
+                    break;
+                    case "cd":
+                    e.cd = float.Parse(n2.InnerText);
                     break;
                     }
                 }
@@ -461,6 +474,7 @@ public class GameData : MonoBehaviour {
             return GetAccessory(id);
         } 
 
+        Console.Error("GameData.cs - GetItem(string): Returned a null value. Id value = " + id);
         return null;
     }
 

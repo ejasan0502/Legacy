@@ -25,6 +25,7 @@ public class Game : MonoBehaviour {
     private static GameObject notificationPref;
     private bool gameDataLoaded = false;
     private static Game _instance = null;
+    private GameObject notification = null;
 
     #region Unity Methods
     void Awake(){
@@ -68,10 +69,17 @@ public class Game : MonoBehaviour {
         }
     }
     public static void Notification(string s, bool b){
+        Console.Log("Notification");
+        if ( GetInstance().notification != null ){
+            Destroy(GetInstance().notification);
+            GetInstance().notification = null;
+        }
         GameObject o = Instantiate(notificationPref) as GameObject;
         o.transform.GetComponent<DestroyWithDelay>().canTapDestroy = b;
         o.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = s;
         o.transform.localPosition = Vector3.zero;
+
+        GetInstance().notification = o;
     }
     public static void LoadScene(string s, bool b){
         if ( b ) LoadingScreen.Load(3f);

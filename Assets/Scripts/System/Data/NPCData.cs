@@ -68,6 +68,6 @@ public class NPCData : MonoBehaviour {
             if ( region == "tutorial" ) tutorial.Insert(index,e);
         }
 
-        Console.Log("Monsters Xml Data extracted.");
+        Console.Log("NPC Xml Data extracted.");
     }
 }

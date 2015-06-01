@@ -47,13 +47,10 @@ public class HotkeyManager : MonoBehaviour {
         Player p = Game.GetPlayer();
 
         if ( p.hotkeys[index] != null ){
-            float cdMax = 5f;
-            if ( p.hotkeys[index].IsSkill ) cdMax = p.hotkeys[index].GetAsSkillHotkey().GetSkill().cd;
-            
             Image img = transform.GetChild(index).GetChild(1).GetComponent<Image>();
             img.gameObject.SetActive(true);
             p.hotkeys[index].cdStartTime = Time.time;
-            while (Time.time - p.hotkeys[index].cdStartTime < cdMax){
+            while (Time.time - p.hotkeys[index].cdStartTime < p.hotkeys[index].GetCD()){
                 img.fillAmount = (p.hotkeys[index].GetCD()-(Time.time-p.hotkeys[index].cdStartTime))/p.hotkeys[index].GetCD();
                 yield return new WaitForSeconds(1f);
             }

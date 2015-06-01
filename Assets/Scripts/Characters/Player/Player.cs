@@ -59,7 +59,16 @@ public class Player : Character {
 
     #region Public Methods
     public void SetHotkey(int index, Hotkey h){
-        if ( index < hotkeys.Length ) {
+        if ( index >= 0 && index < hotkeys.Length ) {
+            for (int i = 0; i < hotkeys.Length; i++){
+                if ( hotkeys[i] != null && hotkeys[i].GetId() == h.GetId() ){
+                    HotkeyManager.instance.transform.GetChild(i).GetChild(0).GetComponent<Image>().sprite = null;
+                    if ( !hotkeys[i].IsSkill ) HotkeyManager.instance.transform.GetChild(i).GetChild(2).gameObject.SetActive(false);
+                    hotkeys[i] = null;
+                    break;
+                }
+            }
+
             hotkeys[index] = h;
             HotkeyManager.instance.transform.GetChild(index).GetChild(0).GetComponent<Image>().sprite = hotkeys[index].GetIcon();
             if ( !hotkeys[index].IsSkill ){
@@ -189,6 +198,8 @@ public class Player : Character {
 
         Console.Log("Gained " + (int)x + " exp.");
         Console.Log("Gained " + (int)x*0.125f + " class exp.");
+        
+        ((PlayerObject)characterObject).CreateText("+" + x + " exp \n+" + x*0.125f + " cxp",Color.yellow,1f);
 
         if ( exp >= maxExp ){
             LevelUp();
@@ -372,7 +383,7 @@ public class Player : Character {
         baseStats.physDef = (attributes.strength*0.165f)*level + (attributes.vitality*0.33f)*level;
         baseStats.magDef = (attributes.intelligence*0.165f)*level + (attributes.psyche*0.33f)*level;
         baseStats.critChance = ((attributes.dexterity*0.165f)*level + (attributes.agility*0.33f)*level)/100f;
-        baseStats.critDmg = ((attributes.intelligence*0.165f)*level + (attributes.agility*0.165f)*level)/100.0f;
+        baseStats.critDmg = 1f + ((attributes.intelligence*0.165f)*level + (attributes.agility*0.165f)*level)/100.0f;
         baseStats.accuracy = ((attributes.dexterity*0.165f)*level)/100.0f;
         baseStats.evasion = 1f - (attributes.agility*0.165f)*level;
 
@@ -380,18 +391,16 @@ public class Player : Character {
         baseStats.castSpd = 3f;
         baseStats.movSpd = 1f;
 
-        baseStats.dropRate = (attributes.luck*0.165f)*level;
-        baseStats.enhanceRate = (attributes.luck*0.165f)*level;
-        baseStats.enchantRate = (attributes.luck*0.165f)*level;
+        baseStats.dropRate = ((attributes.luck*0.165f)*level)/100f;
+        baseStats.enhanceRate = ((attributes.luck*0.165f)*level)/100f;
+        baseStats.enchantRate = ((attributes.luck*0.165f)*level)/100f;
 
         stats = new Stats(1f);
         currentStats = new Stats(stats);
     }
-
     public void CalculateSkillStats(){
 
     }
-
     public void CalculateEquipmentStats(){
         stats = new Stats(baseStats);
 
@@ -415,7 +424,6 @@ public class Player : Character {
             }
         }
     }
-
     public void CalculateBonusStats(){
         bonusStats = new Stats();
 
@@ -432,11 +440,13 @@ public class Player : Character {
             f[i].SetValue(stats,(float)f[i].GetValue(stats)*x);
         }
     }
-
     public void CalculateStats(){
         CalculateBaseStats();
         CalculateEquipmentStats();
         CalculateBonusStats();
+    }
+    public void CalculateLuckStats(){
+        
     }
     #endregion
     #region Data Methods

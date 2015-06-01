@@ -12,7 +12,7 @@ public class UsableHotkey : Hotkey {
     }
 
     public override bool CanApply(){
-        if ( Time.time - cdStartTime >= 5f ){
+        if ( Time.time - cdStartTime >= usable.cd ){
             return true;
         }
         return false;
@@ -39,11 +39,15 @@ public class UsableHotkey : Hotkey {
     }
 
     public override float GetCD(){
-        return 3f;
+        return usable.cd;
     }
 
     public override UsableHotkey GetAsUsableHotkey(){
         return this;
+    }
+
+    public override string GetId(){
+        return usable.id;
     }
 
 }

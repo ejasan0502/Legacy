@@ -43,4 +43,8 @@ public class SkillHotkey : Hotkey {
         return skill;
     }
 
+    public override string GetId(){
+        return skill.id;
+    }
+
 }

@@ -12,8 +12,9 @@
 		<icon>inventory/icons/usables/</icon>
 		<stats>health-15</stats>
 		<usableType>replenish</usableType>
-		<duration>0</duration>
+		<duration>15</duration>
 		<friendly>true</friendly>
+		<cd>15</cd>
 	</Usable>
 	<Usable>
 		<name>Mana Crystal</name>
@@ -27,8 +28,9 @@
 		<icon>inventory/icons/usables/</icon>
 		<stats>mana-15</stats>
 		<usableType>replenish</usableType>
-		<duration>0</duration>
+		<duration>15</duration>
 		<friendly>true</friendly>
+		<cd>15</cd>
 	</Usable>
 	<Usable>
 		<name>Health Potion</name>
@@ -43,8 +45,9 @@
 		<icon>inventory/icons/usables/</icon>
 		<stats>health-50</stats>
 		<usableType>potion</usableType>
-		<duration>15</duration>
+		<duration>0</duration>
 		<friendly>true</friendly>
+		<cd>10</cd>
 	</Usable>
 	<Usable>
 		<name>Mana Potion</name>
@@ -59,7 +62,8 @@
 		<icon>inventory/icons/usables/</icon>
 		<stats>mana-50</stats>
 		<usableType>potion</usableType>
-		<duration>15</duration>
+		<duration>0</duration>
 		<friendly>true</friendly>
+		<cd>10</cd>
 	</Usable>
 </Usables>

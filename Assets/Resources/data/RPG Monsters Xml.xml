@@ -10,7 +10,7 @@
 		<sightRange>8</sightRange>
 		<atkDistance>2</atkDistance>
 		<exp>4</exp>
-		<drops>m-0</drops>
+		<drops>c.m-0</drops>
 		<currency>5</currency>
 	</Monster>
 	<Monster>
@@ -23,7 +23,7 @@
 		<sightRange>8</sightRange>
 		<atkDistance>2</atkDistance>
 		<exp>6</exp>
-		<drops>m-0</drops>
+		<drops>c.m-0</drops>
 		<currency>10</currency>
 	</Monster>
 	<Monster>
@@ -36,7 +36,7 @@
 		<sightRange>10</sightRange>
 		<atkDistance>2</atkDistance>
 		<exp>8</exp>
-		<drops>m-0</drops>
+		<drops>c.m-0</drops>
 		<currency>15</currency>
 	</Monster>
 	<Monster>
@@ -49,7 +49,7 @@
 		<sightRange>15</sightRange>
 		<atkDistance>2</atkDistance>
 		<exp>10</exp>
-		<drops>m-0</drops>
+		<drops>c.m-0</drops>
 		<currency>20</currency>
 	</Monster>
 	<Monster>
@@ -62,7 +62,7 @@
 		<sightRange>20</sightRange>
 		<atkDistance>2</atkDistance>
 		<exp>20</exp>
-		<drops>m-0</drops>
+		<drops>c.m-0</drops>
 		<currency>25</currency>
 	</Monster>
 </Monsters>

@@ -83,12 +83,14 @@ public class SkillsData : MonoBehaviour {
 
                     string[] stats = n2.InnerText.Split(',');
                     foreach (string ss in stats){
-                        string statName = ss.Split('-')[0];
-                        string statValue = ss.Split('-')[1];
+                        if ( ss != "" ){
+                            string statName = ss.Split('-')[0];
+                            string statValue = ss.Split('-')[1];
 
-                        foreach (FieldInfo f in fields){
-                            if ( f.Name == statName ){
-                                f.SetValue(s.stats,float.Parse(statValue));
+                            foreach (FieldInfo f in fields){
+                                if ( f.Name == statName ){
+                                    f.SetValue(s.stats,float.Parse(statValue));
+                                }
                             }
                         }
                     }

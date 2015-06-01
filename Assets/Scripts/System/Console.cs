@@ -94,7 +94,7 @@ public class Console : MonoBehaviour {
             minimizedText.color = c;
             while (c.a > 0){
                 yield return new WaitForEndOfFrame();
-                c.a -= 0.005f;
+                c.a -= 0.001f;
                 minimizedText.color = c;
             }
         }

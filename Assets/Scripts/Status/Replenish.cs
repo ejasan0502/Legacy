@@ -24,7 +24,7 @@ public class Replenish : MonoBehaviour, Status {
 
             while (Time.time - startTime < duration && co.c.IsAlive){
                 yield return new WaitForSeconds(rate);
-                co.c.Heal(hp/duration,mp/duration);
+                co.c.Heal(hp/rate,mp/rate);
             }
 
             Destroy(this);

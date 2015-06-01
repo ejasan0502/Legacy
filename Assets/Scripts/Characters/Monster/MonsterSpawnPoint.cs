@@ -31,7 +31,12 @@ public class MonsterSpawnPoint : MonoBehaviour {
                 if ( monsterId == "" ) m = new Monster(monster);
                 else m = new Monster(Game.GetMonsterData().GetMonster(monsterId));
 
-                co = Game.CreateCharacter(m,monsterTag,transform.position);
+                Bounds b = GetComponent<BoxCollider>().bounds;
+                Vector3 pos = transform.position;
+                pos.x = Random.Range(b.min.x,b.max.x);
+                pos.z = Random.Range(b.min.z,b.max.z);
+
+                co = Game.CreateCharacter(m,monsterTag,pos);
                 monsters.Add(co);
             }
         }

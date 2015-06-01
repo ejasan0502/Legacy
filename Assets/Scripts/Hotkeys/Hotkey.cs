@@ -31,4 +31,8 @@ public class Hotkey {
         return null;
     }
 
+    public virtual string GetId(){
+        return "";
+    }
+
 }

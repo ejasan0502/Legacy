@@ -49,8 +49,10 @@ public class QuestData : MonoBehaviour {
                     case "questObjectives":
                     string[] questObjectivesList = n2.InnerText.Split('|');
                     foreach (string qo in questObjectivesList){
-                        string[] parts = qo.Split(',');
-                        e.questObjectives.Add(new QuestObjective(parts[0],parts[1],int.Parse(parts[2])));
+                        if ( qo != "" ){
+                            string[] parts = qo.Split(',');
+                            e.questObjectives.Add(new QuestObjective(parts[0],parts[1],int.Parse(parts[2])));
+                        }
                     }
                     break;
                     case "levelReq":
@@ -66,6 +68,6 @@ public class QuestData : MonoBehaviour {
             if ( region == "tutorial" ) tutorial.Insert(index,e);
         }
 
-        Console.Log("Monsters Xml Data extracted.");
+        Console.Log("Quest Xml Data extracted.");
     }
 }

@@ -8,8 +8,7 @@ public class Usable : Item {
     public UsableType usableType;
     public float duration;
     public bool friendly;
-
-    private float cd = 3f;
+    public float cd;
     private float cdStartTime = 0f;
 
     public Usable(){
@@ -27,6 +26,7 @@ public class Usable : Item {
         usableType = UsableType.replenish;
         duration = 0f;
         friendly = false;
+        cd = 0f;
         cdStartTime = Time.time;
     }
 
@@ -45,6 +45,7 @@ public class Usable : Item {
         usableType = u.usableType;
         duration = u.duration;
         friendly = u.friendly;
+        cd = 0f;
         cdStartTime = Time.time;
     }
 
