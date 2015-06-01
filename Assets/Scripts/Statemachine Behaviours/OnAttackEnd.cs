@@ -20,7 +20,8 @@ public class OnAttackEnd : StateMachineBehaviour {
         Character target = co.GetTarget();
 
         if ( target != null && target.IsAlive ){
-            if ( Random.Range(0,100) >= self.currentStats.accuracy - target.currentStats.evasion ){
+            float hit = self.currentStats.accuracy - target.currentStats.evasion;
+            if ( Random.Range(-100,100) <= hit ){
                 target.PhysicalHit(self);
             } else {
                 target.Miss(self);

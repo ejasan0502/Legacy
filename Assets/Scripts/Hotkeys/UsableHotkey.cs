@@ -20,12 +20,12 @@ public class UsableHotkey : Hotkey {
 
     public override void ApplyHotkey(Player p, int index){
         Character c = p;
+        InventoryItem ii = p.inventory.GetInventorySlot(usable);
 
-        if ( ((PlayerObject)p.characterObject).GetTarget() != null ){
+        if ( ((PlayerObject)p.characterObject).GetTarget() != null && !usable.friendly && !((PlayerObject)p.characterObject).GetTarget().IsPlayer ){
             c = ((PlayerObject)p.characterObject).GetTarget();
         }
 
-        InventoryItem ii = p.inventory.GetInventorySlot(usable);
         if ( ii.amount > 0 && usable.CanUse() ){
             usable.Use(c);
             ii.amount--;

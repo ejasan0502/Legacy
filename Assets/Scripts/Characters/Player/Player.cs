@@ -354,7 +354,7 @@ public class Player : Character {
         baseStats.critChance = ((attributes.dexterity*0.165f)*level + (attributes.agility*0.33f)*level)/100f;
         baseStats.critDmg = ((attributes.intelligence*0.165f)*level + (attributes.agility*0.165f)*level)/100.0f;
         baseStats.accuracy = ((attributes.dexterity*0.165f)*level)/100.0f;
-        baseStats.evasion = 3f - (attributes.agility*0.165f)*level;
+        baseStats.evasion = 1f - (attributes.agility*0.165f)*level;
 
         baseStats.atkSpd = 3f;
         baseStats.castSpd = 3f;

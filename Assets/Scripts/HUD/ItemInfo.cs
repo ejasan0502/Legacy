@@ -101,7 +101,7 @@ public class ItemInfo : MonoBehaviour {
         if ( p.inventory.currency >= item.cost * amtSlider.value ){
             p.inventory.currency -= item.cost * amtSlider.value;
             p.inventory.AddItem(item,(int)amtSlider.value);
-
+            canvas.GetComponent<NPCCanvas>().UpdateUnitsText();
             Game.Notification("Purchased", true);
         } else {
             Game.Notification("Not enough units...", true);

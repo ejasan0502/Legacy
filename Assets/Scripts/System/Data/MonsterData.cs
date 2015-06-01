@@ -44,7 +44,7 @@ public class MonsterData : MonoBehaviour {
                     break;
                     case "model":
                     e.model = Resources.Load(n2.InnerText+e.name,typeof(GameObject)) as GameObject;
-                    if ( e.model == null ) e.model = Resources.Load("monster/Default",typeof(GameObject)) as GameObject;
+                    if ( e.model == null ) e.model = Resources.Load("monsters/Default",typeof(GameObject)) as GameObject;
                     break;
                     case "stats":
                     FieldInfo[] fields = e.stats.GetType().GetFields();
@@ -89,6 +89,8 @@ public class MonsterData : MonoBehaviour {
                     }
                 }
             }
+
+            e.currentStats = new Stats(e.stats);
 
             // Add to lists
             string region = e.id.Split('-')[0];

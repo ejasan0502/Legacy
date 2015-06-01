@@ -7,4 +7,18 @@
 		<npcType>civillian</npcType>
 		<questList>tutorial-0</questList>
 	</NPC>
+	<NPC>
+		<name>Blacksmith</name>
+		<id>tutorial-1</id>
+		<model>npcs/tutorial/</model>
+		<npcType>blacksmith</npcType>
+		<buyList>w.1hs-0</buyList>
+	</NPC>
+	<NPC>
+		<name>Alchemist</name>
+		<id>tutorial-2</id>
+		<model>npcs/tutorial/</model>
+		<npcType>alchemist</npcType>
+		<buyList>u-0,u-1</buyList>
+	</NPC>
 </NPCs>

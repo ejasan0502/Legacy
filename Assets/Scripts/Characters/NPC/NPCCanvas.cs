@@ -184,4 +184,13 @@ public class NPCCanvas : MonoBehaviour {
         }
     }
     #endregion
+
+    public void UpdateUnitsText(){
+        Transform t = buyList.transform;
+        if ( sellList.activeSelf ){
+            t = sellList.transform;
+        }
+
+        t.GetChild(1).GetChild(0).GetComponent<Text>().text = Game.GetPlayer().inventory.currency+"u";
+    }
 }
