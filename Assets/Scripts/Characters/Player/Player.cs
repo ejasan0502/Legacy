@@ -58,6 +58,47 @@ public class Player : Character {
     }
 
     #region Public Methods
+    public void Resurrect(){
+        // Move player
+        if ( lastSafeZone != "" ){
+            GameObject safeZone = GameObject.Find(lastSafeZone);
+            if ( safeZone != null ){
+                characterObject.transform.position = safeZone.transform.position;
+            } else {
+                Console.Error("Player.cs - Resurrect(): Safe zone does not exist in scene. Safe Zone = " + lastSafeZone);
+            }
+        } else {
+            GameObject safeZone = GameObject.Find("Default Safe Zone");
+            if ( safeZone != null ){
+                characterObject.transform.position = safeZone.transform.position;
+            } else {
+                Console.Error("Player.cs - Resurrect(): Default safe zone cannot be found in scene.");
+            }
+        }
+
+        // Reset stats
+        currentStats = new Stats(stats);
+
+        // Reset Controls
+        PlayerObject po = characterObject as PlayerObject;
+        po.SetTarget(null);
+        po.SetState(CharacterState.idle);
+        po.SetControls(true);
+        po.StartStateMachine();
+        po.StopMovement();
+
+        // Reset animations
+        Animator anim = characterObject.GetComponent<Animator>();
+        anim.speed = 1f;
+        anim.SetBool("Attack",false);
+        anim.SetBool("Battle",false);
+        anim.SetBool("Move",false);
+        anim.SetBool("Death",false);
+        anim.SetBool("Reset",true);
+
+        // Reset HUD
+        HUD.instance.resurrectBtn.gameObject.SetActive(false);
+    }
     public void SetHotkey(int index, Hotkey h){
         if ( index >= 0 && index < hotkeys.Length ) {
             for (int i = 0; i < hotkeys.Length; i++){
@@ -181,7 +222,7 @@ public class Player : Character {
         playerInfoDisplay.SetPlayer(this);
     }
     #endregion
-    #region GetMethods
+    #region Get Methods
     public PlayerInfo GetPlayerInfo(){
         return playerInfoDisplay;
     }

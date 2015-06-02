@@ -9,8 +9,7 @@ public class Console : MonoBehaviour {
     public InputField minimizedInputField;
     public Text minimizedText;
     public RectTransform errorField;
-
-    public string[] commands;
+    public RectTransform debug;
 
 	private static object _lock = new object();
 	private static Console _instance;
@@ -36,6 +35,9 @@ public class Console : MonoBehaviour {
     private TouchScreenKeyboard keyboard;
     private float startTime = 0f;
     private float logTime = 1f;
+
+    private int systemLogCount = 0;
+    private string systemLogs = "";
     #endregion
 
 	void Awake(){
@@ -47,7 +49,6 @@ public class Console : MonoBehaviour {
 
 		DontDestroyOnLoad(this);
 	}
-
     void OnEnable(){
         Minimize();
     }
@@ -55,7 +56,6 @@ public class Console : MonoBehaviour {
     public void CloseErrorMessage(){
         errorField.gameObject.SetActive(false);
     }
-
     public void Submit(){
         if ( instance.minimizedText.gameObject.activeSelf ) Log(instance.minimizedInputField.text);
 
@@ -63,30 +63,30 @@ public class Console : MonoBehaviour {
 
         instance.minimizedInputField.text = "";
     }
-
     public void Minimize(){
         transform.GetChild(0).gameObject.SetActive(true);
     }
-
     public void SetDisplay(bool b){
         transform.GetChild(0).gameObject.SetActive(b);
     }
 
-    private void Command(string s){
-        foreach (string c in commands){
-            if ( s.Split(' ')[0] == c ){
-                Log("Command initialized...");
-                switch(c){
-                case "setunits":
-                Game.GetPlayer().inventory.currency = float.Parse(s.Split(' ')[1]);
-                break;
-                }
-
-                return;
-            }
+    private bool Command(string s){
+        switch(s){
+        case "setunits":
+        Game.GetPlayer().inventory.currency = float.Parse(s.Split(' ')[1]);
+        Log("Console.cs - Command(string): Player's units set to " + s.Split(' ')[1]);
+        return true;
+        case "show debug":
+        debug.gameObject.SetActive(true);
+        ((RectTransform)debug.GetChild(0).GetChild(0)).sizeDelta = new Vector2(((RectTransform)debug.GetChild(0).GetChild(0)).sizeDelta.x,systemLogCount*25f);
+        debug.GetChild(0).GetChild(0).GetComponent<Text>().text = systemLogs;
+        return true;
+        case "close debug":
+        debug.gameObject.SetActive(false);
+        return true;
         }
+        return false;
     }
-
     private IEnumerator Fade(){
         if ( minimizedText.gameObject.activeSelf ){
             Color c = minimizedText.color;
@@ -101,6 +101,10 @@ public class Console : MonoBehaviour {
     }
 
     #region Log Methods
+    public static void System(string s){
+        instance.systemLogs += "\n" + s;
+        instance.systemLogCount++;
+    }
     public static void Error(string s){
         Debug.Log(s);
 
@@ -108,21 +112,23 @@ public class Console : MonoBehaviour {
         instance.errorField.GetChild(0).GetComponent<Text>().text = s;
     }
 	public static void Log(string s){
-		Debug.Log(s);
+        if ( !instance.Command(s) ){
+		    Debug.Log(s);
 
-        instance.logsText += "\n" + s;
-        instance.logCount++;
+            instance.logsText += "\n" + s;
+            instance.logCount++;
 
-        if ( Time.time - instance.startTime < instance.logTime ){
-            instance.minimizedText.text += "\n" + s;
-        } else {
-            instance.minimizedText.text = s;
+            if ( Time.time - instance.startTime < instance.logTime ){
+                instance.minimizedText.text += "\n" + s;
+            } else {
+                instance.minimizedText.text = s;
+            }
+
+            instance.StopCoroutine("Fade");
+            instance.StartCoroutine("Fade");
+
+            instance.startTime = Time.time;
         }
-
-        instance.StopCoroutine("Fade");
-        instance.StartCoroutine("Fade");
-
-        instance.startTime = Time.time;
 	}
 	public static void Log(float x){
 		Log(x+"");

@@ -10,6 +10,7 @@ public class CharacterObject : MonoBehaviour {
     
     public bool canMove = true;
     public bool canCast = true;
+    [HideInInspector] public bool inSafeZone = false;
 
     public Character c;
     protected CharacterController cc;
@@ -91,10 +92,10 @@ public class CharacterObject : MonoBehaviour {
 
             if ( canMove ) {
                 navAgent.SetDestination(endPoint);
-                if ( Vector3.Distance(transform.position,endPoint) < 0.5f ){
-                    if ( anim.GetBool("Move") ) anim.SetBool("Move",false);
+                if ( navAgent.velocity != Vector3.zero ){
+                    if ( !anim.GetBool("Move") )  anim.SetBool("Move",true);
                 } else {
-                   if ( !anim.GetBool("Move") )  anim.SetBool("Move",true);
+                    if ( anim.GetBool("Move") ) anim.SetBool("Move",false);
                 }
             }
         }
@@ -108,6 +109,10 @@ public class CharacterObject : MonoBehaviour {
         if ( Time.time - recoveryTime >= recoveryRate ){
             c.currentStats.health += c.currentStats.hpRecov;
             c.currentStats.mana += c.currentStats.mpRecov;
+
+            if ( c.currentStats.health > c.stats.health ) c.currentStats.health = c.stats.health;
+            if ( c.currentStats.magDef > c.stats.mana ) c.currentStats.mana = c.stats.mana;
+
             recoveryTime = Time.time;
         }
     }

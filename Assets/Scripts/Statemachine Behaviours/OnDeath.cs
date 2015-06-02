@@ -15,6 +15,10 @@ public class OnDeath : StateMachineBehaviour {
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        if ( animator.GetComponent<CharacterObject>().c.IsPlayer ){
+            animator.SetBool("Reset",false);
+        }
+
         animator.GetComponent<CharacterObject>().OnDeath();
 	    animator.speed = 0;
 	}

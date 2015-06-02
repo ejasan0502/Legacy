@@ -26,7 +26,8 @@ public class PlayerObject : CharacterObject {
     #endregion
     #region Override Methods
     public override void OnDeath(){
-        
+        Console.System(name + ": OnDeath()");
+        HUD.instance.DisplayResurrectBtn();
     }
     #endregion
     #region Set Methods
@@ -43,6 +44,9 @@ public class PlayerObject : CharacterObject {
     }
     #endregion
     #region State Machine Methods
+    public void StartStateMachine(){
+        StartCoroutine("StateMachine");
+    }
     protected override void Idle(){
         if ( target != null ){
             anim.SetBool("Battle",true);
@@ -86,7 +90,6 @@ public class PlayerObject : CharacterObject {
             target = null;
         }
     }
-
     protected override void Dying(){
         if ( !anim.GetBool("Death") ) {
             anim.SetBool("Death",true);

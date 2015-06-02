@@ -16,8 +16,6 @@ public class Character {
     public CharacterObject characterObject;
     public List<Skill> skills = new List<Skill>();
 
-    protected Character killer = null;
-
     #region Public Methods
     public void Damage(float h, float m){
         currentStats.health -= h;
