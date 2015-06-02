@@ -14,15 +14,13 @@ public class EnemySight : MonoBehaviour {
 
             if ( Physics.Raycast(transform.parent.position, direction, out hit) ){
                 Character c = other.GetComponent<CharacterObject>().GetCharacter();
-                if ( hit.collider == other && transform.parent.tag != other.tag && c.IsAlive ){
+                if ( hit.collider == other && transform.parent.tag != other.tag && c.IsAlive && !c.characterObject.inSafeZone ){
                     target = c;
                     targetInSight = true;
                 }
             } 
         } else {
-            if ( target.IsAlive ){
-                
-            } else {
+            if ( !target.IsAlive || target.characterObject.inSafeZone ){
                 target = null;
                 targetInSight = false;
             }

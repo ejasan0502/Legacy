@@ -9,11 +9,11 @@ public class FPS : MonoBehaviour {
     private float accum   = 0; 
     private int   frames  = 0; 
     private float timeleft;
-    private new Text guiText;
+    private Text text;
  
     void Awake(){
         timeleft = updateInterval;  
-        guiText = GetComponent<Text>();
+        text = GetComponent<Text>();
     }
  
     void Update(){
@@ -24,15 +24,15 @@ public class FPS : MonoBehaviour {
         if( timeleft <= 0.0 ){
 	        float fps = accum/frames;
 	        string format = System.String.Format("{0:F2} FPS",fps);
-	        guiText.text = format;
+	        text.text = format;
  
 	        if(fps < 30)
-		        guiText.color = Color.yellow;
+		        text.color = Color.yellow;
 	        else 
 		        if(fps < 10)
-			        guiText.color = Color.red;
+			        text.color = Color.red;
 		        else
-			        guiText.color = Color.green;
+			        text.color = Color.green;
 
             timeleft = updateInterval;
             accum = 0.0F;
