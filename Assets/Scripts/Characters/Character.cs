@@ -16,6 +16,8 @@ public class Character {
     public CharacterObject characterObject;
     public List<Skill> skills = new List<Skill>();
 
+    protected Skill casting = null;
+
     #region Public Methods
     public void Damage(float h, float m){
         currentStats.health -= h;
@@ -41,8 +43,7 @@ public class Character {
     public virtual void Miss(Character atker){
         characterObject.CreateText("Miss",Color.yellow,1f);
     }
-    public virtual void PhysicalHit(Character atker){
-        float rawDmg = Random.Range(atker.currentStats.meleeMinDmg,atker.currentStats.meleeMaxDmg);
+    public virtual void PhysicalHit(Character atker, float rawDmg){
         float dmg = rawDmg - currentStats.physDef;
         if ( dmg < 1 ) dmg = 1f;
 
@@ -67,8 +68,7 @@ public class Character {
 
         CheckDeath(atker);
     }
-    public virtual void MagicalHit(Character atker, float percent){
-        float rawDmg = percent*Random.Range(atker.currentStats.magicMinDmg,atker.currentStats.magicMaxDmg);
+    public virtual void MagicalHit(Character atker, float rawDmg){
         float dmg = rawDmg - currentStats.magDef;
         if ( dmg < 1 ) dmg = 1f;
 
@@ -136,10 +136,18 @@ public class Character {
         }
         return null;
     }
+    public Skill GetCastSkill(){
+        return casting;
+    }
     #endregion
     #region Set Methods
     public void SetCharacterObject(CharacterObject o){
         characterObject = o;
+    }
+    public void SetCastSkill(Skill s){
+        Console.System("Character.cs - SetCastSkill(Skill)");
+        casting = s;
+        if ( casting != null ) characterObject.SetState(CharacterState.casting);
     }
     #endregion
 }

@@ -32,6 +32,8 @@ public class PlayerObject : CharacterObject {
     #endregion
     #region Set Methods
     public void SetTarget(Character c){
+        if ( c != null ) Console.System("PlayerObject.cs - SetTarget(Character): " + name + " is targetting " + c.name);
+        else Console.System("PlayerObject.cs - SetTarget(Character): " + name + " does not have a target");
         target = c;
     }
     #endregion
@@ -94,6 +96,24 @@ public class PlayerObject : CharacterObject {
         if ( !anim.GetBool("Death") ) {
             anim.SetBool("Death",true);
             controls.enabled = false;
+        }
+    }
+    protected override void Casting(){
+        if ( c.GetCastSkill() != null && target != null && target.IsAlive ){
+            if ( navAgent.velocity != Vector3.zero ){
+                anim.SetBool("Cast",false);
+                SetState(CharacterState.idle);
+                SetTarget(null);
+                c.SetCastSkill(null);
+            }
+
+            if ( !anim.GetBool("Cast") ){
+                anim.SetBool("Cast",true);
+                StopMovement();
+            }
+        } else {
+            anim.SetBool("Cast",false);
+            SetState(CharacterState.battling);
         }
     }
     #endregion

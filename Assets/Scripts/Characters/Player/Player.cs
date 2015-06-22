@@ -215,6 +215,12 @@ public class Player : Character {
             MenusWindow.instance.characterWindow.UpdateDisplay();
         }
     }
+    public void AddSkill(Skill s){
+        if ( !HasSkill(s.id) ) {
+            if ( s.skillType == SkillType.singleTarget ) skills.Add(new SingleTargetSkill(s));
+            Game.Notification("Learned " + s.name,true);
+        }
+    }
     #endregion
     #region Set Methods
     public void SetPlayerInfo(PlayerInfo pi){
@@ -225,11 +231,6 @@ public class Player : Character {
     #region Get Methods
     public PlayerInfo GetPlayerInfo(){
         return playerInfoDisplay;
-    }
-    #endregion
-    #region Skills Methods
-    public void AddSkill(Skill s){
-        if ( !HasSkill(s.id) ) skills.Add(new Skill(s));
     }
     #endregion
     #region Experience Methods
@@ -319,8 +320,8 @@ public class Player : Character {
             po.SetTarget(atker);
         }
     }
-    public override void PhysicalHit(Character atker){
-        base.PhysicalHit(atker);
+    public override void PhysicalHit(Character atker, float rawDmg){
+        base.PhysicalHit(atker,rawDmg);
 
         PlayerObject po = characterObject as PlayerObject;
         if ( po.GetTarget() == null ){

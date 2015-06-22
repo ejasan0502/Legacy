@@ -22,7 +22,7 @@ public class OnAttackEnd : StateMachineBehaviour {
         if ( target != null && target.IsAlive ){
             float hit = self.currentStats.accuracy - target.currentStats.evasion;
             if ( Random.Range(-100,100) <= hit ){
-                target.PhysicalHit(self);
+                target.PhysicalHit(self,Random.Range(self.currentStats.meleeMinDmg,self.currentStats.meleeMaxDmg));
             } else {
                 target.Miss(self);
             }

@@ -17,8 +17,11 @@ public class SkillHotkey : Hotkey {
     }
 
     public override void ApplyHotkey(Player p, int index){
-        skill.Cast(p);
-        HotkeyManager.instance.UpdateHotkeyDisplay(index);
+        Console.System("SkillHotkey.cs - ApplyHotkey(Player,int)");
+        if ( skill.CanCast(p) ){
+            //skill.Cast(p);
+            HotkeyManager.instance.UpdateHotkeyDisplay(index);
+        }
     }
 
     public override Sprite GetIcon(){

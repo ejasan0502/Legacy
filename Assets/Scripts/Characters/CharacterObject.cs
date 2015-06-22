@@ -40,6 +40,7 @@ public class CharacterObject : MonoBehaviour {
         recoveryRate = x;
     }
     public void SetState(CharacterState cs){
+        Console.Log("CharacterObject.cs - SetState(CharacterState): " + name + "'s state set to " + cs.ToString());
         state = cs;
     }
     public void SetCharacter(Character character){
@@ -52,7 +53,6 @@ public class CharacterObject : MonoBehaviour {
         characterInfo = o;
         characterInfo.SetActive(false);
     }
-
     public void SetMovement(bool b){
         canMove = b;
         if ( !canMove ) 
@@ -60,6 +60,10 @@ public class CharacterObject : MonoBehaviour {
     }
     #endregion
     #region Get Methods
+    public bool IsFriendly(CharacterObject co){
+        if ( co.tag == tag ) return true;
+        return false;
+    }
     public Character GetCharacter(){
         return c;
     }
@@ -114,17 +118,6 @@ public class CharacterObject : MonoBehaviour {
             if ( c.currentStats.magDef > c.stats.mana ) c.currentStats.mana = c.stats.mana;
 
             recoveryTime = Time.time;
-        }
-    }
-    public void Cast(string id){
-        if ( canCast ){
-            if ( c.HasSkill(id) ){
-                
-            } else {
-                Console.Log(c.name + " does not have the skill id, " + id);
-            }
-        } else {
-            Console.Log(c.name + " cannot cast at this time");
         }
     }
     #endregion

@@ -43,8 +43,10 @@ public class SkillsData : MonoBehaviour {
 
         foreach (XmlNode n1 in root.ChildNodes){
             Skill s = new Skill();
+
             foreach (XmlNode n2 in n1.ChildNodes){
                 if ( n2.InnerText != "" ){
+                    #region Default Variables
                     switch (n2.Name){
                     case "name":
                     s.name = n2.InnerText;
@@ -63,17 +65,24 @@ public class SkillsData : MonoBehaviour {
                     s.description = n2.InnerText;
                     break;
                     case "skillType":
+                    Skill temp = null;
                     if ( n2.InnerText == "buff" ){
                         s.skillType = SkillType.buff;
+                        temp = new BuffSkill(s);
                     } else if ( n2.InnerText == "passive" ){
                         s.skillType = SkillType.passive;
+                        temp = new PassiveSkill(s);
                     } else if ( n2.InnerText == "singleTarget" ){
                         s.skillType = SkillType.singleTarget;
+                        temp = new SingleTargetSkill(s);
                     } else if ( n2.InnerText == "aoe" ){
                         s.skillType = SkillType.aoe;
+                        temp = new AoeSkill(s);
                     } else if ( n2.InnerText == "summon" ){
                         s.skillType = SkillType.summon;
+                        temp = new SummonSkill(s);
                     }
+                    s = temp;
                     break;
                     case "cd":
                     s.cd = float.Parse(n2.InnerText);
@@ -101,13 +110,42 @@ public class SkillsData : MonoBehaviour {
                         s.reqs.Add(ss);
                     }
                     break;
+                    #endregion
+                    #region SingleTargetSkill Variables
+                    case "instant":
+                    if ( n2.InnerText == "true" ) {
+                        if ( s.skillType == SkillType.singleTarget ) ((SingleTargetSkill)s).instant = true;
+                    } else {
+                        if ( s.skillType == SkillType.singleTarget ) ((SingleTargetSkill)s).instant = false;
+                    }
+                    break;
+                    case "friendly":
+                    if ( n2.InnerText == "true" ) {
+                        if ( s.skillType == SkillType.singleTarget ) ((SingleTargetSkill)s).friendly = true;
+                    } else {
+                        if ( s.skillType == SkillType.singleTarget ) ((SingleTargetSkill)s).friendly = false;
+                    }
+                    break;
+                    case "atkType":
+                    if ( s.skillType == SkillType.singleTarget ) ((SingleTargetSkill)s).atkType = n2.InnerText;
+                    break;
+                    case "castDelay":
+                    if ( s.skillType == SkillType.singleTarget ) ((SingleTargetSkill)s).castDelay = float.Parse(n2.InnerText);
+                    break;
+                    #endregion
                     }
                 }
             }
 
+            #region Add to lists
             if ( s.id.Split('-')[0] == "novice" ){
-                novice.Add(s);
+                if ( s.skillType == SkillType.singleTarget ) novice.Add(s as SingleTargetSkill);
+                else if ( s.skillType == SkillType.aoe ) novice.Add(s as AoeSkill);
+                else if ( s.skillType == SkillType.passive ) novice.Add(s as PassiveSkill);
+                else if ( s.skillType == SkillType.summon ) novice.Add(s as SummonSkill);
+                else if ( s.skillType == SkillType.buff ) novice.Add(s as BuffSkill);
             }
+            #endregion
         }
 
         Console.Log("Skills Xml Data extracted");

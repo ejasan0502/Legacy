@@ -48,7 +48,11 @@
 		<description>Deals {X}% of damage to a target.</description>
 		<skillType>singleTarget</skillType>
 		<cd>3</cd>
-		<stats>meleeMinDmg-120,meleeMaxDmg-120,rangeMinDmg-120,rangeMaxDmg-120,magMinDmg-120,magMaxDmg-120</stats>
+		<stats>meleeMinDmg-1.2,meleeMaxDmg-1.2,rangeMinDmg-1.2,rangeMaxDmg-1.2,magMinDmg-1.2,magMaxDmg-1.2</stats>
+		<instant>true</instant>
+		<friendly>false</friendly>
+		<atkType>physical</atkType>
+		<castDelay>0</castDelay>
 	</Skill>
 	<Skill>
 		<name>Shockwave</name>
@@ -58,7 +62,7 @@
 		<description>Deals {X}% of damage around the player.</description>
 		<skillType>aoe</skillType>
 		<cd>8</cd>
-		<stats>meleeMinDmg-200,meleeMaxDmg-200,rangeMinDmg-200,rangeMaxDmg-200,magMinDmg-200,magMaxDmg-200</stats>
+		<stats>meleeMinDmg-2,meleeMaxDmg-2,rangeMinDmg-2,rangeMaxDmg-2,magMinDmg-2,magMaxDmg-2</stats>
 		<reqs>novice-4</reqs>
 	</Skill>
 	<Skill>
