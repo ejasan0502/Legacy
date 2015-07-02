@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class MonsterObject : CharacterObject {
 
+    public bool isDummy = false;
     public float moveDelay = 5f;
     public float wanderDistance = 10f;
     public List<Transform> nodes = new List<Transform>();
@@ -15,23 +16,25 @@ public class MonsterObject : CharacterObject {
     private float waitTime;
 
     void Start(){
-        GameObject o = new GameObject("Enemy Sight");
-        o.layer = LayerMask.NameToLayer("Ignore Raycast");
-        o.transform.SetParent(transform);
-        o.transform.position = transform.position;
+        if ( !isDummy ) {
+            GameObject o = new GameObject("Enemy Sight");
+            o.layer = LayerMask.NameToLayer("Ignore Raycast");
+            o.transform.SetParent(transform);
+            o.transform.position = transform.position;
 
-        SphereCollider sc = o.AddComponent<SphereCollider>();
-        sc.isTrigger = true;
-        sc.radius = ((Monster)c).sightRange;    
-        wanderDistance = sc.radius;
-        enemySight = o.AddComponent<EnemySight>();
+            SphereCollider sc = o.AddComponent<SphereCollider>();
+            sc.isTrigger = true;
+            sc.radius = ((Monster)c).sightRange;    
+            wanderDistance = sc.radius;
+            enemySight = o.AddComponent<EnemySight>();
 
-        navAgent.speed = c.currentStats.movSpd;
-        startPos = transform.position;
+            navAgent.speed = c.currentStats.movSpd;
+            startPos = transform.position;
 
-        SetEndPoint(startPos);
+            SetEndPoint(startPos);
 
-        StartCoroutine("StateMachine");
+            StartCoroutine("StateMachine");
+        }
     }
 
     protected override void Idle(){

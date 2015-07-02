@@ -47,6 +47,8 @@ public class Monster : Character {
 
     #region Override Methods
     protected override void CheckDeath(Character atker){
+        if ( ((MonsterObject)characterObject).isDummy ) return;
+        
         base.CheckDeath(atker);
 
         if ( atker.IsPlayer && currentStats.health < 1 ){

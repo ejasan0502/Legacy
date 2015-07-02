@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ccab854d037c24d49b28dcdc350ddab2
+guid: bdac34864defba74aa65a4dd0e71ece2
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
@@ -335,8 +335,8 @@ ModelImporter:
     - serializedVersion: 16
       name: IdleRHandPunch
       takeName: IdleRHandPunch
-      firstFrame: 0
-      lastFrame: 20
+      firstFrame: -1
+      lastFrame: 39
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
