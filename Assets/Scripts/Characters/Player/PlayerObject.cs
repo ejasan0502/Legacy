@@ -13,6 +13,7 @@ public class PlayerObject : CharacterObject {
         DontDestroyOnLoad(this);
 
         controls = GetComponent<InputControls>();
+        anim.runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load("animators/Default Animator");
     }
     
     void Start(){

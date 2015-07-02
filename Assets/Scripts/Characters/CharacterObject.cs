@@ -40,7 +40,7 @@ public class CharacterObject : MonoBehaviour {
         recoveryRate = x;
     }
     public void SetState(CharacterState cs){
-        Console.Log("CharacterObject.cs - SetState(CharacterState): " + name + "'s state set to " + cs.ToString());
+        Console.System("CharacterObject.cs - SetState(CharacterState): " + name + "'s state set to " + cs.ToString());
         state = cs;
     }
     public void SetCharacter(Character character){

@@ -192,7 +192,7 @@ public class GameData : MonoBehaviour {
             }
         }
 
-        Console.Log("Equips Xml Data extracted.");
+        Console.System("Equips Xml Data extracted.");
     }
     public void ExtractItemsXmlData(){
         XmlDocument xmlDoc = new XmlDocument();
@@ -271,7 +271,7 @@ public class GameData : MonoBehaviour {
             materials.Insert(index,e);
         }
 
-        Console.Log("Items Xml Data extracted.");
+        Console.System("Items Xml Data extracted.");
     }
     public void ExtractUsablesXmlData(){
         XmlDocument xmlDoc = new XmlDocument();
@@ -369,7 +369,7 @@ public class GameData : MonoBehaviour {
             usables.Insert(index,e);
         }
 
-        Console.Log("Usables Xml Data extracted.");
+        Console.System("Usables Xml Data extracted.");
     }
     #endregion
     #region Add Methods
@@ -601,7 +601,6 @@ public class GameData : MonoBehaviour {
     }
 
     public Item GetMaterial(string id){
-        Debug.Log(id);
         int index = int.Parse(id.Split('-')[1]);
         
         if ( index < materials.Count )

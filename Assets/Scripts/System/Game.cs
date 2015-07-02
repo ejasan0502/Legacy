@@ -69,7 +69,7 @@ public class Game : MonoBehaviour {
         }
     }
     public static void Notification(string s, bool b){
-        Console.Log("Notification");
+        Console.System("Notification: " + s);
         if ( GetInstance().notification != null ){
             Destroy(GetInstance().notification);
             GetInstance().notification = null;
@@ -186,7 +186,7 @@ public class Game : MonoBehaviour {
 
         GetInstance().player.SetPlayerInfo(GameObject.FindObjectOfType<PlayerInfo>());
 
-        Console.Log("Player has been set");
+        Console.System("Player has been set");
     }
     #endregion
 }

@@ -124,7 +124,7 @@ public class MonsterData : MonoBehaviour {
             if ( region == "tutorial" ) tutorial.Insert(index,e);
         }
 
-        Console.Log("Monsters Xml Data extracted.");
+        Console.System("Monsters Xml Data extracted.");
     }
 
     public Monster GetMonster(string id){

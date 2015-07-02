@@ -148,6 +148,6 @@ public class SkillsData : MonoBehaviour {
             #endregion
         }
 
-        Console.Log("Skills Xml Data extracted");
+        Console.System("Skills Xml Data extracted");
     }
 }

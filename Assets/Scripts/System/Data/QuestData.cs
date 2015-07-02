@@ -68,6 +68,6 @@ public class QuestData : MonoBehaviour {
             if ( region == "tutorial" ) tutorial.Insert(index,e);
         }
 
-        Console.Log("Quest Xml Data extracted.");
+        Console.System("Quest Xml Data extracted.");
     }
 }

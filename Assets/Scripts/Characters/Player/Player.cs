@@ -173,11 +173,13 @@ public class Player : Character {
                     // Set Animations
                     Animator anim = characterObject.GetComponent<Animator>();
                     if ( e.id.Contains(".1h") ){
-                        anim.SetInteger("Attack Position",1);
+                        anim.runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load("animators/1h Sword Animator");
                     } else if ( e.id.Contains(".2h") ){
-                        anim.SetInteger("Attack Position",2);
+                        anim.runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load("animators/2h Sword Animator");
                     } else if ( e.id.Contains(".b-") ){
-                        anim.SetInteger("Attack Position",3);
+                        anim.runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load("animators/Bow Animator");
+                    } else {
+                        anim.runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load("animators/Default Animator");
                     }
                 }
 
@@ -204,7 +206,7 @@ public class Player : Character {
 
                 // Set Animations
                 Animator anim = characterObject.GetComponent<Animator>();
-                anim.SetInteger("Attack Position",0);
+                anim.runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load("animators/Default Animator");
             }
 
             if ( equipment[index].id != "" ) inventory.AddItem(equipment[index]);
