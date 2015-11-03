@@ -17,7 +17,7 @@ public class ChatWindow : MonoBehaviour {
     private SmartFox smartfox;
 
     void Start(){
-        playerName = "Player " + Random.Range(0,5);//GameObject.FindGameObjectWithTag("Player").name;
+        playerName = "Player " + GameObject.FindGameObjectWithTag("Player").name;
         smartfox = NetworkManager.GetConnection();
 
         smartfox.AddEventListener(SFSEvent.PUBLIC_MESSAGE,OnPublicMessage);
