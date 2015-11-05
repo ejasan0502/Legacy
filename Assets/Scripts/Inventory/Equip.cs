@@ -1,12 +1,37 @@
 ﻿using UnityEngine;
+using System.Reflection;
 using System.Collections;
 
+[System.Serializable]
 public class Equip : Item {
 
     public int level;
     public Stats stats;
     public Stats bonusStats;
     public Traits bonusTraits;
+    public EquipType equipType;
+
+    public Equip(){
+        name = "";
+        id = "";
+        description = "";
+        icon = null;
+        stackable = false;
+        weight = 0f;   
+
+        level = 0;
+        stats = new Stats();
+        bonusStats = new Stats();
+        bonusTraits = new Traits();
+        equipType = 0;
+    }
+    public Equip(Equip equip){
+        FieldInfo[] fields = GetType().GetFields();
+        FieldInfo[] itemFields = equip.GetType().GetFields();
+        for (int i = 0; i < fields.Length; i++){
+            fields[i].SetValue(this,itemFields[i].GetValue(equip));
+        }
+    }
 
     public override Equip GetAsEquip(){
         return this;

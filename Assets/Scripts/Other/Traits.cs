@@ -15,7 +15,7 @@ public class Traits {
     public Traits(){
         FieldInfo[] fields = GetType().GetFields();
         for (int i = 0; i < fields.Length; i++){
-            fields[i].SetValue(this,0f);
+            fields[i].SetValue(this,0);
         }
     }
 
@@ -24,6 +24,14 @@ public class Traits {
         FieldInfo[] fields2 = s.GetType().GetFields();
         for (int i = 0; i < fields.Length; i++){
             fields[i].SetValue(this,fields2[i].GetValue(s));
+        }
+    }
+
+    public void Set(string fieldName, float val){
+        foreach (FieldInfo fields in GetType().GetFields()){
+            if ( fields.Name.ToLower() == fieldName.ToLower() ){
+                fields.SetValue(this,val);
+            }
         }
     }
 

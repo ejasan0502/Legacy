@@ -45,6 +45,14 @@ public class Stats {
         }
     }
 
+    public void Set(string fieldName, float val){
+        foreach (FieldInfo fields in GetType().GetFields()){
+            if ( fields.Name.ToLower() == fieldName.ToLower() ){
+                fields.SetValue(this,val);
+            }
+        }
+    }
+
     #region Operators
     public static Stats operator+(Stats s1, Stats s2){
         Stats s = new Stats();

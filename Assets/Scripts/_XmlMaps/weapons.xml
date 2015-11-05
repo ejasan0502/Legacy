@@ -1,0 +1,32 @@
+<Weapons>
+	<Weapon>
+		<Name></Name>
+		<ID></ID>
+		<Level></Level>
+		<Stats></Stats>
+		<Weight></Weight>
+		<Type></Type>
+		<Description></Description>
+		<Icon></Icon>
+	</Weapon>
+	<Weapon>
+		<Name></Name>
+		<ID></ID>
+		<Level></Level>
+		<Stats></Stats>
+		<Weight></Weight>
+		<Type></Type>
+		<Description></Description>
+		<Icon></Icon>
+	</Weapon>
+	<Weapon>
+		<Name></Name>
+		<ID></ID>
+		<Level></Level>
+		<Stats></Stats>
+		<Weight></Weight>
+		<Type></Type>
+		<Description></Description>
+		<Icon></Icon>
+	</Weapon>
+</Weapons>

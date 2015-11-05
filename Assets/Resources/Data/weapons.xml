@@ -1,0 +1,178 @@
+<Weapons>
+	<Weapon>
+		<Name>Sword</Name>
+		<ID>sword-0</ID>
+		<Level>1</Level>
+		<Stats>baseDmg-3</Stats>
+		<Weight>3</Weight>
+		<Type>sword</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Shield</Name>
+		<ID>shield-0</ID>
+		<Level>1</Level>
+		<Stats>baseDmg-2,baseDef-5</Stats>
+		<Weight>5</Weight>
+		<Type>shield</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Staff</Name>
+		<ID>staff-0</ID>
+		<Level>1</Level>
+		<Stats>baseDmg-8</Stats>
+		<Weight>5</Weight>
+		<Type>staff</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Wand</Name>
+		<ID>wand-0</ID>
+		<Level>1</Level>
+		<Stats>baseDmg-5</Stats>
+		<Weight>4</Weight>
+		<Type>wand</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Copper Sword</Name>
+		<ID>sword-1</ID>
+		<Level>5</Level>
+		<Type>sword</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Copper Shield</Name>
+		<ID>shield-1</ID>
+		<Level>5</Level>
+		<Type>shield</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Birch Staff</Name>
+		<ID>staff-1</ID>
+		<Level>5</Level>
+		<Type>staff</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Clover Wand</Name>
+		<ID>wand-1</ID>
+		<Level>5</Level>
+		<Type>wand</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Iron Sword</Name>
+		<ID>sword-2</ID>
+		<Level>10</Level>
+		<Type>sword</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Kite Shield</Name>
+		<ID>shield-2</ID>
+		<Level>10</Level>
+		<Type>shield</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Beechwood Staff</Name>
+		<ID>staff-2</ID>
+		<Level>10</Level>
+		<Type>staff</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Boreal Wand</Name>
+		<ID>wand-2</ID>
+		<Level>10</Level>
+		<Type>wand</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Steel Sword</Name>
+		<ID>sword-3</ID>
+		<Level>15</Level>
+		<Type>sword</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Steel Shield</Name>
+		<ID>shield-3</ID>
+		<Level>15</Level>
+		<Type>shield</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Ash Staff</Name>
+		<ID>staff-3</ID>
+		<Level>15</Level>
+		<Type>staff</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Crescent Wand</Name>
+		<ID>wand-3</ID>
+		<Level>15</Level>
+		<Type>wand</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Damascus Steel Sword</Name>
+		<ID>sword-4</ID>
+		<Level>20</Level>
+		<Type>sword</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Damascus Steel Shield</Name>
+		<ID>shield-4</ID>
+		<Level>20</Level>
+		<Type>shield</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Oak Staff</Name>
+		<ID>staff-4</ID>
+		<Level>20</Level>
+		<Type>staff</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Oaken Rod</Name>
+		<ID>wand-4</ID>
+		<Level>20</Level>
+		<Type>wand</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Possessed Sword</Name>
+		<ID>sword-5</ID>
+		<Level>30</Level>
+		<Type>sword</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Possessed Shield</Name>
+		<ID>shield-5</ID>
+		<Level>30</Level>
+		<Type>shield</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Maple Staff</Name>
+		<ID>staff-5</ID>
+		<Level>30</Level>
+		<Type>staff</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Twilight Wand</Name>
+		<ID>wand-5</ID>
+		<Level>30</Level>
+		<Type>wand</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Dark Steel Sword</Name>
+		<ID>sword-6</ID>
+		<Level>40</Level>
+		<Type>sword</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Dark Steel Shield</Name>
+		<ID>shield-6</ID>
+		<Level>40</Level>
+		<Type>shield</Type>
+	</Weapon>
+	<Weapon>
+		<Name>Purpleheart Staff</Name>
+		<ID>staff-6</ID>
+		<Level>40</Level>
+		<Type>staff</Type>
+	</Weapon>
+	<Weapon>
+		<Name>White Wand</Name>
+		<ID>wand-6</ID>
+		<Level>40</Level>
+		<Type>wand</Type>
+	</Weapon>
+</Weapons>
