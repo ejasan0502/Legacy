@@ -4,13 +4,9 @@ using System.Collections;
 
 [System.Serializable]
 public class Traits {
-    public int strength;
-    public int vitality;
-    public int dexterity;
-    public int agility;
-    public int intelligence;
-    public int psyche;
-    public int luck;
+    public int pwr;
+    public int frt;
+    public int con;
 
     public Traits(){
         FieldInfo[] fields = GetType().GetFields();
@@ -18,7 +14,12 @@ public class Traits {
             fields[i].SetValue(this,0);
         }
     }
-
+    public Traits(int x){
+        FieldInfo[] fields = GetType().GetFields();
+        for (int i = 0; i < fields.Length; i++){
+            fields[i].SetValue(this,x);
+        }
+    }
     public Traits(Traits s){
         FieldInfo[] fields = GetType().GetFields();
         FieldInfo[] fields2 = s.GetType().GetFields();
@@ -32,6 +33,13 @@ public class Traits {
             if ( fields.Name.ToLower() == fieldName.ToLower() ){
                 fields.SetValue(this,val);
             }
+        }
+    }
+    public void MustBePositive(){
+        FieldInfo[] fields = GetType().GetFields();
+        for (int i = 0; i < fields.Length; i++){
+            if ( (int)fields[i].GetValue(this) < 0 )
+                fields[i].SetValue(this, 0);
         }
     }
 

@@ -4,32 +4,26 @@ using System.Reflection;
 
 [System.Serializable]
 public class Stats {
-    public float health;
-    public float mana;
-    public float hpRecov;
-    public float mpRecov;
+    public float baseDmg;
+    public float critDmgMultiplier;
+    public float skillDmgMultiplier;
 
-    public float physMinDmg;
-    public float physMaxDmg;
-    public float magMinDmg;
-    public float magMaxDmg;
+    public float baseDef;
+    public float critDefMultiplier;
+    public float skillDefMultiplier;
 
-    public float physDef;
-    public float magDef;
+    public float hp;
+    public float mp;
+    public float recov;
 
     public float critChance;
-    public float critDmg;
+    public float blockRate;
+    public float defPen;
+    public float resist;
+    public float luck;
     
-    public float evasion;
-    public float accuracy;
-
-    public float atkSpd;
-    public float castSpd;
     public float movSpd;
-
-    public float enhanceRate;
-    public float enchantRate;
-    public float dropRate;
+    public float maxWeight;
 
     public Stats(){
         FieldInfo[] fields = GetType().GetFields();
@@ -50,6 +44,13 @@ public class Stats {
             if ( fields.Name.ToLower() == fieldName.ToLower() ){
                 fields.SetValue(this,val);
             }
+        }
+    }
+    public void MustBePositive(){
+        FieldInfo[] fields = GetType().GetFields();
+        for (int i = 0; i < fields.Length; i++){
+            if ( (float)fields[i].GetValue(this) < 0 )
+                fields[i].SetValue(this, 0f);
         }
     }
 
