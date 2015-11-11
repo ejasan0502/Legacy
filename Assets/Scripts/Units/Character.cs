@@ -232,16 +232,11 @@ public class Character {
             }
         }
     }
-    #endregion
-    #region Protected Methods
-    protected virtual void Death(){
-        characterObject.GetTargetManager().RemoveCharacterObject(characterObject);
-        characterObject.SetState(CharacterState.death);
-    }
-    protected virtual void UpdateStats(){
+
+    public virtual void UpdateStats(){
         
     }
-    protected virtual void UpdateBuffs(){
+    public virtual void UpdateBuffs(){
         UpdateStats();
 
         Stats sumOfStats = new Stats(1f);
@@ -254,12 +249,18 @@ public class Character {
 
         maxStats += maxStats*sumOfStats;
     }
-    protected virtual void UpdatePassives(){
+    public virtual void UpdatePassives(){
         foreach (Skill s in skills){
             if ( s.isPassive ){
                 s.Apply(this,null);
             }
         }
+    }
+    #endregion
+    #region Protected Methods
+    protected virtual void Death(){
+        characterObject.GetTargetManager().RemoveCharacterObject(characterObject);
+        characterObject.SetState(CharacterState.death);
     }
     #endregion
     #region Private Methods
