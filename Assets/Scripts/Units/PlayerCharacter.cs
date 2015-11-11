@@ -13,9 +13,16 @@ public class PlayerCharacter : Character {
     public float maxExp;
     public int traitPoints;
 
-    protected override bool isPlayer{
+    private bool hostile = false;
+
+    public override bool isPlayer{
         get{
             return true;
+        }
+    }
+    public override bool isFriendly {
+        get {
+            return hostile;
         }
     }
 
@@ -35,8 +42,8 @@ public class PlayerCharacter : Character {
         exp = 0f;
         maxExp = 0f;
         traitPoints = 0;
-        buffs = new List<BuffSkill>();
-        debuffs = new List<DebuffSkill>();
+        buffs = new List<BuffSC>();
+        debuffs = new List<BuffSC>();
     }
 
     public void IncrementTraits(int pwr, int frt, int con){
@@ -63,7 +70,7 @@ public class PlayerCharacter : Character {
         }
     }
 
-    protected void UpdateTraits(){
+    public void UpdateTraits(){
         traits.pwr = Mathf.CeilToInt(baseTraits.pwr + 0.125f*baseTraits.pwr*level);
         traits.frt = Mathf.CeilToInt(baseTraits.frt + 0.125f*baseTraits.frt*level);
         traits.con = Mathf.CeilToInt(baseTraits.con + 0.125f*baseTraits.con*level);
@@ -74,7 +81,7 @@ public class PlayerCharacter : Character {
         }
         traits *= bonusTraits;
     }
-    protected override void UpdateStats(){
+    public override void UpdateStats(){
 	    Stats s = new Stats();
 	    s.baseDmg = baseStats.baseDmg + 0.125f*baseStats.baseDmg*level + 0.125f*traits.pwr;
 	    s.critDmgMultiplier = baseStats.critDmgMultiplier + 0.00113f*level*baseStats.critDmgMultiplier + 0.00142f*traits.pwr;
@@ -94,17 +101,17 @@ public class PlayerCharacter : Character {
 	    s = EquipmentStats(s);
 	    SetStats(s);
     }
-    protected override void UpdateBuffs(){
+    public override void UpdateBuffs(){
         UpdateTraits();
 
-        Traits sumOfTraits = new Traits();
-        foreach (BuffSkill s in buffs){
+        Traits sumOfTraits = new Traits(1);
+        foreach (BuffSC s in buffs){
             sumOfTraits += s.traits;
         }
-        foreach (DebuffSkill s in debuffs){
-            sumOfTraits -= s.traits;
+        foreach (BuffSC s in debuffs){
+            sumOfTraits *= s.traits;
         }
-        sumOfTraits.MustBePositive();
+        traits += traits*sumOfTraits;
 
         base.UpdateBuffs();
     }

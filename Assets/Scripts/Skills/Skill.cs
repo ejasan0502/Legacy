@@ -3,26 +3,115 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class Skill {
+public class Skill {
     public string name;
     public string id;
     public int requiredLevel;
     public string description;
 
+    public int maxLevel;
     public int iteration;
+    public float castTime;
+    public float castDistance;
     public float cooldown;
-    public List<SkillType> skillType;
+    public bool percentageCost;
+    public float hpCost;
+    public float mpCost;
+    public List<SkillCast> skillCasts;
     public List<Skill> connectors;
+    public string animation;
+
+    public TargetType targetType;
 
     public int Level {
         get {
             return level;
         }
     }
+    public float StartCastTime {
+        get {
+            return startCastTime;
+        }
+    }
+    public float CastRadius {
+        get {
+            foreach (SkillCast sc in skillCasts){
+                if ( sc.skillType == SkillType.aoeAround || sc.skillType == SkillType.aoeWithin )
+                    return ((AoeSC)sc).radius;
+            }
+            return 0f;
+        }
+    }
+    public bool isAoe {
+        get {
+            foreach (SkillCast sc in skillCasts){
+                if ( sc.skillType == SkillType.aoeAround || 
+                     sc.skillType == SkillType.aoeFront || 
+                     sc.skillType == SkillType.aoeWithin )
+                    return true;
+            }   
+            return false;
+        }
+    }
+    public bool isAoeFront {
+        get {
+            foreach (SkillCast sc in skillCasts){
+                if ( sc.skillType == SkillType.aoeFront )
+                    return true;
+            }   
+            return false;
+        }
+    }
+    public bool isAoeAround {
+        get {
+            foreach (SkillCast sc in skillCasts){
+                if ( sc.skillType == SkillType.aoeAround )
+                    return true;
+            }   
+            return false;
+        }
+    }
+    public bool isAoeWithin {
+        get {
+            foreach (SkillCast sc in skillCasts){
+                if ( sc.skillType == SkillType.aoeWithin )
+                    return true;
+            }   
+            return false;
+        }
+    }
+    public bool isToggle {
+        get {
+            return skillCasts[0].skillType == SkillType.toggle;
+        }
+    }
+    public bool isBuff {
+        get {
+            foreach (SkillCast sc in skillCasts){
+                if ( sc.skillType == SkillType.buff || 
+                     sc.skillType == SkillType.debuff )
+                    return true;
+            }   
+            return false;
+        }
+    }
+    public bool isPassive {
+        get {
+            return skillCasts[0].skillType == SkillType.passive;
+        }
+    }
+
+    public bool isCharge {
+        get {
+            return skillCasts[0].skillType == SkillType.charge;
+        }
+    }
 
     protected int level;
     private float exp;
     private float maxExp;
+    private float startCDTime;
+    private float startCastTime;
 
     public Skill(){
         name = "";
@@ -31,11 +120,21 @@ public abstract class Skill {
         description = "";
         iteration = 0;
         cooldown = 0f;
-        skillType = new List<SkillType>();
+        skillCasts = new List<SkillCast>();
         connectors = new List<Skill>();
         level = 0;
         exp = 0f;
         maxExp = 0f;
+
+        startCDTime = 0f;
+        hpCost = 0f;
+        mpCost = 0f;
+        targetType = TargetType.self;
+        castTime = 0f;
+        maxLevel = 1;
+        animation = "";
+        castDistance = 0f;
+        percentageCost = false;
     }
     public Skill(Skill s){
         FieldInfo[] fields = GetType().GetFields();
@@ -46,6 +145,19 @@ public abstract class Skill {
         UpdateSelf();
     }   
 
+    public virtual bool CanCast(Character caster){
+        return  caster.currentStats.hp > hpCost &&
+                caster.currentStats.mp >= mpCost &&
+                caster.CanCast &&
+                Time.time - startCDTime >= cooldown;
+    }
+
+    public void SetStartCastTime(float t){
+        startCastTime = t;
+    }
+    public void SetCDTime(float t){
+        startCDTime = t;
+    }
     public void SetLevel(int x){
         level = x;
         UpdateSelf();
@@ -55,35 +167,49 @@ public abstract class Skill {
         if ( exp >= maxExp )
             LevelUp();
     }
+    
+    public void Apply(Character caster, Character target){
+        foreach (SkillCast sc in skillCasts){
+            sc.Apply(caster,target);
+        }
+    }
+    public void UpdateSelf(){
+        maxExp = 9f + 9f*(level-1)*level*0.125f + 9f*9f*0.0478f*((level-1)/10);
+        foreach (SkillCast sc in skillCasts){
+            sc.UpdateSelf();
+
+            if ( sc.skillType == SkillType.charge ){
+                ChargeSC csc = (ChargeSC) sc;
+                castTime = csc.maxCharge * csc.chargeRate;
+            }
+        }
+    }
 
     private void LevelUp(){
         exp = maxExp - exp;
         level++;
         UpdateSelf();
     }
-    
-    public virtual Skill GetAsSkillType(){
-        return this;
-    }
-    public abstract void Apply(Character caster, Character target);
-
-    protected virtual void UpdateSelf(){
-        maxExp = 9f + 9f*(level-1)*level*0.125f + 9f*9f*0.0478f*((level-1)/10);
-    }
 }
+
+// 1 represents primary skill types, Can only be assigned on skilltype[0]
+// 1+ represents secondary skill types, Can be assigned on skilltype[x] where x = any number
 public enum SkillType {
-    singleTarget,   // Applies to a single target
-    charge,         // Has a charge up time
-    aoeFront,       // Applies to multiple targets in front of caster
-    aoeAround,      // Applies to multiple targets around the caster
-    aoeTarget,      // Applies to multiple targets around a target
-    buff,           // Increases traits or stats of target(s)
-    debuff,         // Decreases traits or stats of target(s)
-    status,         // Applies a status effect
-    summon,         // Instantiates an AI object
-    toggle,         // Remains active until deactivated, decreases mana when active
-    restore,        // Increases hp or mp by a percentage or amount
-    special,        // Adds more functionality
-    passive,        // Applies stats or traits to caster
-    extension       // Adds on to an existing skill
+    buff,           // Increases traits or stats of target(s), 1+
+    debuff,         // Decreases traits or stats of target(s), 1+
+    status,         // Applies a status effect, 1+
+    heal,           // Increases hp or mp by a percentage, 1+
+    aoeFront,       // Applies to multiple targets in front of caster, 1+
+    aoeAround,      // Applies to multiple targets around a target, 1+
+    aoeWithin,      // Applies to multiple targets around the caster, 1+
+    damage,         // Applies damage to a single target, 1+
+    cure,           // Removes statuses, 1+
+
+    charge,         // Has a charge up time, 1
+    toggle,         // Remains active until deactivated, decreases mana when active, 1
+    summon,         // Instantiates an AI object, 1
+    special,        // Adds more functionality, 1 (extends Skill.cs)
+
+    passive,        // Applies stats or traits to caster, 1
+    extension       // Adds on to an existing skill, 1 (extends Skill.cs)
 }

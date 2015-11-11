@@ -31,6 +31,12 @@ public class Stats {
             fields[i].SetValue(this,0f);
         }
     }
+    public Stats(float v){
+        FieldInfo[] fields = GetType().GetFields();
+        for (int i = 0; i < fields.Length; i++){
+            fields[i].SetValue(this,v);
+        }
+    }
     public Stats(Stats s){
         FieldInfo[] fields = GetType().GetFields();
         FieldInfo[] fields2 = s.GetType().GetFields();

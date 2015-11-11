@@ -20,12 +20,12 @@ public class GameManager : MonoBehaviour {
 
         TextAsset textAsset = (TextAsset) Resources.Load(GlobalVariables.PATH_XMLDATA_WEAPONS);
         gameData.LoadFromXml( textAsset.text , typeof(Equip) );
-        textAsset = (TextAsset) Resources.Load(GlobalVariables.PATH_XMLDATA_ARMORS);
-        gameData.LoadFromXml( textAsset.text , typeof(Equip) );
-        textAsset = (TextAsset) Resources.Load(GlobalVariables.PATH_XMLDATA_USABLES);
-        gameData.LoadFromXml( textAsset.text , typeof(Usable) );
-        textAsset = (TextAsset) Resources.Load(GlobalVariables.PATH_XMLDATA_MATERIALS);
-        gameData.LoadFromXml( textAsset.text , typeof(Item) );
+        //textAsset = (TextAsset) Resources.Load(GlobalVariables.PATH_XMLDATA_ARMORS);
+        //gameData.LoadFromXml( textAsset.text , typeof(Equip) );
+        //textAsset = (TextAsset) Resources.Load(GlobalVariables.PATH_XMLDATA_USABLES);
+        //gameData.LoadFromXml( textAsset.text , typeof(Usable) );
+        //textAsset = (TextAsset) Resources.Load(GlobalVariables.PATH_XMLDATA_MATERIALS);
+        //gameData.LoadFromXml( textAsset.text , typeof(Item) );
 
         DebugWindow.Log("Game data loaded!");
     }
