@@ -46,12 +46,6 @@ public class ContentData {
                 case "description":
                     e.description = content.InnerText;
                 break;
-                case "icon":
-                    string name = e.name;
-                    if ( e.name == "" ) name = "_Default";
-                    Sprite texture = (Sprite) Resources.Load("Sprites/Icons/Equips/"+name,typeof(Sprite));
-                    e.icon = texture;
-                break;
                 case "weight":
                     e.weight = float.Parse(content.InnerText);
                 break;
@@ -98,6 +92,14 @@ public class ContentData {
                 break;
             }
         }
+
+        // Grab icon from Resources
+        string path = GlobalVariables.PATH_CONTENTDATA;
+        path += e.id[0] + "/";
+        path += e.id.Substring(1,3) + "/";
+        path += e.name + " icon";
+        Sprite texture = (Sprite) Resources.Load(path,typeof(Sprite));
+        e.icon = texture;
 
         return e;
     }
@@ -155,14 +157,16 @@ public class ContentData {
                 case "description":
                     u.description = content.InnerText;
                 break;
-                case "icon":
-                    string name = u.name;
-                    if ( u.name == "" ) name = "_Default";
-                    Sprite texture = (Sprite) Resources.Load("Sprites/Icons/Usables/"+name,typeof(Sprite));
-                    u.icon = texture;
-                break;
             }
         }
+        
+        // Grab icon from Resources
+        string path = GlobalVariables.PATH_CONTENTDATA;
+        path += u.id[0] + "/";
+        path += u.id.Substring(1,3) + "/";
+        path += u.name + " icon";
+        Sprite texture = (Sprite) Resources.Load(path,typeof(Sprite));
+        u.icon = texture;
 
         return u;
     }
@@ -183,14 +187,16 @@ public class ContentData {
                 case "description":
                     u.description = content.InnerText;
                 break;
-                case "icon":
-                    string name = u.name;
-                    if ( u.name == "" ) name = "_Default";
-                    Sprite texture = (Sprite) Resources.Load("Sprites/Icons/Materials/"+name,typeof(Sprite));
-                    u.icon = texture;
-                break;
             }
         }
+        
+        // Grab icon from Resources
+        string path = GlobalVariables.PATH_CONTENTDATA;
+        path += u.id[0] + "/";
+        path += u.id.Substring(1,3) + "/";
+        path += u.name + " icon";
+        Sprite texture = (Sprite) Resources.Load(path,typeof(Sprite));
+        u.icon = texture;
 
         return u;
     }

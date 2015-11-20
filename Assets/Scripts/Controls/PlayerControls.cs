@@ -80,11 +80,11 @@ public class PlayerControls : MonoBehaviour {
                     RaycastHit wallHit;
                     if ( Physics.Raycast(head.transform.position,transform.forward,out wallHit,0.2f,1 << LayerMask.NameToLayer("Wall")) ){
                         // Climb upward
+                        climbingWall = wallHit.collider;
                         velocity.x = 0f;
                         velocity.y = character.currentStats.movSpd*0.15f;
                         isClimbing = true;
                         characterObject.anim.SetBool("Climbing",true);
-                        climbingWall = wallHit.collider;
                     }
                 } else {
                     // Fall off if not facing right direction or let go of A or D

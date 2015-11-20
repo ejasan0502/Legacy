@@ -37,6 +37,9 @@ public class Equip : Item {
     public override Equip GetAsEquip(){
         return this;
     }
+    public string GetModelPath(){
+        return GlobalVariables.PATH_CONTENTDATA + id[0] + "/" + id.Substring(1,3) + "/" + name + " model";
+    }
 }
 
 public enum EquipType {

@@ -11,6 +11,8 @@ public static class GlobalVariables {
     public static string PATH_XMLDATA_USABLES = "Data/usables.xml";
     public static string PATH_XMLDATA_MATERIALS = "Data/materials.xml";
 
+    public static string PATH_CONTENTDATA = "Models/";
+
     public static string ANIM_WALK = "walk";
     public static string ANIM_RUN = "run";
     public static string ANIM_CAST = "cast";

@@ -7,7 +7,6 @@
 		<Weight></Weight>
 		<Type></Type>
 		<Description></Description>
-		<Icon></Icon>
 	</Weapon>
 	<Weapon>
 		<Name></Name>
@@ -17,7 +16,6 @@
 		<Weight></Weight>
 		<Type></Type>
 		<Description></Description>
-		<Icon></Icon>
 	</Weapon>
 	<Weapon>
 		<Name></Name>
@@ -27,6 +25,5 @@
 		<Weight></Weight>
 		<Type></Type>
 		<Description></Description>
-		<Icon></Icon>
 	</Weapon>
 </Weapons>
