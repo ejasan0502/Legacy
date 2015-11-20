@@ -18,6 +18,7 @@ public class Equip : Item {
         icon = null;
         stackable = false;
         weight = 0f;   
+        recipe = null;
 
         level = 0;
         stats = new Stats();

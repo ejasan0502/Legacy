@@ -7,9 +7,10 @@ public class Item {
     public string name;
     public string id;
     public string description;
-    public Texture2D icon;
+    public Sprite icon;
     public bool stackable;
     public float weight;
+    public Recipe recipe;
 
     public bool isEquip {
         get {
@@ -29,6 +30,7 @@ public class Item {
         icon = null;
         stackable = true;
         weight = 0f;   
+        recipe = null;
     }
     public Item(Item item){
         FieldInfo[] fields = GetType().GetFields();
@@ -44,4 +46,21 @@ public class Item {
     public virtual Usable GetAsUsable(){
         return null;
     }
+
+    public override bool Equals(object obj){
+        return  obj != null && 
+                id == ((Item)obj).id;
+    }
+    public override int GetHashCode(){
+        return base.GetHashCode();
+    }
 }
+
+// Item ID Composition
+// ( Type )( Secondary Type ) - #
+// Type = E (Equip), U (Usable), M (Material), C (Character)
+// Secondary Type = swd (Sword), shd (Shield), brd (Broadsword), spr (Spear), axe, stf (Staff), wad (Wand), dar (Dagger), mae (Mace), bow, hA (Heavy Armor), lA (Light Armor), cA (Cloth Armor), acy (Accessory)
+//                  ree (Restore), ine (Instant Restore), cue (Cure), buf (Buff), enl (Enchant Scroll), upl (Upgrade Crystal)
+//                  bld (Blood), clh (Cloth), dew, ler (Leather), otr (Other), stl (Steel), ucp (Upgrade Crystal Piece), wod (Wood)
+//                  hem (Helm), sht (Shirt), pat (Pants), gls (Gloves), bos (Boots), eas (Ears), tal (Tail)
+//                  

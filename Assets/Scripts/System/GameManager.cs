@@ -5,11 +5,11 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
     
     private DataSaver dataSaver;
-    public GameData gameData;
+    public ContentData gameData;
 
     void Start(){
         dataSaver = DataSaver.GetInstance();
-        gameData = GameData.instance;
+        gameData = ContentData.instance;
 
         LoadGameData();
         LoadPlayerData();

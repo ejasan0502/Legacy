@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 // Handles potential surrounding targets
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(SphereCollider))]
 public class TargetManager : MonoBehaviour {
 
     private List<CharacterObject> surroundingCharacters;

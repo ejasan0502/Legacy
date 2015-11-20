@@ -16,7 +16,8 @@ public class DebugWindow : MonoBehaviour {
     }
 
     public static void Log(string s){
-        instance.debugText.text += "\n" + s;
+        if ( instance != null )
+            instance.debugText.text += "\n" + s;
         Debug.Log(s);
     }
 

@@ -5,16 +5,19 @@ using System.Collections.Generic;
 // [Start cast animation] -> [Cast loop animation] -> [Cast end animation] (OnCastEnd) -> [Idle Animation]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(TargetManager))]
+[RequireComponent(typeof(CharacterController))]
 public class CharacterObject : MonoBehaviour {
 
     public Character character;
-    private Animator anim;
+    [HideInInspector] public Animator anim;
     private CharacterState state;
     private TargetManager targetManager;
+    private CharacterController characterController;
     private List<Character> targets;
 
     protected virtual void Start(){
         targetManager = GetComponent<TargetManager>();
+        characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         targets = new List<Character>();
 
@@ -22,8 +25,10 @@ public class CharacterObject : MonoBehaviour {
         character.SetCharacterObject(this);
     }
     protected virtual void Update(){
-        character.OnUpdate();
-        StateMachine();
+        if ( character != null ){
+            character.OnUpdate();
+            StateMachine();
+        }
     }
 
     public Character GetCharacter(){
@@ -39,6 +44,9 @@ public class CharacterObject : MonoBehaviour {
         return targets;
     }
 
+    public void SetCharacter(Character c){
+        character = c;
+    }
     public void SetState(CharacterState s){
         state = s;
     }
@@ -50,9 +58,6 @@ public class CharacterObject : MonoBehaviour {
         } else {
             targets = targetManager.GetTargetsWithin(s.castDistance);
         }
-    }
-    public void Move(){
-        
     }
 
     public virtual void Idle(){

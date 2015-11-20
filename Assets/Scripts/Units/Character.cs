@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class Character {
     
     public Inventory inventory;

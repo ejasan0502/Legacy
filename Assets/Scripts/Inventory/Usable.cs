@@ -19,6 +19,7 @@ public class Usable : Item {
         icon = null;
         stackable = true;
         weight = 0f;   
+        recipe = null;
 
         stats = new Stats();
         traits = new Traits();
