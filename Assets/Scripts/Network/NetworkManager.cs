@@ -20,7 +20,6 @@ public class NetworkManager : MonoBehaviour {
 	public string serverName = "127.0.0.1";		
 	public int serverPort = 9933;			
     public string zone = "";
-    public List<SqlType> sqlTypes;              // All available sql types on the server
 
     private static SmartFox smartfox;
     public static SmartFox GetConnection(){
@@ -40,8 +39,9 @@ public class NetworkManager : MonoBehaviour {
 
     private string[] dataTypes = new string[6]{ "byteArray", "int", "float", "string", "bool", "double" };
 
-    private CharacterObject localPlayer = null;
-    private Dictionary<SFSUser,CharacterObject> remotePlayers = new Dictionary<SFSUser,CharacterObject>();
+    private string email = "";
+    private MMOPlayer localPlayer = null;
+    private List<MMOPlayer> remotePlayers = new List<MMOPlayer>();
 
     #region Unity Methods
     void Awake(){
@@ -49,7 +49,7 @@ public class NetworkManager : MonoBehaviour {
         NetworkManager[] list = GameObject.FindObjectsOfType<NetworkManager>();
         if ( list.Length > 1 ){
             // Found more than 1 object, meaning this instance is a duplicate
-            Destroy(gameObject);
+            DestroyImmediate(gameObject);
         }
 
 		if (Application.isWebPlayer) {
@@ -79,31 +79,34 @@ public class NetworkManager : MonoBehaviour {
 	}
     #endregion
     #region Public Methods
-    public void SpawnLocalPlayer(string _modelPath, PlayerCharacter _player){
-        smartfox.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
-        smartfox.AddEventListener(SFSEvent.USER_VARIABLES_UPDATE, OnUserVariableUpdate);
-        smartfox.AddEventListener(SFSEvent.USER_EXIT_ROOM, OnUserExitRoom);
-        smartfox.AddEventListener(SFSEvent.USER_ENTER_ROOM, OnUserEnterRoom);
+    public void SetEmail(string e){
+        email = e;
+    }
+    public void LoadPlayerDataFromDatabase(){
+        if ( email == "" ){
+            DebugWindow.Log("email variable is not set.");
+        } else {
+            smartfox.AddEventListener(SFSEvent.EXTENSION_RESPONSE,OnDatabaseResponseLoad);
 
-        // Instantiate Character Model
-        CharacterObject co = Resources.Load(_modelPath, typeof(CharacterObject)) as CharacterObject;
-        //if ( co == null )
-        //    co = Resources.Load(GlobalVariables.PATH_CHARACTERMODEL_DEFAULT, typeof(CharacterObject)) as CharacterObject;
+            ISFSObject param = new SFSObject();
+            param.PutUtfString("email",email);
+            param.PutUtfString("command","load");
 
-        co.transform.position = Vector3.zero;
+            smartfox.Send(new ExtensionRequest("database",param));
+        }
+    }
+    public void SavePlayerDataToDatabase(byte[] data){
+        smartfox.AddEventListener(SFSEvent.EXTENSION_RESPONSE,OnDatabaseResponseSave);
 
-        // Initialize Character
-        co.SetCharacter(_player);
+        ISFSObject param = new SFSObject();
+        param.PutUtfString("email",email);
+        param.PutUtfString("command","save");
+        param.PutByteArray("data",new ByteArray(data));
 
-        // Set camera fixed on player
-        Camera.main.GetComponent<CameraControls>().SetPlayer(co.transform);
-
-        localPlayer = co;
-
-		List<UserVariable> userVariables = new List<UserVariable>();
-		//userVariables.Add(new SFSUserVariable("model", numModel));
-		//userVariables.Add(new SFSUserVariable("mat", numMaterial));
-		smartfox.Send(new SetUserVariablesRequest(userVariables));
+        smartfox.Send(new ExtensionRequest("database",param));
+    }
+    public void SpawnPlayer(SFSUser user){
+        
     }
     public void JoinRoom(string s){
         if ( smartfox.RoomManager.ContainsRoom(s) ){
@@ -121,127 +124,27 @@ public class NetworkManager : MonoBehaviour {
             smartfox.Send(new PublicMessageRequest(_message));
         }
     }
-    #region SaveToDatabase Overload Methods
-    public void SaveToDatabase(string id, byte[] rawData){
-        SqlType s = GetSqlType(id);
-        if ( s == null ) {
-            DebugWindow.Log("Invalid id");
-            return;
-        }
-
-        if ( dataTypes[(int)s.dataType] != dataTypes[0] ){
-            DebugWindow.Log("Invalid data type.");
-            return;
-        }
-
-        ISFSObject param = new SFSObject();
-        Sfs2X.Util.ByteArray data = new Sfs2X.Util.ByteArray(rawData);
-        param.PutByteArray(id,data);
-
-        SaveToDatabase(id,param);
-    }
-    public void SaveToDatabase(string id, int rawData){
-        SqlType s = GetSqlType(id);
-        if ( s == null ) {
-            DebugWindow.Log("Invalid id");
-            return;
-        }
-
-        if ( dataTypes[(int)s.dataType] != dataTypes[1] ){
-            DebugWindow.Log("Invalid data type.");
-            return;
-        }
-
-        ISFSObject param = new SFSObject();
-        param.PutInt(id,rawData);
-
-        SaveToDatabase(id,param);
-    }
-    public void SaveToDatabase(string id, float rawData){
-        SqlType s = GetSqlType(id);
-        if ( s == null ) {
-            DebugWindow.Log("Invalid id");
-            return;
-        }
-
-        if ( dataTypes[(int)s.dataType] != dataTypes[2] ){
-            DebugWindow.Log("Invalid data type.");
-            return;
-        }
-
-        ISFSObject param = new SFSObject();
-        param.PutFloat(id,rawData);
-
-        SaveToDatabase(id,param);
-    }
-    public void SaveToDatabase(string id, string rawData){
-        SqlType s = GetSqlType(id);
-        if ( s == null ) {
-            DebugWindow.Log("Invalid id");
-            return;
-        }
-
-        if ( dataTypes[(int)s.dataType] != dataTypes[3] ){
-            DebugWindow.Log("Invalid data type.");
-            return;
-        }
-
-        ISFSObject param = new SFSObject();
-        param.PutUtfString(id,rawData);
-
-        SaveToDatabase(id,param);
-    }
-    public void SaveToDatabase(string id, bool rawData){
-        SqlType s = GetSqlType(id);
-        if ( s == null ) {
-            DebugWindow.Log("Invalid id");
-            return;
-        }
-
-        if ( dataTypes[(int)s.dataType] != dataTypes[4] ){
-            DebugWindow.Log("Invalid data type.");
-            return;
-        }
-
-        ISFSObject param = new SFSObject();
-        param.PutBool(id,rawData);
-
-        SaveToDatabase(id,param);
-    }
-    public void SaveToDatabase(string id, double rawData){
-        SqlType s = GetSqlType(id);
-        if ( s == null ) {
-            DebugWindow.Log("Invalid id");
-            return;
-        }
-
-        if ( dataTypes[(int)s.dataType] != dataTypes[5] ){
-            DebugWindow.Log("Invalid data type.");
-            return;
-        }
-
-        ISFSObject param = new SFSObject();
-        param.PutDouble(id,rawData);
-
-        SaveToDatabase(id,param);
-    }
-    #endregion
-    #endregion
-    #region Private Methods
-    private void SaveToDatabase(string id, ISFSObject data){
-        smartfox.AddEventListener(SFSEvent.EXTENSION_RESPONSE,OnDatabaseResponse);
-
-        smartfox.Send(new ExtensionRequest("database",data));
-    }
-    private SqlType GetSqlType(string id){
-        return  (SqlType) sqlTypes.Where(st => st.id.ToLower() == id.ToLower());
-    }
     #endregion
     #region EventListener methods
-    private void OnDatabaseResponse(BaseEvent evt){
-        DebugWindow.Log("Database response received: " + evt.Params["message"]);
+    private void OnDatabaseResponseSave(BaseEvent evt){
+        smartfox.RemoveEventListener(SFSEvent.EXTENSION_RESPONSE,OnDatabaseResponseSave);
 
-        smartfox.RemoveEventListener(SFSEvent.EXTENSION_RESPONSE,OnDatabaseResponse);
+        if ( (bool) evt.Params["success"] ){
+            DebugWindow.Log("Successfully saved player data to database!");
+        } else {
+            DebugWindow.Log("Failed to save player data to database.");
+        }
+    }
+    private void OnDatabaseResponseLoad(BaseEvent evt){
+        smartfox.RemoveEventListener(SFSEvent.EXTENSION_RESPONSE,OnDatabaseResponseLoad);
+        
+        if ( (bool) evt.Params["success"] ){
+            DebugWindow.Log("Successfully received player data from database!");
+            GameManager.instance.dataSaver.LoadDataFromBytes( ((ByteArray)evt.Params["data"]).Bytes );
+        } else {
+            DebugWindow.Log(evt.Params["message"]+"");
+            DebugWindow.Log("Loading character creation...");
+        }
     }
     private void OnRoomJoin(BaseEvent evt){
         DebugWindow.Log("Joined room: " + evt.Params["message"]);
@@ -301,17 +204,8 @@ public class NetworkManager : MonoBehaviour {
     #endregion
 }
 
-[System.Serializable]
-public class SqlType {
-    public string id;
-    public DataType dataType;
-}
-
-public enum DataType {
-    byteArray,
-    integer,
-    floatType,
-    stringType,
-    boolean,
-    doubleType
+public class MMOPlayer {
+    public SFSUser user;
+    public CharacterObject characterObject;
+    public PlayerCharacter player;
 }

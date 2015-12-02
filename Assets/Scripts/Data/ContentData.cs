@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
+// Original content data NOT modified by players
 [System.Serializable]
 public class ContentData {
     
@@ -16,16 +17,7 @@ public class ContentData {
     public List<Usable> usables;
     public List<Item> materials;
 
-    private static ContentData _instance = null;
-    public static ContentData instance {
-        get {
-            if ( _instance == null )
-                _instance = new ContentData();
-            return _instance;
-        }
-    }
-
-    private ContentData(){
+    public ContentData(){
         weapons = new List<Equip>();
         armors = new List<Equip>();
 
@@ -227,5 +219,33 @@ public class ContentData {
                     materials.Add(i);
             }
         }
+    }
+    public Item GetItem(string id){
+        Item i = null;
+
+        // Interpret ID
+        // Check item is modified, if so, exit
+        if ( id.Split('_').Length > 1 ) return null;
+
+        // Dissect ID to identify where to start looking
+        if ( id.ToLower().StartsWith("e") ){
+            // Is equip
+            // Check if armor
+            if ( id.Split('-')[0].Length < 4 ){
+                // is Armor
+                i = (Equip) armors.Where(e => e.id.ToLower() == id.ToLower());
+            } else {
+                // is Weapon
+                i = (Equip) weapons.Where(e => e.id.ToLower() == id.ToLower());
+            }
+        } else if ( id.ToLower().StartsWith("u") ){
+            // Is usable
+            i = (Usable) weapons.Where(u => u.id.ToLower() == id.ToLower());
+        } else {
+            // Is material
+            i = (Item) materials.Where(m => m.id.ToLower() == id.ToLower());
+        }
+
+        return i;
     }
 }

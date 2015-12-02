@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Xml;
 using System.Reflection;
 using System.Collections;
 
@@ -17,9 +18,9 @@ public class Usable : Item {
         id = "";
         description = "";
         icon = null;
-        stackable = true;
         weight = 0f;   
         recipe = null;
+        tier = Tier.common;
 
         stats = new Stats();
         traits = new Traits();
@@ -38,6 +39,14 @@ public class Usable : Item {
 
     public override Usable GetAsUsable(){
         return this;
+    }
+    public override XmlElement ToXmlElement(XmlDocument xmlDoc){
+        XmlElement root = xmlDoc.CreateElement("Usable");
+
+        XmlElement xmlId = xmlDoc.CreateElement("Id"); xmlId.InnerText = id; root.AppendChild(xmlId);
+        XmlElement xmlTier = xmlDoc.CreateElement("Tier"); xmlTier.InnerText = tier.ToString(); root.AppendChild(xmlTier);
+
+        return root;
     }
 }
 

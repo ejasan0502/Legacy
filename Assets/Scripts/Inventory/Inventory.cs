@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
+using System.Xml;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
 public class Inventory {
-    
     public List<InventoryItem> items;
+
+    public Inventory(){
+        items = new List<InventoryItem>();
+    }
 
     public void Add(Item _item, int _amt){
         InventoryItem inventoryItem = GetInventoryItem(_item);
@@ -31,6 +35,23 @@ public class Inventory {
         }
     }
 
+    public XmlElement ToXmlElement(XmlDocument xmlDoc){
+        XmlElement root = xmlDoc.CreateElement("Inventory");
+
+        foreach (InventoryItem ii in items){
+            XmlElement content = xmlDoc.CreateElement("InventoryItem");
+            content.AppendChild(ii.item.ToXmlElement(xmlDoc));
+
+            XmlElement amt = xmlDoc.CreateElement("Amount");
+            amt.InnerText = ii.amt+"";
+            content.AppendChild(amt);
+
+            root.AppendChild(content);
+        }
+
+        return root;
+    }
+
     private InventoryItem GetInventoryItem(Item _item){
         return (InventoryItem) items.Where(i => i.item.id == _item.id);
     }
@@ -45,3 +66,10 @@ public class InventoryItem {
         amt = a;
     }
 }
+
+//  Xml format
+//  <Inventory>
+//      <InventoryItem>
+//          <Item></Item>
+//          <Amount></Amount>
+    

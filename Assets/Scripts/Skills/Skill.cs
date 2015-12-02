@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using System.Xml;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
 public class Skill {
+    #region Base Variables
     public string name;
     public string id;
     public int requiredLevel;
@@ -22,7 +24,8 @@ public class Skill {
     public string animation;
 
     public TargetType targetType;
-
+    #endregion
+    #region Read-only Variables
     public int Level {
         get {
             return level;
@@ -100,13 +103,12 @@ public class Skill {
             return skillCasts[0].skillType == SkillType.passive;
         }
     }
-
     public bool isCharge {
         get {
             return skillCasts[0].skillType == SkillType.charge;
         }
     }
-
+    #endregion
     protected int level;
     private float exp;
     private float maxExp;
@@ -150,6 +152,15 @@ public class Skill {
                 caster.currentStats.mp >= mpCost &&
                 caster.CanCast &&
                 Time.time - startCDTime >= cooldown;
+    }
+    public virtual XmlElement ToXmlElement(XmlDocument xmlDoc){
+        XmlElement root = xmlDoc.CreateElement("Skill");
+
+        XmlElement xmlId = xmlDoc.CreateElement("Id"); xmlId.InnerText = id; root.AppendChild(xmlId);
+        XmlElement xmlLevel = xmlDoc.CreateElement("Level"); xmlLevel.InnerText = level+""; root.AppendChild(xmlLevel);
+        XmlElement xmlExp = xmlDoc.CreateElement("Exp"); xmlExp.InnerText = exp+""; root.AppendChild(xmlExp);
+
+        return root;
     }
 
     public void SetStartCastTime(float t){

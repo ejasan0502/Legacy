@@ -16,10 +16,9 @@ public class Login : MonoBehaviour {
 
     public InputField emailText;
     public InputField passText;
-
-    public GameObject chatWindow;
 	
 	private SmartFox smartfox;
+    private string savedEmail = "";
 
 	void Awake(){	
 		smartfox = NetworkManager.GetConnection();
@@ -51,6 +50,7 @@ public class Login : MonoBehaviour {
         ISFSObject param = new SFSObject();
         param.PutUtfString("email",emailText.text);
         param.PutUtfString("password",passText.text);
+        savedEmail = emailText.text;
         
         smartfox.Send(new ExtensionRequest("login",param));
     }
@@ -73,12 +73,8 @@ public class Login : MonoBehaviour {
     #endregion
     #region Private Methods
     private void OnLoginSuccess(){
-        smartfox.RemoveAllEventListeners();
-
-        chatWindow.SetActive(true);
-        gameObject.SetActive(false);
-
-        NetworkManager.instance.JoinRoom("Lobby");
+        NetworkManager.instance.SetEmail(savedEmail);
+        NetworkManager.instance.LoadPlayerDataFromDatabase();
     }
     private void OnLoginFailure(){
 

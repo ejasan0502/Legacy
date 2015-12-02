@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using System.Xml;
+using System.Reflection;
 
 // Value class
 // Used to save data into a byte array
@@ -21,19 +23,8 @@ public class DataSaver
 	private bool debug = true;      // Display debug messages
 	#endregion
 	
-	#region Singleton
-	private static DataSaver instance;          // Static instance
-	
-	public static DataSaver GetInstance() {
-		if(instance == null) {
-			instance = new DataSaver();
-		}
-		return instance;
-	}
-	#endregion
-	
 	#region Contructors
-	private DataSaver() {
+	public DataSaver() {
         // Initialize variables
 		values = new List<Value>();
 	}
@@ -201,7 +192,7 @@ public class DataSaver
 			return false;
 		}
 	}
-	
+
     // Save values in list as bytes on the current storage device
 	public void SaveData(string path, params string[] dataLabel) {
 		List<byte[]> blocks = new List<byte[]>();
@@ -265,7 +256,98 @@ public class DataSaver
 		File.WriteAllBytes(path, values_bytes);
 		if(debug) DebugWindow.Log("Values Saved");
 	}
-	
+    public void SaveData(PlayerCharacter pc){
+        NetworkManager nm = NetworkManager.instance;
+
+        #region Save data to xml string
+        XmlDocument xmlDoc = new XmlDocument();
+        XmlElement root = xmlDoc.CreateElement("Player");
+
+        // Inventory
+        if ( pc.inventory.items.Count > 0 )
+            root.AppendChild(pc.inventory.ToXmlElement(xmlDoc));
+
+        // Equipment
+        XmlElement equipment = xmlDoc.CreateElement("Equipment");
+        foreach (Equip e in pc.equipment){
+            if ( e.id != "" )
+                equipment.AppendChild(e.ToXmlElement(xmlDoc));
+        }
+        root.AppendChild(equipment);
+
+        // Base Traits
+        XmlElement baseTraits = xmlDoc.CreateElement("BaseTraits");
+        foreach(FieldInfo fi in pc.baseTraits.GetType().GetFields()){
+            XmlElement content = xmlDoc.CreateElement(fi.Name);
+            content.InnerText = fi.GetValue(pc.baseTraits).ToString();
+            baseTraits.AppendChild(content);
+        }
+        root.AppendChild(baseTraits);
+
+        // Trait Points
+        XmlElement traitPoints = xmlDoc.CreateElement("TraitPoints");
+        traitPoints.InnerText = pc.traitPoints+"";
+        root.AppendChild(traitPoints);
+
+        // Skills
+        XmlElement skills = xmlDoc.CreateElement("Skills");
+        foreach (Skill s in pc.skills){
+            skills.AppendChild(s.ToXmlElement(xmlDoc));
+        }
+        root.AppendChild(skills);
+
+        // Last saved scene
+        XmlElement lastSavedScene = xmlDoc.CreateElement("LastSavedScene");
+        lastSavedScene.InnerText = pc.lastSavedScene;
+        root.AppendChild(lastSavedScene);
+
+        xmlDoc.AppendChild(root);
+
+        // Save data as xml string
+        StringWriter sw = new StringWriter();
+        XmlWriter xw = XmlWriter.Create(sw);
+        xmlDoc.WriteTo(xw);
+        if ( !CheckLabel("playerData") ){
+            RegisterLabel("playerData");
+        }
+        SetData("playerData",sw.ToString());
+        xw.Close();
+        sw.Close();
+        #endregion
+        #region Convert data to bytes
+		List<byte[]> blocks = new List<byte[]>();
+		int size = 0;
+
+        Value v = getValue("playerData");
+        byte[] label = Encoding.ASCII.GetBytes(v.label);
+		for(int i = 0; i < label.Length; i++) {
+			label[i] = (byte)(label[i] ^ 0xff);
+		}
+		byte[] data = v.data;
+			
+		byte[] value_bytes = new byte[label.Length + 5];
+			
+		value_bytes[0] = (byte)label.Length;
+			
+		System.Buffer.BlockCopy(label, 0, value_bytes, 1, label.Length);
+		System.Buffer.BlockCopy(data, 0, value_bytes, 1 + label.Length, 4);
+			
+		blocks.Add(value_bytes);
+			
+		size += value_bytes.Length;
+
+		byte[] values_bytes = new byte[size];
+		int index = 0;
+		for(int i = 0; i < blocks.Count; i++) {
+			System.Buffer.BlockCopy(blocks[i], 0, values_bytes, index, blocks[i].Length);
+			index += blocks[i].Length;
+		}
+        #endregion
+        #region Save bytes data to server
+        nm.SavePlayerDataToDatabase(values_bytes);
+        #endregion
+    }
+
     // Load values to list from bytes on the current storage device
 	public void LoadData(string path) {
 		byte[] bytes;
@@ -306,6 +388,33 @@ public class DataSaver
 		
 		if(debug) DebugWindow.Log("Values Loaded");
 	}
+    public void LoadDataFromBytes(byte[] _data){
+		values.Clear();
+
+        int index = 0;
+		while(index < _data.Length) {
+			int l = _data[index];
+			byte[] labelBytes = new byte[l];
+			byte[] dataBytes = new byte[4];
+			System.Buffer.BlockCopy(_data, index + 1, labelBytes, 0, l);
+			System.Buffer.BlockCopy(_data, index + 1 + l, dataBytes, 0, 4);
+			
+			for(int i = 0; i < labelBytes.Length; i++) {
+				labelBytes[i] = (byte)(labelBytes[i] ^ 0xff);
+			}
+			string label = Encoding.ASCII.GetString(labelBytes);
+			byte[] data = dataBytes;
+			
+			Value v = new Value();
+			v.label = label;
+			v.data = data;
+			values.Add(v);
+			
+			if(debug) DebugWindow.Log("Value loaded with label: " + label + " and data: " + data);
+			
+			index += 5 + l;
+		}
+    }
 	
 	public void SetDebug(bool debug) {
 		this.debug = debug;

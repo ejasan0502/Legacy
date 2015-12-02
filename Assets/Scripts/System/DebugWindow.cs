@@ -6,11 +6,14 @@ public class DebugWindow : MonoBehaviour {
 
     public Text debugText;
 
+    private static Object lockObj = new Object();
     private static DebugWindow _instance;
     public static DebugWindow instance {
         get {
-            if ( _instance == null )
-                _instance = GameObject.FindObjectOfType<DebugWindow>();
+            lock (lockObj){
+                if ( _instance == null )
+                    _instance = GameObject.FindObjectOfType<DebugWindow>();
+            }
             return _instance;
         }
     }
