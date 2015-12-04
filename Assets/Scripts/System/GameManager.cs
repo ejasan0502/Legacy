@@ -13,7 +13,6 @@ using Sfs2X.Entities.Variables;
 
 public class GameManager : MonoBehaviour {
     
-    public PlayerCharacter pc;
     private NetworkManager networkManager;
     public DataSaver dataSaver;
     private SmartFox smartfox;
@@ -68,7 +67,8 @@ public class GameManager : MonoBehaviour {
     // Save player data to Server
     public void SavePlayerData(){
         DebugWindow.Log("Saving player data...");
-        dataSaver.SaveData(pc);
+        if ( networkManager.LocalPlayer != null )
+            dataSaver.SaveData(networkManager.LocalPlayer.player);
     }
     #endregion
     #region Event Listeners

@@ -43,6 +43,12 @@ public class NetworkManager : MonoBehaviour {
     private MMOPlayer localPlayer = null;
     private List<MMOPlayer> remotePlayers = new List<MMOPlayer>();
 
+    public MMOPlayer LocalPlayer {
+        get {
+            return localPlayer;
+        }
+    }
+
     #region Unity Methods
     void Awake(){
         // Destroy duplicates
