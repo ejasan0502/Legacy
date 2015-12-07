@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,16 +27,22 @@ public class NetworkManager : MonoBehaviour {
         return smartfox;
     }
 
+    private static Object lockObject = new Object();
     private static NetworkManager _instance;
     public static NetworkManager instance {
         get {
-            if ( _instance == null )
-                _instance = GameObject.FindObjectOfType<NetworkManager>();
+            lock (lockObject){
+                if ( _instance == null ){
+                    _instance = GameObject.FindObjectOfType<NetworkManager>();
+                    if ( _instance == null ){
+                        GameObject o = new GameObject("NetworkManager");
+                        _instance = o.AddComponent<NetworkManager>();
+                    }
+                }
+            }
             return _instance;
         }
     }
-
-    private string[] dataTypes = new string[6]{ "byteArray", "int", "float", "string", "bool", "double" };
 
     private string email = "";
     private MMOPlayer localPlayer = null;
@@ -85,6 +90,15 @@ public class NetworkManager : MonoBehaviour {
 	}
     #endregion
     #region Public Methods
+    public void AddRemotePlayer(MMOPlayer mmoPlayer){
+        remotePlayers.Add(mmoPlayer);
+        SpawnPlayer(mmoPlayer, mmoPlayer.characterObject.transform.position);
+    }
+    public void SetLocalPlayer(PlayerCharacter pc){
+        localPlayer = new MMOPlayer();
+        localPlayer.player = pc;
+        localPlayer.user = (SFSUser) smartfox.MySelf;
+    }
     public void SetEmail(string e){
         email = e;
     }
@@ -111,8 +125,22 @@ public class NetworkManager : MonoBehaviour {
 
         smartfox.Send(new ExtensionRequest("database",param));
     }
-    public void SpawnPlayer(SFSUser user){
-        
+    public void SpawnPlayer(MMOPlayer mmoPlayer, Vector3 spawnPos){
+        if ( mmoPlayer.characterObject != null ){
+            DestroyImmediate(mmoPlayer.characterObject.gameObject);
+            mmoPlayer.characterObject = null;
+        }
+
+        GameObject o = (GameObject) Instantiate(Resources.Load(GlobalVariables.PATH_CONTENTDATA_CHARACTERS+mmoPlayer.player.characterType));
+        o.transform.position = spawnPos;
+        mmoPlayer.characterObject = o.AddComponent<CharacterObject>();
+
+        if ( mmoPlayer == localPlayer ){
+            o.AddComponent<PlayerControls>();
+        } else {
+            RemoteInterpolation ri = o.AddComponent<RemoteInterpolation>();
+            ri.SimpleInterpolation(spawnPos, Quaternion.identity, false);
+        }
     }
     public void JoinRoom(string s){
         if ( smartfox.RoomManager.ContainsRoom(s) ){
@@ -214,4 +242,10 @@ public class MMOPlayer {
     public SFSUser user;
     public CharacterObject characterObject;
     public PlayerCharacter player;
+
+    public MMOPlayer(){
+        user = null;
+        characterObject = null;
+        player = null;
+    }
 }

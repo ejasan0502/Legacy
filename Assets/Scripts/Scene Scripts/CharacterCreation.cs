@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class CharacterCreation : MonoBehaviour {
     
+    public InputField nameInputField;
+
     private Object[] characterModels;
     private Vector2 characterListScrollPos = Vector2.zero;
     private GameObject characterModel = null;
@@ -29,7 +31,12 @@ public class CharacterCreation : MonoBehaviour {
     }
 
     public void Create(){
-        
+        PlayerCharacter pc = new PlayerCharacter();
+        pc.name = nameInputField.text;
+        pc.characterType = characterModel.name.Split('(')[0];
+        NetworkManager.instance.SetLocalPlayer(pc);
+
+        Application.LoadLevel((int)GlobalVariables.UnityScenes.tutorial);
     }
 
 }

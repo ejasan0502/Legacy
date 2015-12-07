@@ -17,7 +17,6 @@ public class Stats {
     public float recov;
 
     public float critChance;
-    public float blockRate;
     public float defPen;
     public float resist;
     public float luck;
@@ -35,6 +34,14 @@ public class Stats {
         FieldInfo[] fields = GetType().GetFields();
         for (int i = 0; i < fields.Length; i++){
             fields[i].SetValue(this,v);
+        }
+    }
+    public Stats(params float[] v){
+        FieldInfo[] fields = GetType().GetFields();
+        for (int i = 0; i < v.Length; i++){
+            if ( i < fields.Length ){
+                fields[i].SetValue(this,v[i]);
+            }
         }
     }
     public Stats(Stats s){

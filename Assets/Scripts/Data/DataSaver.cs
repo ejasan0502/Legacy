@@ -263,6 +263,11 @@ public class DataSaver
         XmlDocument xmlDoc = new XmlDocument();
         XmlElement root = xmlDoc.CreateElement("Player");
 
+        // Character Type
+        XmlElement characterType = xmlDoc.CreateElement("CharacterType");
+        characterType.InnerText = pc.characterType;
+        root.AppendChild(characterType);
+
         // Inventory
         if ( pc.inventory.items.Count > 0 )
             root.AppendChild(pc.inventory.ToXmlElement(xmlDoc));
@@ -346,6 +351,18 @@ public class DataSaver
         #region Save bytes data to server
         nm.SavePlayerDataToDatabase(values_bytes);
         #endregion
+    }
+    public PlayerCharacter ExtractXmlPlayerData(){
+        if ( !CheckLabel("playerData") ){
+            DebugWindow.Log("Player data was not found!");
+            return null;
+        }
+
+        PlayerCharacter pc = new PlayerCharacter();
+
+
+
+        return pc;
     }
 
     // Load values to list from bytes on the current storage device

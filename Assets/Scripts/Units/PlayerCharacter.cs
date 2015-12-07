@@ -9,6 +9,9 @@ using System.Xml.Serialization;
 [System.Serializable]
 public class PlayerCharacter : Character {
 
+    public string name;
+    public string characterType;
+
     public Traits baseTraits;
     public Traits traits;
 
@@ -34,10 +37,12 @@ public class PlayerCharacter : Character {
     }
 
     public PlayerCharacter(){
+        name = "";
+        characterType = "";
         inventory = new Inventory();
         baseTraits = new Traits();
-        traits = new Traits();
-        baseStats = new Stats();
+        traits = new Traits(GlobalVariables.DEFAULT_PLAYER_TRAITS);
+        baseStats = new Stats(GlobalVariables.DEFAULT_PLAYER_STATS);
         currentStats = new Stats();
         maxStats = new Stats();
         skills = new List<Skill>();
