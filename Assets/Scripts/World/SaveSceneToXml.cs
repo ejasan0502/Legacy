@@ -6,16 +6,12 @@ using System.Collections.Generic;
 
 // ONLY USE IN UNITY EDITOR
 // Used to create game scenes, NOT USED FOR UNITY SCENES
+// *Requires tag, "SceneObject"
 public class SaveSceneToXml : MonoBehaviour {
 
-    public List<string> ignoredObjects;
-
     void Start(){
-        // Add self to ignoredObjects list
-        ignoredObjects.Add(name);
-
         // Find/Create xml file
-        string path = "Resources/Data/Scenes.xml";
+        string path = GlobalVariables.PATH_XMLDATA_SCENES_FULL;
         XmlDocument xmlDoc = new XmlDocument();
         XmlElement root;
         if ( !File.Exists(path) ){
@@ -39,26 +35,24 @@ public class SaveSceneToXml : MonoBehaviour {
         // Add scene to xml file
         XmlElement scene = xmlDoc.CreateElement("Scene");
         scene.SetAttribute("name",Application.loadedLevelName);
-        foreach (GameObject o in GameObject.FindObjectsOfType<GameObject>()){
-            if ( !ignoredObjects.Contains(o.name) ){
-                XmlElement obj = xmlDoc.CreateElement("GameObject");
-                XmlElement n = xmlDoc.CreateElement("Name");
-                XmlElement pos = xmlDoc.CreateElement("Position");
-                XmlElement rot = xmlDoc.CreateElement("Rotation");
+        foreach (GameObject o in GameObject.FindGameObjectsWithTag("SceneObject")){
+            XmlElement obj = xmlDoc.CreateElement("SceneObject");
+            XmlElement n = xmlDoc.CreateElement("Name");
+            XmlElement pos = xmlDoc.CreateElement("Position");
+            XmlElement rot = xmlDoc.CreateElement("Rotation");
 
-                string desiredName = o.name;
-                if ( desiredName.Contains("(Clone)") ){
-                    desiredName = desiredName.Split('(')[0];
-                }
-                n.InnerText = desiredName;
-                pos.InnerText = o.transform.position+"";
-                rot.InnerText = o.transform.rotation+"";
-
-                obj.AppendChild(n);
-                obj.AppendChild(pos);
-                obj.AppendChild(rot);
-                scene.AppendChild(obj);
+            string desiredName = o.name;
+            if ( desiredName.Contains("(Clone)") ){
+                desiredName = desiredName.Split('(')[0];
             }
+            n.InnerText = desiredName;
+            pos.InnerText = o.transform.position+"";
+            rot.InnerText = o.transform.rotation+"";
+
+            obj.AppendChild(n);
+            obj.AppendChild(pos);
+            obj.AppendChild(rot);
+            scene.AppendChild(obj);
         }
         root.AppendChild(scene);
 

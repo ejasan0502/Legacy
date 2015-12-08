@@ -23,5 +23,10 @@ public class DebugWindow : MonoBehaviour {
             instance.debugText.text += "\n" + s;
         Debug.Log(s);
     }
+    public static bool Assert(bool condition, string message){
+        if ( condition )
+            Log(message);
 
+        return condition;
+    }
 }

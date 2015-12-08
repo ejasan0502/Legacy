@@ -10,6 +10,8 @@ public static class GlobalVariables {
     public static string PATH_XMLDATA_ARMORS = "Data/armors.xml";
     public static string PATH_XMLDATA_USABLES = "Data/usables.xml";
     public static string PATH_XMLDATA_MATERIALS = "Data/materials.xml";
+    public static string PATH_XMLDATA_SCENES = "Data/scenes.xml";
+    public static string PATH_XMLDATA_SCENES_FULL = "Resources/Data/scenes.xml";
 
     public static string PATH_CONTENTDATA = "Content/";
     public static string PATH_CONTENTDATA_CHARACTERS = "Content/c/";
