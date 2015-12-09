@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
     public DataSaver dataSaver;
     private SmartFox smartfox;
     public ContentData contentData;
+    private SceneManager sceneManager;
 
     private static Object lockObj = new Object();
     private static GameManager _instance;
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour {
         dataSaver = new DataSaver();
         smartfox = NetworkManager.GetConnection();
         contentData = new ContentData();
+        sceneManager = new SceneManager();
 
         LoadContentData();
     }

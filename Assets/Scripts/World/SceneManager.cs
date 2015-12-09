@@ -31,6 +31,12 @@ public class SceneManager {
                 GameObject o = (GameObject) GameObject.Instantiate(Resources.Load(GlobalVariables.PATH_SCENEOBJECTS+so.name));
                 o.transform.position = so.position;
                 o.transform.rotation = so.rotation;
+
+                if ( so.portal != "" ){
+                    Portal p = o.AddComponent<Portal>();
+                    p.scene = so.portal;
+                }
+
                 currentScene.gameObjects.Add(o);
             }
         }
@@ -56,13 +62,15 @@ public class SceneManager {
 
                     string[] pos = posString.Split(',');
                     so.position = new Vector3(float.Parse(pos[0]),float.Parse(pos[1]),float.Parse(pos[2]));
-                } else {
+                } else if ( obj.Name == "Rotation" ) {
                     // Remove parathesis
                     string rotString = obj.InnerText.Remove(0);
                     rotString.Remove(rotString.Length);
 
                     string[] rot = rotString.Split(',');
                     so.rotation = new Quaternion(float.Parse(rot[0]),float.Parse(rot[1]),float.Parse(rot[2]),float.Parse(rot[3]));
+                } else if ( obj.Name == "Portal" ){
+                    so.portal = obj.InnerText;
                 }
             }
             scenes.Add(scene);
@@ -85,10 +93,12 @@ public class SceneObject {
     public string name;
     public Vector3 position;
     public Quaternion rotation;
+    public string portal;
 
     public SceneObject(){
         name = "";
         position = Vector3.zero;
         rotation = Quaternion.identity;
+        portal = "";
     }
 }

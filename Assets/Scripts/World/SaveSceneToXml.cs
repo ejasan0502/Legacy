@@ -52,6 +52,13 @@ public class SaveSceneToXml : MonoBehaviour {
             obj.AppendChild(n);
             obj.AppendChild(pos);
             obj.AppendChild(rot);
+
+            if ( o.name.ToLower().Contains("portal") ){
+                XmlElement p = xmlDoc.CreateElement("Portal");
+                p.InnerText = o.GetComponent<Portal>().scene;
+                obj.AppendChild(p);
+            }
+
             scene.AppendChild(obj);
         }
         root.AppendChild(scene);
