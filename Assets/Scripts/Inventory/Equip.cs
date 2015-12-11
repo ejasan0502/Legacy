@@ -15,6 +15,56 @@ public class Equip : Item {
     public int upgrades;
     public List<Enchant> enchants;
 
+    public bool isWeapon {
+        get {
+            return  (int) equipType == 0;
+        }
+    }
+    public bool isArmor {
+        get {
+            return (int) equipType == 2;
+        }
+    }
+    public bool isAccessory {
+        get {
+            return (int) equipType == 3;
+        }
+    }
+    public bool oneHanded {
+        get {
+            return  equipType == EquipType.sword ||
+                    equipType == EquipType.axe ||
+                    equipType == EquipType.wand ||
+                    equipType == EquipType.dagger ||
+                    equipType == EquipType.mace;
+        }
+    }
+
+    public string modelPath {
+        get {
+            string s = "";
+
+            if ( isWeapon )
+                s = GlobalVariables.PATH_CONTENTDATA + id[0] + "/" + id.Substring(1,3) + "/" + name + "/model";
+            else if ( isArmor )
+                s = GlobalVariables.PATH_CONTENTDATA + id[0] + "/" + id.Substring(1,2) + "/" + name;
+
+            return s;
+        }
+    }
+    public string iconPath {
+        get {
+            string s = "";
+
+            if ( isArmor )
+                s = GlobalVariables.PATH_CONTENTDATA + id[0] + "/" + id.Substring(1,2) + "/" + name + "/icon";
+            else 
+                s = GlobalVariables.PATH_CONTENTDATA + id[0] + "/" + id.Substring(1,3) + "/" + name + "/icon";
+
+            return s;
+        }
+    }
+
     public Equip(){
         name = "";
         id = "";
@@ -64,9 +114,6 @@ public class Equip : Item {
         }
 
         return root;
-    }
-    public string GetModelPath(){
-        return GlobalVariables.PATH_CONTENTDATA + id[0] + "/" + id.Substring(1,3) + "/" + name + " model";
     }
 }
 

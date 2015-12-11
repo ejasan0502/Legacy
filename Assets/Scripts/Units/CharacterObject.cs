@@ -5,19 +5,16 @@ using System.Collections.Generic;
 // [Start cast animation] -> [Cast loop animation] -> [Cast end animation] (OnCastEnd) -> [Idle Animation]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(TargetManager))]
-[RequireComponent(typeof(CharacterController))]
 public class CharacterObject : MonoBehaviour {
 
     public Character character;
     [HideInInspector] public Animator anim;
     private CharacterState state;
     private TargetManager targetManager;
-    private CharacterController characterController;
     private List<Character> targets;
 
     protected virtual void Start(){
         targetManager = GetComponent<TargetManager>();
-        characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         targets = new List<Character>();
 

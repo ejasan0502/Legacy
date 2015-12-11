@@ -23,7 +23,7 @@ public class PlayerCharacter : Character {
     private bool hostile = false;
     private GameObject primaryWeapon = null;
     private GameObject secondaryWeapon = null;
-    private Model armor = new Model();
+    private List<GameObject> armor = null;
 
     public override bool isPlayer{
         get{
@@ -70,45 +70,29 @@ public class PlayerCharacter : Character {
             LevelUp();
     }
     public void Equip(Equip e){
-        int index = (int) e.equipType;
-
-        // Remove previous model from character, if necessary
-        if ( equipment[index] != null ){
-            if ( index < 3 ){
-                // Equip has a model
-                if ( index < 2 ){
-                    // Equip is a weapon
-                    if ( primaryWeapon != null ){
-                        GameObject.DestroyImmediate(primaryWeapon);
-                        primaryWeapon = null;
-                    }
-                    primaryWeapon = (GameObject) GameObject.Instantiate(Resources.Load(e.GetModelPath()));
+        if ( e.isWeapon ){
+            if ( primaryWeapon != null ){
+                if ( e.oneHanded && secondaryWeapon == null ){
+                    SetSecondaryWeapon(e);
                 } else {
-                    // Equip is armor
-                }
-                equipment[index] = e;
-            } else {
-                // Equip is an accessory
-                // Add accessory to next empty slot
-                bool equipped = false;
-                for (int i = 3; i < equipment.Length; i++){
-                    if ( equipment[i] == null ){
-                        equipment[i] = e;
-                        equipped = true;
+                    if ( !e.oneHanded && secondaryWeapon != null ){
+                        GameObject.DestroyImmediate(secondaryWeapon);
+                        secondaryWeapon = null;
                     }
+                    SetPrimaryWeapon(e);
                 }
+            } else {
+                SetPrimaryWeapon(e);
+            }   
+        } else if ( e.isArmor ){
+            
+        } else {
 
-                // Empty slot wasn't found, set it to first accessory slot
-                if ( !equipped )
-                    equipment[index] = e;
-            }
         }
 
         // Update Stats
         UpdateTraits();
         UpdateStats();
-
-        // Update Graphics
     }
     public void Equip(Equip e, int slot){
         int index = (int) e.equipType;
@@ -172,6 +156,66 @@ public class PlayerCharacter : Character {
         base.UpdateBuffs();
     }
 
+    private void SetPrimaryWeapon(Equip e){
+        // Destroy previous primaryWeapon, if it exists
+        if ( primaryWeapon != null ) {
+            GameObject.DestroyImmediate(primaryWeapon);
+        }
+
+        primaryWeapon = (GameObject) GameObject.Instantiate(Resources.Load(e.modelPath));
+        primaryWeapon.transform.SetParent(characterObject.GetComponent<Model>().rightHand);
+        primaryWeapon.transform.position = Vector3.zero;
+
+        // Add equip to equipment
+        equipment[0] = e;
+    }
+    private void SetSecondaryWeapon(Equip e){
+        // Destroy previous secondaryWeapon, if it exists
+        if ( secondaryWeapon != null ){
+            GameObject.DestroyImmediate(secondaryWeapon);
+        }
+
+        Transform parentObject;
+        if ( e.equipType == EquipType.shield ){
+            parentObject = characterObject.GetComponent<Model>().shieldPos;
+        } else {
+            parentObject = characterObject.GetComponent<Model>().leftHand;
+        }
+        secondaryWeapon = (GameObject) GameObject.Instantiate(Resources.Load(e.modelPath));
+        secondaryWeapon.transform.SetParent(parentObject);
+        secondaryWeapon.transform.position = Vector3.zero;
+
+        // Add equip to equipment
+        equipment[1] = e;
+    }
+    private void SetArmor(Equip e){
+        // Destroy previous armor, if it exists
+        if ( armor != null || armor.Count > 0 ){
+            foreach (GameObject o in armor){
+                GameObject.DestroyImmediate(o);
+            }
+            armor = new List<GameObject>();
+        }
+
+        Object[] armorObjects = Resources.LoadAll<GameObject>(e.modelPath);
+        if ( armorObjects.Length > 0 ){
+            foreach (Object o in armorObjects){
+                GameObject obj = (GameObject) GameObject.Instantiate(o);
+                string[] transformRef = o.name.Split(' ');
+                FieldInfo fi = characterObject.GetComponent<Model>().GetType().GetField(transformRef[transformRef.Length-1]);
+                if ( fi != null ){
+                    obj.transform.SetParent((Transform)fi.GetValue(characterObject.GetComponent<Model>()));
+                    obj.transform.position = Vector3.zero;
+                    armor.Add(obj);
+                } else {
+                    DebugWindow.Log("ERROR: PlayerCharacter.SetArmor(Equip) method does not recognize, " + transformRef[transformRef.Length-1] + " for " + o.name);
+                }
+            }
+        }
+
+        // Add equip to equipment
+        equipment[2] = e;
+    }
     private Stats EquipmentStats(Stats stats){
         Stats sumOfEquipmentStats = new Stats();
         Stats sumOfEquipmentBonusStats = new Stats();

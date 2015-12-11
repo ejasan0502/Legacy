@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour {
     
     private NetworkManager networkManager;
     public DataSaver dataSaver;
-    private SmartFox smartfox;
     public ContentData contentData;
     private SceneManager sceneManager;
 
@@ -42,7 +41,6 @@ public class GameManager : MonoBehaviour {
 
         networkManager = NetworkManager.instance;
         dataSaver = new DataSaver();
-        smartfox = NetworkManager.GetConnection();
         contentData = new ContentData();
         sceneManager = new SceneManager();
 
@@ -66,6 +64,9 @@ public class GameManager : MonoBehaviour {
     }
     #endregion
     #region Public Methods
+    public void LoadScene(string s){
+        sceneManager.LoadScene(s);
+    }
     // Save player data to Server
     public void SavePlayerData(){
         DebugWindow.Log("Saving player data...");
